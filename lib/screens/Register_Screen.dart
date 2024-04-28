@@ -1,12 +1,9 @@
 import 'package:country_picker/country_picker.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
+import 'package:intl/intl.dart';
 import 'package:testing/screens/VerifyScreen.dart';
 import 'package:testing/widget/CustomButton.dart';
-import 'dart:convert';
 import 'package:dio/dio.dart';
-
 
 class Register_Screen extends StatefulWidget {
   const Register_Screen({super.key});
@@ -17,7 +14,6 @@ class Register_Screen extends StatefulWidget {
 
 class _Register_ScreenState extends State<Register_Screen> {
   final TextEditingController phoneController = TextEditingController();
-
   TextEditingController _firstNameController = TextEditingController();
   TextEditingController _lastNameController = TextEditingController();
   TextEditingController _dobController = TextEditingController();
@@ -25,8 +21,6 @@ class _Register_ScreenState extends State<Register_Screen> {
   TextEditingController _genderController = TextEditingController();
   TextEditingController _frnNumberController = TextEditingController();
   TextEditingController _addressController = TextEditingController();
-
-
 
   Country selectedCountry = Country(
     phoneCode: "91",
@@ -40,6 +34,9 @@ class _Register_ScreenState extends State<Register_Screen> {
     displayNameNoCountryCode: "IN",
     e164Key: "",
   );
+
+  DateTime? _selectedDateOfBirth; // Define _selectedDateOfBirth
+  String? _selectedGender; // Define _selectedGender
 
   Future<void> registerUser(BuildContext context) async {
     try {
@@ -149,8 +146,6 @@ class _Register_ScreenState extends State<Register_Screen> {
                               });
                             },
                           );
-
-
                         },
                         child: Text(
                           "${selectedCountry.flagEmoji} + ${selectedCountry.phoneCode}",
@@ -181,54 +176,175 @@ class _Register_ScreenState extends State<Register_Screen> {
                   ),
                 ),
                 const SizedBox(height: 20),
-            Expanded(
-              child: Form(
-                child: SingleChildScrollView(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      TextFormField(
-                        controller: _firstNameController,
-                        decoration: InputDecoration(labelText: 'First Name'),
-                  
+                Expanded(
+                  child: Form(
+                    child: SingleChildScrollView(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          TextFormField(
+                            controller: _firstNameController,
+                            decoration: InputDecoration(
+                              labelText: 'First Name',
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(10),
+                                borderSide: const BorderSide(color: Colors.black12),
+                              ), // apply border to text field
+                            ),
+                            validator: (value) {
+                              if (value!.isEmpty) {
+                                return 'Please enter first name';
+                              }
+                              return null;
+                            },
+                            onSaved: (value) {
+                              // Not implemented yet
+                            },
+                          ),
+                          const SizedBox(height: 10),
+                          TextFormField(
+                            controller: _lastNameController,
+                            decoration: InputDecoration(
+                              labelText: 'Last Name',
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(10),
+                                borderSide: const BorderSide(color: Colors.black12),
+                              ), // apply border to text field
+                            ),
+                            validator: (value) {
+                              if (value!.isEmpty) {
+                                return 'Please enter last name';
+                              }
+                              return null;
+                            },
+                            onSaved: (value) {
+                              // Not implemented yet
+                            },
+                          ),
+                          const SizedBox(height: 10),
+                          TextFormField(
+                            controller: _dobController,
+                            decoration: InputDecoration(
+                              labelText: 'Date of Birth',
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(10),
+                                borderSide: const BorderSide(color: Colors.black12),
+                              ), // apply border to text field
+                            ),
+                            onTap: () async {
+                              final DateTime? picked = await showDatePicker(
+                                context: context,
+                                initialDate: _selectedDateOfBirth ?? DateTime.now(),
+                                firstDate: DateTime(1900),
+                                lastDate: DateTime.now(),
+                              );
+                              if (picked != null && picked != _selectedDateOfBirth) {
+                                setState(() {
+                                  _selectedDateOfBirth = picked;
+                                  _dobController.text = DateFormat('dd-MM-yyyy').format(picked); // Format the date
+                                });
+                              }
+                            },
+
+                            validator: (value) {
+                              if (value!.isEmpty) {
+                                return 'Please enter date of birth';
+                              }
+                              return null;
+                            },
+                            onSaved: (value) {
+                              // Not implemented yet
+                            },
+                          ),
+                          const SizedBox(height: 10),
+                          DropdownButtonFormField<String>(
+                            value: _selectedGender,
+                            decoration: InputDecoration(
+                              labelText: 'Gender',
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(10),
+                                borderSide: const BorderSide(color: Colors.black12),
+                              ), // apply border to dropdown
+                            ),
+                            onChanged: (String? newValue) {
+                              setState(() {
+                                _selectedGender = newValue;
+                                _genderController.text = newValue!;
+                              });
+                            },
+                            items: <String>['Male', 'Female', 'Other']
+                                .map<DropdownMenuItem<String>>((String value) {
+                              return DropdownMenuItem<String>(
+                                value: value,
+                                child: Text(value),
+                              );
+                            }).toList(),
+                          ),
+                          const SizedBox(height: 10),
+                          TextFormField(
+                            controller: _panchayatCentreController,
+                            decoration: InputDecoration(
+                              labelText: 'Panchayat Centre',
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(10),
+                                borderSide: const BorderSide(color: Colors.black12),
+                              ), // apply border to text field
+                            ),
+                            validator: (value) {
+                              if (value!.isEmpty) {
+                                return 'Please enter Panchayat Centre';
+                              }
+                              return null;
+                            },
+                            onSaved: (value) {
+                              // Not implemented yet
+                            },
+                          ),
+                          const SizedBox(height: 10),
+                          TextFormField(
+                            controller: _frnNumberController,
+                            decoration: InputDecoration(
+                              labelText: 'FRN Number',
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(10),
+                                borderSide: const BorderSide(color: Colors.black12),
+                              ), // apply border to text field
+                            ),
+                            validator: (value) {
+                              if (value!.isEmpty) {
+                                return 'Please enter FRN Number';
+                              }
+                              return null;
+                            },
+                            onSaved: (value) {
+                              // Not implemented yet
+                            },
+                          ),
+                          const SizedBox(height: 10),
+                          TextFormField(
+                            controller: _addressController,
+                            decoration: InputDecoration(
+                              labelText: 'Address',
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(10),
+                                borderSide: const BorderSide(color: Colors.black12),
+                              ), // apply border to text field
+                            ),
+                            validator: (value) {
+                              if (value!.isEmpty) {
+                                return 'Please enter address';
+                              }
+                              return null;
+                            },
+                            onSaved: (value) {
+                              // Not implemented yet
+                            },
+                          ),
+                        ],
                       ),
-                      TextFormField(
-                        controller: _lastNameController,
-                        decoration: InputDecoration(labelText: 'Last Name'),
-                  
-                      ),
-                      TextFormField(
-                        controller: _dobController,
-                        decoration: InputDecoration(labelText: 'Date of Birth'),
-                  
-                      ),
-                      TextFormField(
-                        controller: _panchayatCentreController,
-                        decoration: InputDecoration(labelText: 'Panchayat Centre'),
-                  
-                      ),
-                      TextFormField(
-                        controller: _genderController,
-                        decoration: InputDecoration(labelText: 'Gender'),
-                  
-                      ),
-                      TextFormField(
-                        controller: _frnNumberController,
-                        decoration: InputDecoration(labelText: 'FRN Number'),
-                  
-                      ),
-                      TextFormField(
-                        controller: _addressController,
-                        decoration: InputDecoration(labelText: 'Address'),
-                  
-                      ),
-                    ],
+                    ),
                   ),
                 ),
-              ),
-            ),
-
-                const SizedBox(height: 20),
                 SizedBox(
                   width: double.infinity,
                   height: 50,

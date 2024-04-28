@@ -48,6 +48,7 @@ dependencies:
   smooth_page_indicator: ^1.1.0
   flutter_svg: ^2.0.10+1
   curved_labeled_navigation_bar: ^2.0.2
+  intl: ^0.17.0
 
 dev_dependencies:
   flutter_test:

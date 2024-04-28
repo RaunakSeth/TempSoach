@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:pinput/pinput.dart';
 import 'package:testing/screens/HomeScreen.dart';
+import 'package:testing/screens/navScreen.dart';
 import 'package:testing/widget/CustomButton.dart';
 import 'package:dio/dio.dart';
 
@@ -35,7 +36,7 @@ class _VerifyScreenState extends State<VerifyScreen> {
         // Navigate to the home screen if verification is successful
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => const HomeScreen()),
+          MaterialPageRoute(builder: (context) => const NavScreen()),
         );
       } else {
         // Handle failure cases if necessary

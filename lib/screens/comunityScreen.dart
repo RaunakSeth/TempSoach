@@ -15,51 +15,61 @@ class _CommunityScreenState extends State<CommunityScreen> {
       body: Stack(
         children: [
           AppBar(
-            toolbarHeight: 100,
+            automaticallyImplyLeading: false,
             backgroundColor: Colors.transparent,
             elevation: 0.0,
-            flexibleSpace: ClipPath(
-              clipper: Customshape(), // Assuming your custom clipper for the shape
+            flexibleSpace: ClipPath(// Assuming your custom clipper for the shape
               child: Stack( // Use a Stack to position elements on top of each other
                 children: [
                   Container(
-                    height: 150,
+                    height: 130,
                     width: MediaQuery.of(context).size.width,
-                    color: const Color(0xFF11AB2F),
+                    decoration: const BoxDecoration(
+                        color: Color(0xFF11AB2F),
+                        borderRadius: BorderRadius.only(
+                          bottomLeft: Radius.circular(20),
+                          bottomRight: Radius.circular(20),
+                        ),
+                    ),
                   ),
                   Padding(
                     padding: const EdgeInsets.all(8),
                     child: Container(// Container with padding for better alignment
-                      padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 24.0,),
-                      child: Row( // Row to arrange search bar and icon horizontally
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween, // Space evenly
+                      child: Column(
                         children: [
-                          Expanded(//// Expand search bar to fill most of the space
-                            child: TextField(
-                              decoration: InputDecoration(
-                                fillColor: Colors.white, // Fill color for the textbox
-                                filled: true, // Enable filling with the fillColor
-                                hintText: 'Search',
-                                prefixIcon: const Icon(Icons.search),
-                                border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(10.0), // Slightly rounded corners
+                          SizedBox(height: 30,),
+                          Row(
+                          children: [
+                            SizedBox(width: 10,),
+                            Expanded(//// Expand search bar to fill most of the space
+                              child: TextField(
+                                decoration: InputDecoration(
+                                  fillColor: Colors.white, // Fill color for the textbox
+                                  filled: true, // Enable filling with the fillColor
+                                  hintText: 'Search',
+                                  prefixIcon: const Icon(Icons.search),
+                                  border: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(10.0), // Slightly rounded corners
+                                  ),
                                 ),
-                              ),
-                              onChanged: (value) {
-                                // Handle search query changes here
-                              },
-                            )
-
-                          ),
-                          IconButton( // Bell icon button
-                            icon: const Icon(Icons.notifications,
-                              color: Colors.white,
+                                onChanged: (value) {
+                                  // Handle search query changes here
+                                },
+                              )
                             ),
-                            onPressed: () {
-                              // Add functionality for bell icon press
-                            },
-                          ),
-                        ],
+                            SizedBox(width: 10,),
+                            IconButton( // Bell icon button
+                              icon: const Icon(Icons.notifications,
+                                color: Colors.white,
+                                size: 30,
+                              ),
+                              onPressed: () {
+                                // Add functionality for bell icon press
+                              },
+                            ),
+                          ],
+                        ),
+                      ],
                       ),
                     ),
                   ),

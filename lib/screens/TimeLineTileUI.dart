@@ -30,7 +30,7 @@ class TimeLineTileUI extends StatelessWidget {
             color: isPast ? Color(0xFF11AB2F) : Color(0xFF11AB2F),
             iconStyle: IconStyle(
                 iconData: Icons.check_circle,
-                color: isPast ? Colors.greenAccent : Color(0xFF11AB2F))),
+                color:  Color(0xFF11AB2F))),
         endChild: EventPath(
           isPast: isPast,
           childWidget: eventChild,

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:pinput/pinput.dart';
 import 'package:dio/dio.dart';
 import 'package:testing/screens/HomeScreen.dart';
+import 'package:testing/screens/navScreen.dart';
 import 'package:testing/widget/CustomButton.dart';
 
 class OtpScreen extends StatefulWidget {
@@ -45,7 +46,7 @@ class _OtpScreenState extends State<OtpScreen> {
         // Success: Move to RegisterScreen
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => const HomeScreen()),
+          MaterialPageRoute(builder: (context) => const NavScreen()),
         );
       } else {
         // Handle other status codes if needed

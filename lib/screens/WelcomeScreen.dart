@@ -52,7 +52,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                   child: CustomButton(
                     onPressed: (){
                       Navigator.push(context, MaterialPageRoute(
-                          builder: (context)=>  NavScreen(),
+                          builder: (context)=>  Register_Screen(),
                       ),
                       );
                     },
@@ -63,7 +63,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                 GestureDetector(
                   onTap: () {
                     Navigator.push(context, MaterialPageRoute(
-                        builder: (context)=>  Login_Screen()
+                        builder: (context)=>  NavScreen()
                     ),
                     );
                   },

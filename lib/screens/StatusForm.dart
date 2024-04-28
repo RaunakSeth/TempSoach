@@ -43,7 +43,7 @@ class _StatusFromState extends State<StatusFrom> {
 
           children:[
             Container(
-              height: 70,
+              height: 40,
               child: const Text('Check Application Satus',
                 style: TextStyle(
                   color: Colors.black,
@@ -54,7 +54,7 @@ class _StatusFromState extends State<StatusFrom> {
             ),
             SizedBox(height: 20,),
             Container(
-              height: 650,
+              height: 600,
               decoration: BoxDecoration(
                   color: Color(0xFFF5F5F5),
                   borderRadius: BorderRadius.circular(10.0),

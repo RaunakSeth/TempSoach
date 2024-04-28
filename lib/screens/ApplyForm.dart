@@ -52,8 +52,8 @@ class ApplyForm extends StatelessWidget {
                   SizedBox(height: 20),
                   Container(
                     margin: const EdgeInsets.all(10.0),
-                    width: 350,
-                    height: 400,
+                    width: 400,
+                    height: 420,
                     decoration: BoxDecoration(
                       color: const Color(0xffF5F5F5),
                       borderRadius: BorderRadius.circular(12),

@@ -1,12 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:testing/screens/ApplyForm.dart';
 import 'package:testing/screens/StatusForm.dart';
 import 'package:testing/theme/app_decoration.dart';
-import 'package:testing/theme/custom_button_style.dart';
-import 'package:testing/theme/custom_text_style.dart';
-import 'package:testing/theme/theme_helper.dart';
 import 'package:testing/widgets/custom_outlined_button.dart';
 
 class HomeScreen extends StatelessWidget {
@@ -15,72 +11,162 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      extendBody: true,
+      appBar: PreferredSize(
+        preferredSize: const Size.fromHeight(90),
+        child: AppBar(
+          automaticallyImplyLeading: false,
+          backgroundColor: const Color(0xff11AB2F),
+          flexibleSpace: Container(
+            decoration: const BoxDecoration(
+              borderRadius: BorderRadius.only(
+                bottomLeft: Radius.circular(20),
+                bottomRight: Radius.circular(20),
+              ),
+              color: Color(0xff11AB2F),
+            ),
+            child: const Column(
+              children: [
+                SizedBox(height: 40,),
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    SizedBox(width: 20,),
+                    Image(image: AssetImage('assets/iconn.png')),
+                    SizedBox(width: 10,),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          'Ashish Kumar',
+                          style: TextStyle(color: Colors.white, fontSize: 25.0),
+                        ),
+                        Text(
+                          'FRN no- 21231234449',
+                          style: TextStyle(color: Colors.white, fontSize: 16.0),
+                        ),
+                      ],
+                    ),
+                    Icon(Icons.edit, color: Colors.white,),
+                    SizedBox(width: 30,),
+                    Icon(Icons.notifications, color: Colors.white,),
+                    SizedBox(width: 5,),
+                    Icon(Icons.settings, color: Colors.white,)
+                  ],
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
       body: SingleChildScrollView(
         child: Column(
-          children: [
-            AppBar(
-              toolbarHeight: 100,
-              backgroundColor: Colors.transparent,
-              elevation: 0.0,
-              flexibleSpace: ClipPath(
-                clipper: Customshape(), // Assuming your custom clipper for the shape
-                child: Stack( // Use a Stack to position elements on top of each other
-                  children: [
-                    Container(
-                      height: 150,
-                      width: MediaQuery.of(context).size.width,
-                      color: const Color(0xFF11AB2F),
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: <Widget>[
+            Container(
+              child: Stack(
+                clipBehavior: Clip.none,
+                children: [
+                  CustomPaint(
+                    size: Size(MediaQuery.of(context).size.width, 250),
+                    painter: CurvePainter(),
+                  ),
+                  Positioned(
+                    top: 0,
+                    left: 0,
+                    right: 0,
+                    bottom: 0,
+                    child: SizedBox(
+                      height: 440,
+                      width: 400,
+                      child: Column(
+                        children: [
+                          const SizedBox(height: 10,),
+                          _buildTwelve(context),
+                        ],
+                      ),
                     ),
-                    Padding(
-                      padding: const EdgeInsets.all(8),
-                      child: Container(
-                        decoration: const BoxDecoration(
-                          borderRadius: BorderRadius.only(bottomRight: Radius.circular(50), bottomLeft: Radius.circular(50)),
-
-                        ),
-                        child: const Padding(
-                          padding: EdgeInsets.all(16.0),
-                          child: Row(
+                  ),
+                ],
+              ),
+            ),
+            SizedBox(height: 10,),
+            const Row(
+                children:[
+                  SizedBox(width: 20,),
+                  Align(
+                    alignment: Alignment.topLeft,
+                    child: Text(
+                      "Other Amenities",
+                      style: TextStyle(
+                        color: Colors.black,
+                        fontWeight: FontWeight.normal,
+                        fontSize: 24,
+                      ),
+                    ),
+                  ),
+                ]
+            ),
+            Container(
+              height: 450,
+              color: Colors.white,
+              padding: EdgeInsets.all(12),
+              width: 380,
+              child: Column(
+                children: [
+                  const SizedBox(height: 10,),
+                  Container(
+                    height: 200,
+                    width: 380,
+                    color: Colors.white,
+                    child: Column(
+                      children: [
+                        Container(
+                          height: 180,
+                          width: 360,
+                          padding: const EdgeInsets.all(12),
+                          decoration: AppDecoration.gradientGreenToGreenE
+                              .copyWith(
+                              borderRadius: BorderRadiusStyle
+                                  .roundedBorder12),
+                          child: const Column(
                             children: [
-                              Image(image: AssetImage('assets/iconn.png')),
-                              SizedBox(width: 20.0),
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  SizedBox(height: 20,),
-                                  Text(
-                                    'Ashish Kumar',
-                                    style: TextStyle(color: Colors.black, fontSize: 25.0),
-                                  ),
-                                  Text(
-                                    'FRN no- 21231234449',
-                                    style: TextStyle(color: Colors.black, fontSize: 16.0),
-                                  ),
-                                ],
+                              SizedBox(height: 10,),
+                              Text("Total Listed Units",
+                                style: TextStyle(color: Colors.white,
+                                    fontSize: 24,
+                                    fontWeight: FontWeight.bold),
+                              ),
+                              Text("0",
+                                style: TextStyle(color: Colors.white,
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 56),
+                              ),
+                              Text("Current Market value = ₹00,000",
+                                style: TextStyle(color: Colors.white,
+                                    fontWeight: FontWeight.normal,
+                                    fontSize: 18),
                               ),
                             ],
                           ),
                         ),
+                      ],
+                    ),
+                  ),
+                  Container(
+                    height: 150,
+                    width: 360,
+                    decoration: const BoxDecoration(
+                      image: DecorationImage(
+                        image: AssetImage('assets/news.png'),
+                        fit: BoxFit.cover,
                       ),
                     ),
-                  ],
-                ),
+                  ),
+                  const SizedBox(height: 20,)
+                ],
               ),
             ),
-            const SizedBox(height: 20),
-            _buildTwelve(context),
-            _buildDashboard(context),
-            const SizedBox(height: 20),
-            Container(
-              height: 130,
-              width: 325,// Set the maximum height to 30 logical pixels
-              decoration: const BoxDecoration(
-                image: DecorationImage(
-                  image: AssetImage('assets/news.png'),
-                  fit: BoxFit.cover, // Adjust the fit of the image as needed
-                ),
-              ),
-            )
           ],
         ),
       ),
@@ -97,14 +183,7 @@ class HomeScreen extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          const Divider(indent: 5),
-          const SizedBox(height: 17),
-          const Divider(indent: 5),
-          const SizedBox(height: 18),
-          const Divider(indent: 5, endIndent: 43),
-          const SizedBox(height: 17),
-          const Divider(indent: 5),
-          const SizedBox(height: 15),
+          const SizedBox(height: 150,),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
@@ -124,12 +203,9 @@ class HomeScreen extends StatelessWidget {
                 child: CustomOutlinedButton(
                   text: "Status",
                   margin: const EdgeInsets.only(left: 11),
-                  buttonStyle: CustomButtonStyles.outlineOrangeA,
-                  buttonTextStyle: theme.textTheme.titleMedium!,
                   onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => const StatusFrom()),
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (context) => const StatusFrom())
                     );
                   },
                 ),
@@ -140,70 +216,23 @@ class HomeScreen extends StatelessWidget {
       ),
     );
   }
-
-  Widget _buildDashboard(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 19),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          const SizedBox(height: 16),
-          Text(
-            "Other Amenities",
-            style: theme.textTheme.headlineSmall,
-          ),
-          const SizedBox(height: 15),
-          Container(
-            margin: const EdgeInsets.only(right: 2),
-            padding: const EdgeInsets.symmetric(horizontal: 95, vertical: 18),
-            decoration: AppDecoration.gradientGreenToGreenE.copyWith(
-              borderRadius: BorderRadiusStyle.roundedBorder12,
-            ),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                const SizedBox(height: 6),
-                Container(
-                  width: 127,
-                  decoration: AppDecoration.outlineBlackF,
-                  child: RichText(
-                    text: TextSpan(
-                      children: [
-                        TextSpan(
-                          text: "0\n",
-                          style: theme.textTheme.displayLarge,
-                        ),
-                        TextSpan(
-                          text: "VFGA Unit",
-                          style: CustomTextStyles.headlineSmallInterffffffff,
-                        ),
-                      ],
-                    ),
-                    textAlign: TextAlign.center,
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ],
-      ),
-    );
-  }
 }
-class Customshape extends CustomClipper<Path>{
+
+class CurvePainter extends CustomPainter {
   @override
-  Path getClip(Size size) {
-    double height = size.height;
-    double width = size.width;
-    var path = Path();
-    path.lineTo(0, height-50);
-    path.quadraticBezierTo(width/2, height, width, height-50);
-    path.lineTo(width, 0);
-    path.close();
-    return path;
+  void paint(Canvas canvas, Size size) {
+    Paint paint = Paint()..color = Color(0xff11AB2F);
+    Path path = Path()
+      ..lineTo(0, size.height - 140)
+      ..quadraticBezierTo(size.width / 2, size.height, size.width, size.height - 140)
+      ..lineTo(size.width, 0)
+      ..close();
+
+    canvas.drawPath(path, paint);
   }
+
   @override
-  bool shouldReclip(covariant CustomClipper<Path> oldClipper) {
-    return true;
+  bool shouldRepaint(covariant CustomPainter oldDelegate) {
+    return false;
   }
 }

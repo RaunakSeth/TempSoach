@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:testing/onboarding/onboarding_view.dart';
 import 'package:testing/screens/HomeScreen.dart';
+import 'package:testing/screens/Login_Screen.dart';
+import 'package:testing/screens/Register_Screen.dart';
 import 'package:testing/screens/WelcomeScreen.dart';
 import 'package:testing/screens/navScreen.dart';
 
@@ -27,7 +29,7 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.green),
         useMaterial3: true,
       ),
-      home: onboarding? const NavScreen() : const NavScreen(),
+      home: onboarding? const WelcomeScreen() : const WelcomeScreen(),
     );
   }
 }

@@ -31,8 +31,8 @@ class _NavScreenState extends State<NavScreen> {
     return Scaffold(
       bottomNavigationBar: CurvedNavigationBar(
         backgroundColor: Colors.white,
-        buttonBackgroundColor: const Color(0xFF0F9429),
-        color: const Color(0xFF0F9429),
+        buttonBackgroundColor: const Color(0xFF11AB2F),
+        color: const Color(0xFF11AB2F),
         animationDuration: const Duration(milliseconds: 400),
         items: const [
           CurvedNavigationBarItem(
