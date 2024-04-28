@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:testing/screens/HomeScreen.dart';
-import 'package:testing/screens/Outstanding.dart';
-import 'package:testing/screens/Payment.dart';
-import 'package:testing/screens/Rejected.dart';
+import 'package:testing/screens/Transction_screens/Outstanding.dart';
+import 'package:testing/screens/Transction_screens/Payment.dart';
+import 'package:testing/screens/Transction_screens/Rejected.dart';
 
 class TransactionScreen extends StatefulWidget {
   const TransactionScreen({Key? key}) : super(key: key);
@@ -23,13 +22,13 @@ class _TransactionScreenState extends State<TransactionScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        toolbarHeight: 130,
+        toolbarHeight: 100,
         automaticallyImplyLeading: false,
         backgroundColor: Colors.transparent,
         elevation: 0.0,
         flexibleSpace: ClipPath(
           child: Container(
-            height: 130,
+            height: 100,
             width: MediaQuery.of(context).size.width,
             decoration: const BoxDecoration(
               borderRadius: BorderRadius.only(
@@ -38,22 +37,24 @@ class _TransactionScreenState extends State<TransactionScreen> {
               ),
               color: Color(0xFF11AB2F),
             ),
-            child: const Row(
-              children: [
-                SizedBox(width: 10,),
-                Text(
-                  "Transaction History",
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 40,
-                    fontWeight: FontWeight.bold,
+            child: const Padding(
+              padding: EdgeInsets.all(24),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    "Transaction History",
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 30,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
-                ),
-                SizedBox(width: 5,),
-                Icon(Icons.notifications,
-                color: Colors.white,
-                size: 30,)
-              ],
+                  Icon(Icons.notifications,
+                  color: Colors.white,
+                  size: 30,)
+                ],
+              ),
             ),
           ),
         ),

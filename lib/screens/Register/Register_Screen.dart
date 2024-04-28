@@ -1,7 +1,7 @@
 import 'package:country_picker/country_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:testing/screens/VerifyScreen.dart';
+import 'package:testing/screens/Login/VerifyScreen.dart';
 import 'package:testing/widget/CustomButton.dart';
 import 'package:dio/dio.dart';
 

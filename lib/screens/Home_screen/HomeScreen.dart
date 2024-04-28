@@ -1,7 +1,6 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:testing/screens/ApplyForm.dart';
-import 'package:testing/screens/StatusForm.dart';
+import 'package:testing/screens/Home_screen/ApplyForm.dart';
+import 'package:testing/screens/Home_screen/Status_form/StatusForm.dart';
 import 'package:testing/theme/app_decoration.dart';
 import 'package:testing/widgets/custom_outlined_button.dart';
 
@@ -90,6 +89,7 @@ class HomeScreen extends StatelessWidget {
                 ],
               ),
             ),
+
             SizedBox(height: 10,),
             const Row(
                 children:[
@@ -107,66 +107,7 @@ class HomeScreen extends StatelessWidget {
                   ),
                 ]
             ),
-            Container(
-              height: 450,
-              color: Colors.white,
-              padding: EdgeInsets.all(12),
-              width: 380,
-              child: Column(
-                children: [
-                  const SizedBox(height: 10,),
-                  Container(
-                    height: 200,
-                    width: 380,
-                    color: Colors.white,
-                    child: Column(
-                      children: [
-                        Container(
-                          height: 180,
-                          width: 360,
-                          padding: const EdgeInsets.all(12),
-                          decoration: AppDecoration.gradientGreenToGreenE
-                              .copyWith(
-                              borderRadius: BorderRadiusStyle
-                                  .roundedBorder12),
-                          child: const Column(
-                            children: [
-                              SizedBox(height: 10,),
-                              Text("Total Listed Units",
-                                style: TextStyle(color: Colors.white,
-                                    fontSize: 24,
-                                    fontWeight: FontWeight.bold),
-                              ),
-                              Text("0",
-                                style: TextStyle(color: Colors.white,
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 56),
-                              ),
-                              Text("Current Market value = ₹00,000",
-                                style: TextStyle(color: Colors.white,
-                                    fontWeight: FontWeight.normal,
-                                    fontSize: 18),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  Container(
-                    height: 150,
-                    width: 360,
-                    decoration: const BoxDecoration(
-                      image: DecorationImage(
-                        image: AssetImage('assets/news.png'),
-                        fit: BoxFit.cover,
-                      ),
-                    ),
-                  ),
-                  const SizedBox(height: 20,)
-                ],
-              ),
-            ),
+            _totallistedunits(context),
           ],
         ),
       ),
@@ -217,6 +158,69 @@ class HomeScreen extends StatelessWidget {
     );
   }
 }
+Widget _totallistedunits(BuildContext context) {
+  return Container(
+    height: 450,
+    color: Colors.white,
+    padding: EdgeInsets.all(12),
+    width: 380,
+    child: Column(
+      children: [
+        const SizedBox(height: 10,),
+        Container(
+          height: 200,
+          width: 380,
+          color: Colors.white,
+          child: Column(
+            children: [
+              Container(
+                height: 180,
+                width: 360,
+                padding: const EdgeInsets.all(12),
+                decoration: AppDecoration.gradientGreenToGreenE
+                    .copyWith(
+                    borderRadius: BorderRadiusStyle
+                        .roundedBorder12),
+                child: const Column(
+                  children: [
+                    SizedBox(height: 10,),
+                    Text("Total Listed Units",
+                      style: TextStyle(color: Colors.white,
+                          fontSize: 24,
+                          fontWeight: FontWeight.bold),
+                    ),
+                    Text("0",
+                      style: TextStyle(color: Colors.white,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 56),
+                    ),
+                    Text("Current Market value = ₹00,000",
+                      style: TextStyle(color: Colors.white,
+                          fontWeight: FontWeight.normal,
+                          fontSize: 18),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ),
+        Container(
+          height: 150,
+          width: 360,
+          decoration: const BoxDecoration(
+            image: DecorationImage(
+              image: AssetImage('assets/news.png'),
+              fit: BoxFit.cover,
+            ),
+          ),
+        ),
+        const SizedBox(height: 20,)
+      ],
+    ),
+  );
+}
+
 
 class CurvePainter extends CustomPainter {
   @override

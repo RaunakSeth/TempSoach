@@ -1,7 +1,7 @@
 import 'package:curved_labeled_navigation_bar/curved_navigation_bar.dart';
 import 'package:curved_labeled_navigation_bar/curved_navigation_bar_item.dart';
 import 'package:flutter/material.dart';
-import 'package:testing/screens/HomeScreen.dart';
+import 'package:testing/screens/Home_screen/HomeScreen.dart';
 import 'package:testing/screens/comunityScreen.dart';
 import 'package:testing/screens/transactionScreen.dart';
 

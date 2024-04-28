@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:testing/screens/HomeScreen.dart';
-import 'package:testing/screens/Register_Screen.dart';
-import 'package:testing/screens/Login_Screen.dart';
+import 'package:testing/screens/Home_screen/HomeScreen.dart';
+import 'package:testing/screens/Register/Register_Screen.dart';
+import 'package:testing/screens/Login/Login_Screen.dart';
 import 'package:testing/screens/navScreen.dart';
 import 'package:testing/widget/CustomButton.dart';
 

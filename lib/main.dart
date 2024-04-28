@@ -1,23 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:testing/onboarding/onboarding_view.dart';
-import 'package:testing/screens/HomeScreen.dart';
-import 'package:testing/screens/Login_Screen.dart';
-import 'package:testing/screens/Register_Screen.dart';
 import 'package:testing/screens/WelcomeScreen.dart';
-import 'package:testing/screens/navScreen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   final prefs = await SharedPreferences.getInstance();
-  final onboarding = prefs.getBool("onboarding")??false;
-
+  final onboarding = prefs.getBool("onboarding")??true;
   runApp( MyApp(onboarding: onboarding));
 }
 
 class MyApp extends StatelessWidget {
   final bool onboarding;
-  const MyApp({super.key, this.onboarding = false});
+  const MyApp({super.key, this.onboarding = true});
 
   @override
   Widget build(BuildContext context) {

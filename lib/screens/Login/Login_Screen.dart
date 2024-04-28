@@ -1,10 +1,7 @@
-import 'dart:convert';
-
 import 'package:dio/dio.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:country_picker/country_picker.dart';
-import 'package:testing/screens/OtpScreen.dart';
+import 'package:testing/screens/Register/OtpScreen.dart';
 import 'package:testing/widget/CustomButton.dart';
 
 class Login_Screen extends StatefulWidget {
