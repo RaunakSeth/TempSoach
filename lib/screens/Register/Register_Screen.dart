@@ -1,5 +1,6 @@
 import 'package:country_picker/country_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 import 'package:testing/screens/Login/VerifyScreen.dart';
 import 'package:testing/widget/CustomButton.dart';
@@ -71,7 +72,10 @@ class _Register_ScreenState extends State<Register_Screen> {
       print(e.toString()); // Print any errors for debugging
     }
   }
-
+  bool validDate(String value) {
+    RegExp regex = RegExp("(0[1-9]|[12][0-9]|3[01])(\/|-)(0[1-9]|1[1,2])(\/|-)(19|20)\d{2}");
+    return (!regex.hasMatch(value)) ? false : true;
+  }
   @override
   Widget build(BuildContext context) {
     phoneController.selection = TextSelection.fromPosition(
@@ -107,6 +111,10 @@ class _Register_ScreenState extends State<Register_Screen> {
                 TextFormField(
                   cursorColor: Colors.green,
                   controller: phoneController,
+                  keyboardType: TextInputType.number,
+                  inputFormatters: <TextInputFormatter>[
+                    FilteringTextInputFormatter.allow(RegExp('[0-9]'))
+                  ],
                   style: const TextStyle(
                     fontSize: 18,
                     fontWeight: FontWeight.bold,
@@ -184,6 +192,10 @@ class _Register_ScreenState extends State<Register_Screen> {
                         children: <Widget>[
                           TextFormField(
                             controller: _firstNameController,
+                            keyboardType: TextInputType.name,
+                            inputFormatters: <TextInputFormatter>[
+                              FilteringTextInputFormatter.allow(RegExp('[a-z A-Z]'))
+                            ],
                             decoration: InputDecoration(
                               labelText: 'First Name',
                               border: OutlineInputBorder(
@@ -204,6 +216,10 @@ class _Register_ScreenState extends State<Register_Screen> {
                           const SizedBox(height: 10),
                           TextFormField(
                             controller: _lastNameController,
+                            keyboardType: TextInputType.name,
+                            inputFormatters: <TextInputFormatter>[
+                              FilteringTextInputFormatter.allow(RegExp('[a-z A-Z]'))
+                            ],
                             decoration: InputDecoration(
                               labelText: 'Last Name',
                               border: OutlineInputBorder(
@@ -247,7 +263,7 @@ class _Register_ScreenState extends State<Register_Screen> {
                             },
 
                             validator: (value) {
-                              if (value!.isEmpty) {
+                              if (value!.isEmpty && validDate(value)) {
                                 return 'Please enter date of birth';
                               }
                               return null;
@@ -283,6 +299,10 @@ class _Register_ScreenState extends State<Register_Screen> {
                           const SizedBox(height: 10),
                           TextFormField(
                             controller: _panchayatCentreController,
+                            keyboardType: TextInputType.name,
+                            inputFormatters: <TextInputFormatter>[
+                              FilteringTextInputFormatter.allow(RegExp('[a-z A-Z]'))
+                            ],
                             decoration: InputDecoration(
                               labelText: 'Panchayat Centre',
                               border: OutlineInputBorder(
@@ -303,6 +323,10 @@ class _Register_ScreenState extends State<Register_Screen> {
                           const SizedBox(height: 10),
                           TextFormField(
                             controller: _frnNumberController,
+                            keyboardType: TextInputType.number,
+                            inputFormatters: <TextInputFormatter>[
+                              FilteringTextInputFormatter.allow(RegExp('[0-9]'))
+                            ],
                             decoration: InputDecoration(
                               labelText: 'FRN Number',
                               border: OutlineInputBorder(

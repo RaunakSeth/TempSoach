@@ -1,6 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:country_picker/country_picker.dart';
+import 'package:flutter/services.dart';
 import 'package:testing/screens/Register/OtpScreen.dart';
 import 'package:testing/widget/CustomButton.dart';
 
@@ -101,6 +102,10 @@ class _Login_ScreenState extends State<Login_Screen> {
                       fontSize: 18,
                       fontWeight: FontWeight.bold,
                     ),
+                    keyboardType: TextInputType.number,
+                    inputFormatters: <TextInputFormatter>[
+                      FilteringTextInputFormatter.allow(RegExp('[0-9]'))
+                    ],
                     decoration: InputDecoration(
                       hintText: "Enter phone number",
                       hintStyle: TextStyle(
