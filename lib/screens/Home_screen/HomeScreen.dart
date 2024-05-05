@@ -1,11 +1,23 @@
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:testing/screens/Home_screen/ApplyForm.dart';
+import 'package:testing/screens/Home_screen/ProfileScreen.dart';
 import 'package:testing/screens/Home_screen/Status_form/StatusForm.dart';
 import 'package:testing/theme/app_decoration.dart';
 import 'package:testing/widgets/custom_outlined_button.dart';
 
-class HomeScreen extends StatelessWidget {
-  const HomeScreen({Key? key});
+class HomeScreen extends StatefulWidget {
+  final String? name;
+  final String? frnno;
+  const HomeScreen({Key? key, @required this.name,@required this.frnno}) : super(key: key);
+
+  @override
+  State<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+
 
   @override
   Widget build(BuildContext context) {
@@ -24,7 +36,7 @@ class HomeScreen extends StatelessWidget {
               ),
               color: Color(0xff11AB2F),
             ),
-            child: const Column(
+            child: Column(
               children: [
                 SizedBox(height: 40,),
                 Row(
@@ -37,16 +49,27 @@ class HomeScreen extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          'Ashish Kumar',
+                          widget.name!,
                           style: TextStyle(color: Colors.white, fontSize: 25.0),
                         ),
                         Text(
-                          'FRN no- 21231234449',
+                          'Frn No:'+widget.frnno!,
                           style: TextStyle(color: Colors.white, fontSize: 16.0),
                         ),
                       ],
                     ),
-                    Icon(Icons.edit, color: Colors.white,),
+                    GestureDetector(
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (context) => ProfileScreen()),
+                          );
+                        },
+                        child: Icon(
+                          Icons.edit,
+                          color: Colors.white,
+                        )
+                    ),
                     SizedBox(width: 30,),
                     Icon(Icons.notifications, color: Colors.white,),
                     SizedBox(width: 5,),
@@ -240,3 +263,5 @@ class CurvePainter extends CustomPainter {
     return false;
   }
 }
+
+

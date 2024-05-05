@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 import 'package:testing/screens/Login/VerifyScreen.dart';
+import 'package:testing/screens/Register/OtpScreen.dart';
 import 'package:testing/widget/CustomButton.dart';
 import 'package:dio/dio.dart';
 
@@ -43,7 +44,7 @@ class _Register_ScreenState extends State<Register_Screen> {
     try {
       Dio dio = Dio();
       Response response = await dio.post(
-        'https://vgfa-backend.onrender.com/api/auth/register',
+        'https://vgfa-backend.onrender.com/api/auth/farmer/register',
         data: {
           "phone":"+91"+phoneController.text,
           "first_name": _firstNameController.text,
@@ -63,7 +64,7 @@ class _Register_ScreenState extends State<Register_Screen> {
         // Navigate to the verification screen if registration is successful
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => VerifyScreen(phone: "+91"+phoneController.text,),),
+          MaterialPageRoute(builder: (context) => OtpScreen("",phone: "+91"+phoneController.text,),),
         );
       } else {
         // Handle failure cases if necessary

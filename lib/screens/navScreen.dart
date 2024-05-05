@@ -6,21 +6,28 @@ import 'package:testing/screens/comunityScreen.dart';
 import 'package:testing/screens/transactionScreen.dart';
 
 class NavScreen extends StatefulWidget {
-  const NavScreen({Key? key}) : super(key: key);
+  final String? name;
+  final String? frnno;
+  const NavScreen({Key? key, @required this.name,@required this.frnno}) : super(key: key);
 
   @override
   State<NavScreen> createState() => _NavScreenState();
 }
-
 class _NavScreenState extends State<NavScreen> {
   int _selectedIndex = 0;
-  final NotchBottomBarController _controller = NotchBottomBarController(); // Declare and initialize _controller
+  final NotchBottomBarController _controller = NotchBottomBarController();
+  late List<Widget> _screens; // Declare _screens
 
-  final List<Widget> _screens = [
-    CommunityScreen(),
-    HomeScreen(),
-    TransactionScreen(),
-  ];
+  @override
+  void initState() {
+    super.initState();
+    // Initialize _screens after widget is available
+    _screens = [
+      CommunityScreen(),
+      HomeScreen(name: widget.name, frnno: widget.frnno),
+      TransactionScreen(),
+    ];
+  }
 
   void _onItemTapped(int index) {
     setState(() {
@@ -38,15 +45,12 @@ class _NavScreenState extends State<NavScreen> {
           fontSize: 8.0,
         ),
         notchBottomBarController: _controller,
-        bottomBarItems:  [
+        bottomBarItems: [
           BottomBarItem(
-            inActiveItem: Lottie.asset('animations/community.json',
-            repeat: false),
-            activeItem: Lottie.asset('animations/community.json',
-
-            ),
-            itemLabel: 'Community'
-          ),
+              inActiveItem: Lottie.asset('animations/community.json',
+                  repeat: false),
+              activeItem: Lottie.asset('animations/community.json'),
+              itemLabel: 'Community'),
           BottomBarItem(
             inActiveItem: Image.asset(
               "assets/home_ani.gif",
@@ -71,8 +75,8 @@ class _NavScreenState extends State<NavScreen> {
           ),
         ],
         onTap: _onItemTapped,
-        kBottomRadius: 10, // Provide kBottomRadius
-        kIconSize: 24, // Provide kIconSize
+        kBottomRadius: 10,
+        kIconSize: 24,
       ),
       body: _screens[_selectedIndex],
     );

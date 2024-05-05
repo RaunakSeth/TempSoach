@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:pinput/pinput.dart';
 import 'package:testing/screens/Home_screen/HomeScreen.dart';
 import 'package:testing/screens/navScreen.dart';
@@ -17,20 +18,24 @@ class VerifyScreen extends StatefulWidget {
 
 class _VerifyScreenState extends State<VerifyScreen> {
   String? otpCode;
+  AndroidOptions _getAndroidOptions() => const AndroidOptions(
+    encryptedSharedPreferences: true,
+  );
 
   Future<void> verifyOTP(BuildContext context) async {
+    final storage = FlutterSecureStorage(aOptions: _getAndroidOptions());
     try {
       Dio dio = Dio();
       Response response = await dio.post(
-        'https://vgfa-backend.onrender.com/api/auth/verify',
+        'https://vgfa-backend.onrender.com/api/auth/farmer/verify',
         data: {
           "phone": widget.phone,
           "otp": otpCode,
         },
       );
-
       print(response.data); // For debugging, you can remove this later
-
+      print("Token value"+response.data['data']['token']);
+      await storage.write(key: "Token Key", value: response.data['data']['token']);
       // Access 'type' property accordingly
       if (response.data['type'] == "success") {
         // Navigate to the home screen if verification is successful
@@ -141,12 +146,14 @@ class _VerifyScreenState extends State<VerifyScreen> {
                   ),
                 ),
                 const SizedBox(height: 15),
-                const Text(
-                  "Resend New Code",
-                  style: TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.green,
+                GestureDetector(
+                  onTap: () => verifyOTP(context),
+                  child: const Text("Resend code.",
+                    style: TextStyle(
+                      fontSize: 14,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.black38,
+                    ),
                   ),
                 ),
               ],

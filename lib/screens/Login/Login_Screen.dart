@@ -5,6 +5,8 @@ import 'package:flutter/services.dart';
 import 'package:testing/screens/Register/OtpScreen.dart';
 import 'package:testing/widget/CustomButton.dart';
 
+import 'VerifyScreen.dart';
+
 class Login_Screen extends StatefulWidget {
   const Login_Screen({Key? key});
 
@@ -33,7 +35,7 @@ class _Login_ScreenState extends State<Login_Screen> {
       print("+91"+phoneController.text);
       Dio dio = Dio();
       Response response = await dio.post(
-        'https://vgfa-backend.onrender.com/api/auth/login',
+        'https://vgfa-backend.onrender.com/api/auth/farmer/login',
         data: {"phone":"+91"+phoneController.text},
       );
       print(response);
@@ -43,7 +45,7 @@ class _Login_ScreenState extends State<Login_Screen> {
       print(response.data);// Access 'type' property accordingly
       if (response.data['type']== "success") {
         Navigator.push(context, MaterialPageRoute(
-            builder: (context)=>  OtpScreen(phone:"+91"+phoneController.text)
+            builder: (context)=>  VerifyScreen(phone:"+91"+phoneController.text)
 
         ),
         );

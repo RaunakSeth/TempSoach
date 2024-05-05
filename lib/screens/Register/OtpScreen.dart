@@ -8,7 +8,7 @@ import 'package:testing/widget/CustomButton.dart';
 
 class OtpScreen extends StatefulWidget {
   final  String? phone;
-  const OtpScreen({Key? key, @required this.phone}) : super(key: key);
+  const OtpScreen(String s, {Key? key, @required this.phone}) : super(key: key);
 
 
   @override
@@ -34,7 +34,7 @@ class _OtpScreenState extends State<OtpScreen> {
 
       var dio = Dio();
       Response response = await dio.post(
-        'https://vgfa-backend.onrender.com/api/auth/verify',
+        'https://vgfa-backend.onrender.com/api/auth/farmer/verify',
         data: {
           "phone": widget.phone,
           "otp": otpCode
