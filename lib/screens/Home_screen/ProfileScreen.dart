@@ -1,8 +1,7 @@
-import 'package:flutter/cupertino.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:testing/screens/WelcomeScreen.dart';
-
 import '../../widget/CustomButton.dart';
 
 class ProfileScreen extends StatefulWidget {
@@ -21,7 +20,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
     await storage.delete(key: "Token Key");
     Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) => WelcomeScreen()),
+      MaterialPageRoute(builder: (context) => const WelcomeScreen()),
     );
   }
   @override
@@ -29,7 +28,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
     return Scaffold(
         backgroundColor: Colors.white,
         appBar: AppBar(
-          backgroundColor: Color(0xFFFFFFFF),
+          backgroundColor: const Color(0xFFFFFFFF),
           actions: [
             IconButton(
               icon: Image.asset(
@@ -46,9 +45,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
         body: Padding(
             padding: const EdgeInsets.only(left: 15.0, right: 15.0),
             child: Column(children: [
-              Container(
+              const SizedBox(
                 height: 40,
-                child: const Text(
+                child: Text(
                   'Profile Screen',
                   style: TextStyle(
                     color: Colors.black,
@@ -57,19 +56,19 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   ),
                 ),
               ),
-              SizedBox(
+              const SizedBox(
                 height: 20,
               ),
               Container(
                 height: 600,
                 decoration: BoxDecoration(
-                    color: Color(0xFFF5F5F5),
+                    color: const Color(0xFFF5F5F5),
                     borderRadius: BorderRadius.circular(10.0),
-                    border: Border.all(width: 5, color: Color(0xFFB9B9B9))),
+                    border: Border.all(width: 5, color: const Color(0xFFB9B9B9))),
                 padding: const EdgeInsets.only(
                     left: 20.0, right: 20.0, top: 20, bottom: 20),
               ),
-              SizedBox(
+              const SizedBox(
                 height: 20,
               ),
               SizedBox(
