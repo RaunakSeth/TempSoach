@@ -1,4 +1,4 @@
-
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:testing/screens/WelcomeScreen.dart';
@@ -15,7 +15,26 @@ class _ProfileScreenState extends State<ProfileScreen> {
   AndroidOptions _getAndroidOptions() => const AndroidOptions(
     encryptedSharedPreferences: true,
   );
-  Future<void> logout() async {
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+
+  TextEditingController _firstNameController = TextEditingController(text: 'John');
+  TextEditingController _lastNameController = TextEditingController(text: 'Doe');
+  TextEditingController _dobController = TextEditingController(text: '01/01/1990');
+  TextEditingController _genderController = TextEditingController(text: 'Male');
+  TextEditingController _panchayatController = TextEditingController(text: 'Panchayat Name');
+  TextEditingController _centreController = TextEditingController(text: 'Centre Name');
+  TextEditingController _frnNumberController = TextEditingController(text: '123456789');
+  TextEditingController _addressController = TextEditingController(text: '123 Street, City, Country');
+
+  bool _isEditing = false;
+
+  void _toggleEdit() {
+    setState(() {
+      _isEditing = !_isEditing;
+    });
+  }
+
+  Future<void> _logout() async {
     final storage = FlutterSecureStorage(aOptions: _getAndroidOptions());
     await storage.delete(key: "Token Key");
     Navigator.push(
@@ -23,66 +42,147 @@ class _ProfileScreenState extends State<ProfileScreen> {
       MaterialPageRoute(builder: (context) => const WelcomeScreen()),
     );
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: Colors.white,
-        appBar: AppBar(
-          backgroundColor: const Color(0xFFFFFFFF),
-          actions: [
-            IconButton(
-              icon: Image.asset(
-                "assets/vector.png",
-                height: 28,
-                width: 28,
-              ), // Add your icon here
-              onPressed: () {
-                // Add your onPressed logic here
-              },
+      backgroundColor: Colors.white,
+      appBar: AppBar(
+        backgroundColor: const Color(0xFFFFFFFF),
+        actions: [
+          IconButton(
+            icon: Icon(
+              Icons.edit,
+              color: Colors.black,
+              size: 30,
             ),
-          ],
-        ),
-        body: Padding(
-            padding: const EdgeInsets.only(left: 15.0, right: 15.0),
-            child: Column(children: [
-              const SizedBox(
-                height: 40,
-                child: Text(
-                  'Profile Screen',
-                  style: TextStyle(
-                    color: Colors.black,
-                    fontWeight: FontWeight.bold,
-                    fontSize: 30,
+            onPressed: _toggleEdit,
+          ),
+        ],
+      ),
+      body: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 15.0),
+        child: Column(
+          children: [
+            SizedBox(
+              height: 40,
+              child: Text(
+                'Profile Screen',
+                style: TextStyle(
+                  color: Colors.black,
+                  fontWeight: FontWeight.bold,
+                  fontSize: 30,
+                ),
+              ),
+            ),
+            const SizedBox(
+              height: 20,
+            ),
+            Form(
+              key: _formKey,
+              child: Container(
+                height: 600,
+                width: 350,
+                decoration: BoxDecoration(
+                  color: const Color(0xFFF5F5F5),
+                  borderRadius: BorderRadius.circular(10.0),
+                  border: Border.all(width: 5, color: const Color(0xFFB9B9B9)),
+                ),
+                padding: const EdgeInsets.all(20),
+                child: SingleChildScrollView(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      TextFormField(
+                        controller: _firstNameController,
+                        enabled: _isEditing,
+                        decoration: InputDecoration(
+                          labelText: 'First Name',
+                          border: OutlineInputBorder(),
+                        ),
+                      ),
+                      SizedBox(height: 10),
+                      TextFormField(
+                        controller: _lastNameController,
+                        enabled: _isEditing,
+                        decoration: InputDecoration(
+                          labelText: 'Last Name',
+                          border: OutlineInputBorder(),
+                        ),
+                      ),
+                      SizedBox(height: 10),
+                      TextFormField(
+                        controller: _dobController,
+                        enabled: _isEditing,
+                        decoration: InputDecoration(
+                          labelText: 'Date of Birth',
+                          border: OutlineInputBorder(),
+                        ),
+                      ),
+                      SizedBox(height: 10),
+                      TextFormField(
+                        controller: _genderController,
+                        enabled: _isEditing,
+                        decoration: InputDecoration(
+                          labelText: 'Gender',
+                          border: OutlineInputBorder(),
+                        ),
+                      ),
+                      SizedBox(height: 10),
+                      TextFormField(
+                        controller: _panchayatController,
+                        enabled: _isEditing,
+                        decoration: InputDecoration(
+                          labelText: 'Panchayat',
+                          border: OutlineInputBorder(),
+                        ),
+                      ),
+                      SizedBox(height: 10),
+                      TextFormField(
+                        controller: _centreController,
+                        enabled: _isEditing,
+                        decoration: InputDecoration(
+                          labelText: 'Centre',
+                          border: OutlineInputBorder(),
+                        ),
+                      ),
+                      SizedBox(height: 10),
+                      TextFormField(
+                        controller: _frnNumberController,
+                        enabled: _isEditing,
+                        decoration: InputDecoration(
+                          labelText: 'FRN Number',
+                          border: OutlineInputBorder(),
+                        ),
+                      ),
+                      SizedBox(height: 10),
+                      TextFormField(
+                        controller: _addressController,
+                        enabled: _isEditing,
+                        decoration: InputDecoration(
+                          labelText: 'Address',
+                          border: OutlineInputBorder(),
+                        ),
+                      ),
+                    ],
                   ),
                 ),
               ),
-              const SizedBox(
-                height: 20,
+            ),
+            const SizedBox(
+              height: 20,
+            ),
+            SizedBox(
+              width: double.infinity,
+              height: 50,
+              child: CustomButton(
+                onPressed: _logout,
+                text: "Logout",
               ),
-              Container(
-                height: 600,
-                decoration: BoxDecoration(
-                    color: const Color(0xFFF5F5F5),
-                    borderRadius: BorderRadius.circular(10.0),
-                    border: Border.all(width: 5, color: const Color(0xFFB9B9B9))),
-                padding: const EdgeInsets.only(
-                    left: 20.0, right: 20.0, top: 20, bottom: 20),
-              ),
-              const SizedBox(
-                height: 20,
-              ),
-              SizedBox(
-                width: double.infinity,
-                height: 50,
-                child: CustomButton(
-                  onPressed: () => logout(),
-                  text: "Logout",
-                ),
-              ),
-            ]
-            )
-          )
-
+            ),
+          ],
+        ),
+      ),
     );
   }
 }
