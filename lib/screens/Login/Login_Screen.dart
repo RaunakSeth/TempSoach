@@ -2,7 +2,6 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:country_picker/country_picker.dart';
 import 'package:flutter/services.dart';
-import 'package:testing/screens/Register/OtpScreen.dart';
 import 'package:testing/widget/CustomButton.dart';
 
 import 'VerifyScreen.dart';

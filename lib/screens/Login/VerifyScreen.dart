@@ -18,10 +18,29 @@ class VerifyScreen extends StatefulWidget {
 
 class _VerifyScreenState extends State<VerifyScreen> {
   String? otpCode;
+  String? name;
+  String? frnno;
   AndroidOptions _getAndroidOptions() => const AndroidOptions(
     encryptedSharedPreferences: true,
   );
-
+  Future<void> updateprofile(String? value) async {
+    final storage = FlutterSecureStorage(aOptions: _getAndroidOptions());
+    try {
+      Dio dio = Dio();
+      Response response = await dio.get(
+          'https://vgfa-backend.onrender.com/api/auth/farmer/me',
+          options: Options(headers: {
+            "Authorization":"Bearer $value",
+          }));
+      print(response.data['message']);
+      if (response.data['type']== "success") {
+        name=response.data['data']['user']['first_name']+" "+response.data['data']['user']['last_name'];
+        frnno=response.data['data']['user']['frn_number'];
+      }
+    } catch (e) {
+      print(e.toString());
+    }
+  }
   Future<void> verifyOTP(BuildContext context) async {
     final storage = FlutterSecureStorage(aOptions: _getAndroidOptions());
     try {
@@ -39,9 +58,10 @@ class _VerifyScreenState extends State<VerifyScreen> {
       // Access 'type' property accordingly
       if (response.data['type'] == "success") {
         // Navigate to the home screen if verification is successful
+       await updateprofile(response.data['data']['token']);
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => const NavScreen()),
+          MaterialPageRoute(builder: (context) => NavScreen(name: name,frnno: frnno,)),
         );
       } else {
         // Handle failure cases if necessary
