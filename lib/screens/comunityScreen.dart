@@ -12,36 +12,35 @@ class _CommunityScreenState extends State<CommunityScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Stack(
-        children: [
-          AppBar(
-            automaticallyImplyLeading: false,
-            backgroundColor: Colors.transparent,
-            elevation: 0.0,
-            flexibleSpace: ClipPath(// Assuming your custom clipper for the shape
-              child: Stack( // Use a Stack to position elements on top of each other
-                children: [
-                  Container(
-                    height: 130,
-                    width: MediaQuery.of(context).size.width,
-                    decoration: const BoxDecoration(
-                        color: Color(0xFF11AB2F),
-                        borderRadius: BorderRadius.only(
-                          bottomLeft: Radius.circular(20),
-                          bottomRight: Radius.circular(20),
-                        ),
-                    ),
+      appBar: AppBar(
+        toolbarHeight: 100,
+        automaticallyImplyLeading: false,
+        backgroundColor: Colors.transparent,
+        elevation: 0.0,
+        flexibleSpace: ClipPath(// Assuming your custom clipper for the shape
+          child: Stack( // Use a Stack to position elements on top of each other
+            children: [
+              Container(
+                height: 130,
+                width: MediaQuery.of(context).size.width,
+                decoration: const BoxDecoration(
+                  color: Color(0xFF11AB2F),
+                  borderRadius: BorderRadius.only(
+                    bottomLeft: Radius.circular(20),
+                    bottomRight: Radius.circular(20),
                   ),
-                  Padding(
-                    padding: const EdgeInsets.all(8),
-                    child: Container(// Container with padding for better alignment
-                      child: Column(
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.all(8),
+                child: Container(// Container with padding for better alignment
+                  child: Column(
+                    children: [
+                      SizedBox(height: 30,),
+                      Row(
                         children: [
-                          SizedBox(height: 30,),
-                          Row(
-                          children: [
-                            SizedBox(width: 10,),
-                            Expanded(//// Expand search bar to fill most of the space
+                          SizedBox(width: 10,),
+                          Expanded(//// Expand search bar to fill most of the space
                               child: TextField(
                                 decoration: InputDecoration(
                                   fillColor: Colors.white, // Fill color for the textbox
@@ -56,35 +55,36 @@ class _CommunityScreenState extends State<CommunityScreen> {
                                   // Handle search query changes here
                                 },
                               )
+                          ),
+                          SizedBox(width: 10,),
+                          IconButton( // Bell icon button
+                            icon: const Icon(Icons.notifications,
+                              color: Colors.white,
+                              size: 30,
                             ),
-                            SizedBox(width: 10,),
-                            IconButton( // Bell icon button
-                              icon: const Icon(Icons.notifications,
-                                color: Colors.white,
-                                size: 30,
-                              ),
-                              onPressed: () {
-                                // Add functionality for bell icon press
-                              },
-                            ),
-                          ],
-                        ),
-                      ],
+                            onPressed: () {
+                              // Add functionality for bell icon press
+                            },
+                          ),
+                        ],
                       ),
-                    ),
+                    ],
                   ),
-                ],
+                ),
               ),
-            ),
+            ],
           ),
-
+        ),
+      ),
+      body: Stack(
+        children: [
           Positioned(
-            top: 130, // Adjust position according to AppBar height
+            top: 0, // Adjust position according to AppBar height
             left: 0,
             right: 0,
             bottom: 0,
             child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
               child: Column(
                 children:[
                   const SizedBox(height: 20),

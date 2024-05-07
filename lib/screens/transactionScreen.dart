@@ -61,7 +61,6 @@ class _TransactionScreenState extends State<TransactionScreen> {
       ),
       body: Stack(
         children: [
-
           Column(
             children: [
               _buildNavigationBar(),

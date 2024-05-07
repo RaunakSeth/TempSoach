@@ -1,24 +1,21 @@
-import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:testing/screens/Home_screen/ApplyForm.dart';
 import 'package:testing/screens/Home_screen/ProfileScreen.dart';
 import 'package:testing/screens/Home_screen/Status_form/StatusForm.dart';
 import 'package:testing/theme/app_decoration.dart';
 import 'package:testing/widgets/custom_outlined_button.dart';
 
+
 class HomeScreen extends StatefulWidget {
   final String? name;
   final String? frnno;
-  const HomeScreen({Key? key, @required this.name,@required this.frnno}) : super(key: key);
+  const HomeScreen({super.key, @required this.name, @required this.frnno});
 
   @override
   State<HomeScreen> createState() => _HomeScreenState();
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -38,42 +35,43 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
             child: Column(
               children: [
-                SizedBox(height: 40,),
+                const SizedBox(height: 40,),
                 Row(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    SizedBox(width: 20,),
-                    Image(image: AssetImage('assets/iconn.png')),
-                    SizedBox(width: 10,),
+                    const SizedBox(width: 20,),
+                    const Image(image: AssetImage('assets/iconn.png')),
+                    const SizedBox(width: 10,),
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          widget.name!,
-                          style: TextStyle(color: Colors.white, fontSize: 25.0),
+                          widget.name ?? "", // Check for null
+                          style: const TextStyle(color: Colors.white, fontSize: 25.0),
                         ),
                         Text(
-                          'Frn No:'+widget.frnno!,
-                          style: TextStyle(color: Colors.white, fontSize: 16.0),
+                          'Frn No:${widget.frnno ?? ""}', // Check for null
+                          style: const TextStyle(color: Colors.white, fontSize: 16.0),
                         ),
                       ],
                     ),
+                    const SizedBox(width: 10,),
                     GestureDetector(
                         onTap: () {
                           Navigator.push(
                             context,
-                            MaterialPageRoute(builder: (context) => ProfileScreen()),
+                            MaterialPageRoute(builder: (context) => const ProfileScreen()),
                           );
                         },
-                        child: Icon(
+                        child: const Icon(
                           Icons.edit,
                           color: Colors.white,
                         )
                     ),
-                    SizedBox(width: 30,),
-                    Icon(Icons.notifications, color: Colors.white,),
-                    SizedBox(width: 5,),
-                    Icon(Icons.settings, color: Colors.white,)
+                    const SizedBox(width: 35,),
+                    const Icon(Icons.notifications, color: Colors.white,),
+                    const SizedBox(width: 5,),
+                    const Icon(Icons.settings, color: Colors.white,)
                   ],
                 ),
               ],
@@ -85,35 +83,33 @@ class _HomeScreenState extends State<HomeScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
-            Container(
-              child: Stack(
-                clipBehavior: Clip.none,
-                children: [
-                  CustomPaint(
-                    size: Size(MediaQuery.of(context).size.width, 250),
-                    painter: CurvePainter(),
-                  ),
-                  Positioned(
-                    top: 0,
-                    left: 0,
-                    right: 0,
-                    bottom: 0,
-                    child: SizedBox(
-                      height: 440,
-                      width: 400,
-                      child: Column(
-                        children: [
-                          const SizedBox(height: 10,),
-                          _buildTwelve(context),
-                        ],
-                      ),
+            Stack(
+              clipBehavior: Clip.none,
+              children: [
+                CustomPaint(
+                  size: Size(MediaQuery.of(context).size.width, 250),
+                  painter: CurvePainter(),
+                ),
+                Positioned(
+                  top: 0,
+                  left: 0,
+                  right: 0,
+                  bottom: 0,
+                  child: SizedBox(
+                    height: 440,
+                    width: 400,
+                    child: Column(
+                      children: [
+                        const SizedBox(height: 10,),
+                        _buildTwelve(context),
+                      ],
                     ),
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
 
-            SizedBox(height: 10,),
+            const SizedBox(height: 10,),
             const Row(
                 children:[
                   SizedBox(width: 20,),
@@ -181,11 +177,12 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 }
+
 Widget _totallistedunits(BuildContext context) {
   return Container(
     height: 450,
     color: Colors.white,
-    padding: EdgeInsets.all(12),
+    padding: const EdgeInsets.all(12),
     width: 380,
     child: Column(
       children: [
@@ -244,11 +241,10 @@ Widget _totallistedunits(BuildContext context) {
   );
 }
 
-
 class CurvePainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
-    Paint paint = Paint()..color = Color(0xff11AB2F);
+    Paint paint = Paint()..color = const Color(0xff11AB2F);
     Path path = Path()
       ..lineTo(0, size.height - 140)
       ..quadraticBezierTo(size.width / 2, size.height, size.width, size.height - 140)
@@ -263,5 +259,4 @@ class CurvePainter extends CustomPainter {
     return false;
   }
 }
-
 
