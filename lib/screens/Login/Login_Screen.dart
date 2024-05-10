@@ -43,7 +43,7 @@ class _Login_ScreenState extends State<Login_Screen> {
       // var responseData = json.decode(response.data);
       print(response.data);// Access 'type' property accordingly
       if (response.data['type']== "success") {
-        Navigator.push(context, MaterialPageRoute(
+        Navigator.pushReplacement(context, MaterialPageRoute(
             builder: (context)=>  VerifyScreen(phone:"+91"+phoneController.text)
 
         ),

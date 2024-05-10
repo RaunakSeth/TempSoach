@@ -61,7 +61,7 @@ class _Register_ScreenState extends State<Register_Screen> {
       // Access 'type' property accordingly
       if (response.data['type'] == "success") {
         // Navigate to the verification screen if registration is successful
-        Navigator.push(
+        Navigator.pushReplacement(
           context,
           MaterialPageRoute(builder: (context) => VerifyScreen(phone: "+91"+phoneController.text,),),
         );

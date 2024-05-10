@@ -21,9 +21,8 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
   String? name;
   String? frnno;
 
-  Future<void> updateprofile() async {
-    final storage = FlutterSecureStorage(aOptions: _getAndroidOptions());
-    String? value = await storage.read(key: "Token Key");
+  Future<void> updateprofile(String? value) async {
+
     try {
       Dio dio = Dio();
       Response response = await dio.get(
@@ -44,8 +43,10 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
     final storage = FlutterSecureStorage(aOptions: _getAndroidOptions());
     String? value = await storage.read(key: "Token Key");
     if(value != null) {
-      await updateprofile();
-      Navigator.push(context, MaterialPageRoute(builder: (context) => NavScreen(name:name,frnno: frnno)));
+      final storage = FlutterSecureStorage(aOptions: _getAndroidOptions());
+      String? value = await storage.read(key: "Token Key");
+      await updateprofile(value);
+      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => NavScreen(name:name,frnno: frnno)));
     }
   }
   @override
@@ -105,7 +106,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                 const SizedBox(height: 10),
                 GestureDetector(
                   onTap: () {
-                    Navigator.push(context, MaterialPageRoute(
+                    Navigator.pushReplacement(context, MaterialPageRoute(
                         builder: (context)=>  Login_Screen()
                     ),
                     );

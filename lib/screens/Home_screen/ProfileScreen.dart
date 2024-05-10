@@ -16,7 +16,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
     encryptedSharedPreferences: true,
   );
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-
   TextEditingController _firstNameController = TextEditingController(text: 'John');
   TextEditingController _lastNameController = TextEditingController(text: 'Doe');
   TextEditingController _dobController = TextEditingController(text: '01/01/1990');
@@ -37,9 +36,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
   Future<void> _logout() async {
     final storage = FlutterSecureStorage(aOptions: _getAndroidOptions());
     await storage.delete(key: "Token Key");
-    Navigator.push(
+    Navigator.pushAndRemoveUntil(
       context,
-      MaterialPageRoute(builder: (context) => const WelcomeScreen()),
+      MaterialPageRoute(builder: (context) => const WelcomeScreen()),(Route<dynamic> route) => false
     );
   }
 
