@@ -59,10 +59,10 @@ class _VerifyScreenState extends State<VerifyScreen> {
       if (response.data['type'] == "success") {
         // Navigate to the home screen if verification is successful
        await updateprofile(response.data['data']['token']);
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(builder: (context) => NavScreen(name: name,frnno: frnno,)),
-        );
+       Navigator.pushReplacement(
+         context,
+         MaterialPageRoute(builder: (context) => NavScreen(name: name, frnno: frnno, phone: widget.phone)), // Pass the phone number
+       );
       } else {
         // Handle failure cases if necessary
       }

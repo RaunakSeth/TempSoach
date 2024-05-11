@@ -1,22 +1,104 @@
-import 'package:flutter/cupertino.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
-import 'package:testing/screens/Home_screen/HomeScreen.dart';
+import 'package:testing/screens/navScreen.dart';
 import 'package:testing/widget/CustomButton.dart';
 
-class ApplyForm extends StatelessWidget {
-  final _formKey = GlobalKey<FormState>();
-  String _cropType = 'Crop A'; // Set a default value for _cropType
+class ApplyForm extends StatefulWidget {
+  final String? phone; // Accept phone number
+  final String? token;
+  final String? name;
+  final String? frnno;
+  const ApplyForm({
+    Key? key,
+    this.phone,
+    required this.token,
+    @required this.name,
+    @required this.frnno,
+  }) : super(key: key);
 
+  @override
+  _ApplyFormState createState() => _ApplyFormState();
+}
+
+class _ApplyFormState extends State<ApplyForm> {
+  final _formKey = GlobalKey<FormState>();
+  String _cropType = 'Enter crop'; // Set a default value for _cropType
+  String _landUnit = 'acres'; // Default land unit
+  String _productionUnit = 'kg'; // Default production unit
   double _landArea = 0.0;
   double _expectedProduction = 0.0;
   double _issuePercentage = 0.0;
   int _quantity = 0;
-  String _equivalentVFGAUnit = '';
+  int _equivalentVFGAUnit = 0;
+
+  Future<void> submitForm() async {
+    try {
+      // Convert land area and expected production to the appropriate units
+      if (_landUnit == 'hectares') {
+        _landArea *= 10000; // Convert hectares to sqm
+        print("dome");
+      } // else it's in acres, no conversion needed
+
+      if (_productionUnit == 'tons') {
+        _expectedProduction *= 1000; // Convert tons to kg
+        print("dome");
+      } // else it's in kg, no conversion needed
+
+      Dio dio = Dio();
+      Response response = await dio.post(
+        'https://vgfa-backend.onrender.com/api/forms/create',
+        data: {
+          'cropType': _cropType,
+          'landArea': _landArea.toInt(),
+          'expectedProduction': _expectedProduction.toInt(),
+          'issuePercent': _issuePercentage.toInt(),
+          'quantity': _quantity,
+          'vgfaUnitEq': _equivalentVFGAUnit,
+          'farmer': widget.phone,
+        },
+        options: Options(
+          headers: {
+            'Authorization': 'Bearer ${widget.token}',
+          },
+        ),
+      );
+      print(response.data);
+      print(response.statusCode); // Log status code
+      // Handle response
+    } catch (e) {
+      print(e.toString());
+      // Handle error
+    }
+  }
+
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        toolbarHeight: 70,
+        automaticallyImplyLeading: false,
+        backgroundColor: Colors.transparent,
+        elevation: 0.0,
+        flexibleSpace: const Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  "Apply here for listing.",
+                  style: TextStyle(
+                    fontSize: 30,
+                    color: Colors.black,
+                    fontWeight: FontWeight.bold,
+                  ),
+                )
+              ],
+            ),
+          ],
+        ),
+      ),
       body: SafeArea(
         child: Center(
           child: Padding(
@@ -24,22 +106,11 @@ class ApplyForm extends StatelessWidget {
             child: SingleChildScrollView(
               child: Column(
                 children: [
-                  const Align(
-                    alignment: Alignment.topLeft,
-                    child: Text(
-                      "Apply here for Listing",
-                      style: TextStyle(
-                        fontSize: 22,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ),
-                  SizedBox(height: 25),
                   const CircleAvatar(
-                    radius: 48, // Image radius
+                    radius: 48,
                     backgroundImage: AssetImage('assets/asset2.gif'),
                   ),
-                  SizedBox(height: 20,),
+                  SizedBox(height: 20),
                   const Text(
                     "Fill your details here.",
                     style: TextStyle(
@@ -53,7 +124,7 @@ class ApplyForm extends StatelessWidget {
                   Container(
                     margin: const EdgeInsets.all(10.0),
                     width: 400,
-                    height: 420,
+                    height: 390,
                     decoration: BoxDecoration(
                       color: const Color(0xffF5F5F5),
                       borderRadius: BorderRadius.circular(12),
@@ -62,7 +133,7 @@ class ApplyForm extends StatelessWidget {
                         color: const Color(0xffB9B9B9),
                       ),
                     ),
-                    child: const Padding(
+                    child: Padding(
                       padding: EdgeInsets.symmetric(vertical: 20, horizontal: 20),
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.start,
@@ -76,7 +147,7 @@ class ApplyForm extends StatelessWidget {
                               color: Color(0xff303030),
                             ),
                           ),
-                          SizedBox(height: 10,),
+                          SizedBox(height: 10),
                           Text(
                             'Date of Birth: 12/02/2000',
                             style: TextStyle(
@@ -85,7 +156,7 @@ class ApplyForm extends StatelessWidget {
                               fontWeight: FontWeight.bold,
                             ),
                           ),
-                          SizedBox(height: 10,),
+                          SizedBox(height: 10),
                           Text(
                             'Gender: Male',
                             style: TextStyle(
@@ -95,9 +166,9 @@ class ApplyForm extends StatelessWidget {
                               fontWeight: FontWeight.bold,
                             ),
                           ),
-                          SizedBox(height: 10,),
+                          SizedBox(height: 10),
                           Text(
-                            'Phone: 8306344301',
+                            'Phone: ${widget.phone ?? ""}',
                             style: TextStyle(
                               fontSize: 20,
                               fontStyle: FontStyle.italic,
@@ -105,7 +176,7 @@ class ApplyForm extends StatelessWidget {
                               fontWeight: FontWeight.bold,
                             ),
                           ),
-                          SizedBox(height: 10,),
+                          SizedBox(height: 10),
                           Text(
                             'Email: ashish.kisan@gmail.com',
                             style: TextStyle(
@@ -115,7 +186,7 @@ class ApplyForm extends StatelessWidget {
                               fontWeight: FontWeight.bold,
                             ),
                           ),
-                          SizedBox(height: 10,),
+                          SizedBox(height: 10),
                           Text(
                             'Address:',
                             style: TextStyle(
@@ -125,7 +196,7 @@ class ApplyForm extends StatelessWidget {
                               fontWeight: FontWeight.bold,
                             ),
                           ),
-                          SizedBox(height: 10,),
+                          SizedBox(height: 10),
                           Text(
                             'City: Kanpur',
                             style: TextStyle(
@@ -135,7 +206,7 @@ class ApplyForm extends StatelessWidget {
                               fontWeight: FontWeight.bold,
                             ),
                           ),
-                          SizedBox(height: 10,),
+                          SizedBox(height: 10),
                           Text(
                             'State: Uttar Pradesh',
                             style: TextStyle(
@@ -145,7 +216,7 @@ class ApplyForm extends StatelessWidget {
                               fontWeight: FontWeight.bold,
                             ),
                           ),
-                          SizedBox(height: 10,),
+                          SizedBox(height: 10),
                           Text(
                             'Postal code: 201206',
                             style: TextStyle(
@@ -159,15 +230,17 @@ class ApplyForm extends StatelessWidget {
                       ),
                     ),
                   ),
-                  SizedBox(height: 20),
+                  SizedBox(height: 10),
                   Container(
+                    margin: const EdgeInsets.all(10.0),
+                    width: 400,
                     decoration: BoxDecoration(
                       color: const Color(0xffF5F5F5),
                       border: Border.all(
-                        width: 2, // adjust border width as needed
-                        color: Colors.grey, // adjust border color as needed
+                        width: 2,
+                        color: Colors.grey,
                       ),
-                      borderRadius: BorderRadius.circular(12), // adjust border radius as needed
+                      borderRadius: BorderRadius.circular(12),
                     ),
                     child: Padding(
                       padding: const EdgeInsets.all(20.0),
@@ -179,30 +252,36 @@ class ApplyForm extends StatelessWidget {
                             DropdownButtonFormField<String>(
                               decoration: InputDecoration(
                                 hintText: 'Select Crop Type',
-                                border: OutlineInputBorder(), // apply border to dropdown
+                                border: OutlineInputBorder(),
                               ),
                               value: _cropType,
                               onChanged: (String? newValue) {
-                                _cropType = newValue!;
+                                setState(() {
+                                  _cropType = newValue!;
+                                });
                               },
-                              items: <String>['Crop A', 'Crop B', 'Crop C', 'Crop D', 'Crop E']
-                                  .map<DropdownMenuItem<String>>((String value) {
+                              items: <String>[
+                                'Enter crop', // This should be unique and match the default value
+                                'Rice',
+                                'Maize',
+                                'Wheat',
+                                'Jawar',
+                                'Bajra'
+                              ].map<DropdownMenuItem<String>>((String value) {
                                 return DropdownMenuItem<String>(
                                   value: value,
                                   child: Text(value),
                                 );
                               }).toList(),
                             ),
-
                             SizedBox(height: 10),
-
                             Row(
                               children: [
                                 Expanded(
                                   child: TextFormField(
                                     decoration: InputDecoration(
                                       hintText: 'Enter Land Area',
-                                      border: OutlineInputBorder(), // apply border to text field
+                                      border: OutlineInputBorder(),
                                     ),
                                     keyboardType: TextInputType.number,
                                     validator: (value) {
@@ -217,16 +296,18 @@ class ApplyForm extends StatelessWidget {
                                   ),
                                 ),
                                 SizedBox(width: 10),
-                                Container( // Boxed dropdown button for land unit
+                                Container(
                                   padding: EdgeInsets.symmetric(horizontal: 12.0),
                                   decoration: BoxDecoration(
-                                    border: Border.all(color: Colors.grey), // Border
-                                    borderRadius: BorderRadius.circular(8.0), // BorderRadius
+                                    border: Border.all(color: Colors.grey),
+                                    borderRadius: BorderRadius.circular(8.0),
                                   ),
                                   child: DropdownButton<String>(
-                                    value: 'acres',
+                                    value: _landUnit,
                                     onChanged: (String? newValue) {
-                                      // Not implemented yet
+                                      setState(() {
+                                        _landUnit = newValue!;
+                                      });
                                     },
                                     items: <String>['acres', 'hectares']
                                         .map<DropdownMenuItem<String>>((String value) {
@@ -239,16 +320,14 @@ class ApplyForm extends StatelessWidget {
                                 ),
                               ],
                             ),
-
                             SizedBox(height: 10),
-
                             Row(
                               children: [
                                 Expanded(
                                   child: TextFormField(
                                     decoration: InputDecoration(
                                       hintText: 'Enter Expected Production',
-                                      border: OutlineInputBorder(), // apply border to text field
+                                      border: OutlineInputBorder(),
                                     ),
                                     keyboardType: TextInputType.number,
                                     validator: (value) {
@@ -263,16 +342,18 @@ class ApplyForm extends StatelessWidget {
                                   ),
                                 ),
                                 SizedBox(width: 10),
-                                Container( // Boxed dropdown button for production unit
+                                Container(
                                   padding: EdgeInsets.symmetric(horizontal: 12.0),
                                   decoration: BoxDecoration(
-                                    border: Border.all(color: Colors.grey), // Border
-                                    borderRadius: BorderRadius.circular(8.0), // BorderRadius
+                                    border: Border.all(color: Colors.grey),
+                                    borderRadius: BorderRadius.circular(8.0),
                                   ),
                                   child: DropdownButton<String>(
-                                    value: 'kg',
+                                    value: _productionUnit,
                                     onChanged: (String? newValue) {
-                                      // Not implemented yet
+                                      setState(() {
+                                        _productionUnit = newValue!;
+                                      });
                                     },
                                     items: <String>['kg', 'tons']
                                         .map<DropdownMenuItem<String>>((String value) {
@@ -285,13 +366,11 @@ class ApplyForm extends StatelessWidget {
                                 ),
                               ],
                             ),
-
                             SizedBox(height: 10),
-
                             TextFormField(
                               decoration: InputDecoration(
                                 hintText: 'Enter Issue Percentage',
-                                border: OutlineInputBorder(), // apply border to text field
+                                border: OutlineInputBorder(),
                               ),
                               keyboardType: TextInputType.number,
                               validator: (value) {
@@ -304,13 +383,11 @@ class ApplyForm extends StatelessWidget {
                                 _issuePercentage = double.parse(value!);
                               },
                             ),
-
                             SizedBox(height: 10),
-
                             TextFormField(
                               decoration: InputDecoration(
                                 hintText: 'Enter Quantity',
-                                border: OutlineInputBorder(), // apply border to text field
+                                border: OutlineInputBorder(),
                               ),
                               keyboardType: TextInputType.number,
                               validator: (value) {
@@ -323,14 +400,13 @@ class ApplyForm extends StatelessWidget {
                                 _quantity = int.parse(value!);
                               },
                             ),
-
                             SizedBox(height: 10),
-
                             TextFormField(
                               decoration: InputDecoration(
                                 hintText: 'Enter Equivalent VFGA Unit',
-                                border: OutlineInputBorder(), // apply border to text field
+                                border: OutlineInputBorder(),
                               ),
+                              keyboardType: TextInputType.number,
                               validator: (value) {
                                 if (value!.isEmpty) {
                                   return 'Please enter equivalent VFGA unit';
@@ -338,7 +414,7 @@ class ApplyForm extends StatelessWidget {
                                 return null;
                               },
                               onSaved: (value) {
-                                _equivalentVFGAUnit = value!;
+                                _equivalentVFGAUnit = int.parse(value!);
                               },
                             ),
                           ],
@@ -346,20 +422,20 @@ class ApplyForm extends StatelessWidget {
                       ),
                     ),
                   ),
-
-
-
-
-                  SizedBox(height: 10,),
+                  SizedBox(height: 10),
                   SizedBox(
                     width: double.infinity,
                     height: 50,
                     child: CustomButton(
                       onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (context) => HomeScreen()),
-                        );
+                        if (_formKey.currentState!.validate()) {
+                          _formKey.currentState!.save();
+                          submitForm();
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (context) => NavScreen(name: widget.name, frnno: widget.frnno,)),
+                          );
+                        }
                       },
                       text: "SUBMIT",
                     ),
@@ -373,4 +449,3 @@ class ApplyForm extends StatelessWidget {
     );
   }
 }
-

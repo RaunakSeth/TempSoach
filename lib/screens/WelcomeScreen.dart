@@ -1,7 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-import 'package:testing/screens/Home_screen/HomeScreen.dart';
 import 'package:testing/screens/Register/Register_Screen.dart';
 import 'package:testing/screens/Login/Login_Screen.dart';
 import 'package:testing/screens/navScreen.dart';
@@ -113,8 +112,6 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                   },
                   child: Text("If you are already registered click here."),
                 ),
-
-
               ],
             ),
           ),

@@ -8,11 +8,13 @@ import 'package:testing/screens/transactionScreen.dart';
 class NavScreen extends StatefulWidget {
   final String? name;
   final String? frnno;
-  const NavScreen({Key? key, @required this.name,@required this.frnno}) : super(key: key);
+  final String? phone; // Add mobile number parameter
+  const NavScreen({Key? key, @required this.name, @required this.frnno, @required this.phone}) : super(key: key);
 
   @override
   State<NavScreen> createState() => _NavScreenState();
 }
+
 class _NavScreenState extends State<NavScreen> {
   int _selectedIndex = 0;
   final NotchBottomBarController _controller = NotchBottomBarController();
@@ -24,7 +26,7 @@ class _NavScreenState extends State<NavScreen> {
     // Initialize _screens after widget is available
     _screens = [
       CommunityScreen(),
-      HomeScreen(name: widget.name, frnno: widget.frnno),
+      HomeScreen(name: widget.name, frnno: widget.frnno, phone: widget.phone),
       TransactionScreen(),
     ];
   }
