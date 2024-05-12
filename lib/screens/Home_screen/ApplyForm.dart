@@ -1,20 +1,15 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:testing/ApiManagerClass.dart';
+import 'package:testing/screens/Home_screen/HomeScreen.dart';
 import 'package:testing/screens/navScreen.dart';
 import 'package:testing/widget/CustomButton.dart';
 
 class ApplyForm extends StatefulWidget {
-  final String? phone; // Accept phone number
-  final String? token;
-  final String? name;
-  final String? frnno;
-  const ApplyForm({
-    Key? key,
-    this.phone,
-    required this.token,
-    @required this.name,
-    @required this.frnno,
-  }) : super(key: key);
+
+  const ApplyForm({Key? key}) : super(key: key);
 
   @override
   _ApplyFormState createState() => _ApplyFormState();
@@ -30,7 +25,8 @@ class _ApplyFormState extends State<ApplyForm> {
   double _issuePercentage = 0.0;
   int _quantity = 0;
   int _equivalentVFGAUnit = 0;
-
+  String? phone;
+  ApiManagerClass api=ApiManagerClass();
   Future<void> submitForm() async {
     try {
       // Convert land area and expected production to the appropriate units
@@ -38,33 +34,50 @@ class _ApplyFormState extends State<ApplyForm> {
         _landArea *= 10000; // Convert hectares to sqm
         print("dome");
       } // else it's in acres, no conversion needed
-
       if (_productionUnit == 'tons') {
         _expectedProduction *= 1000; // Convert tons to kg
         print("dome");
-      } // else it's in kg, no conversion needed
-
-      Dio dio = Dio();
-      Response response = await dio.post(
-        'https://vgfa-backend.onrender.com/api/forms/create',
-        data: {
-          'cropType': _cropType,
-          'landArea': _landArea.toInt(),
-          'expectedProduction': _expectedProduction.toInt(),
-          'issuePercent': _issuePercentage.toInt(),
-          'quantity': _quantity,
-          'vgfaUnitEq': _equivalentVFGAUnit,
-          'farmer': widget.phone,
-        },
-        options: Options(
-          headers: {
-            'Authorization': 'Bearer ${widget.token}',
-          },
-        ),
-      );
-      print(response.data);
-      print(response.statusCode); // Log status code
-      // Handle response
+      }
+      print("cropType: $_cropType,"+
+          "landArea: ${_landArea.toInt()},"+
+          "expectedProduction: ${_expectedProduction.toInt()},"+
+          "issuePercent: ${_issuePercentage.toInt()},"+
+          "quantity: ${_quantity.toInt()},"+
+          "vgfaUnitEq: ${_equivalentVFGAUnit.toInt()},");
+        var list=await api.data();
+        phone=list.phone;
+        var response=await api.createForm(
+            cropType: _cropType,
+            landArea: _landArea.toInt(),
+            expectedProduction: _expectedProduction.toInt(),
+            issuePercent: _issuePercentage.toInt(),
+            quantity: _quantity.toInt(),
+            vgfaUnitEq: _equivalentVFGAUnit.toInt(),
+            farmer: phone);
+         if(response)
+          {
+            Fluttertoast.showToast(
+                msg: "Successfully submitted apply Form",
+                toastLength: Toast.LENGTH_LONG,
+                gravity: ToastGravity.BOTTOM,
+                timeInSecForIosWeb: 1,
+                backgroundColor: Colors.grey,
+                textColor: Colors.white,
+                fontSize: 16.0
+            );
+          }
+         else
+           {
+             Fluttertoast.showToast(
+                 msg: "Error in Applying submit",
+                 toastLength: Toast.LENGTH_LONG,
+                 gravity: ToastGravity.BOTTOM,
+                 timeInSecForIosWeb: 1,
+                 backgroundColor: Colors.grey,
+                 textColor: Colors.white,
+                 fontSize: 16.0
+             );
+           }
     } catch (e) {
       print(e.toString());
       // Handle error
@@ -168,7 +181,7 @@ class _ApplyFormState extends State<ApplyForm> {
                           ),
                           SizedBox(height: 10),
                           Text(
-                            'Phone: ${widget.phone ?? ""}',
+                            'Phone: ${phone ?? ""}',
                             style: TextStyle(
                               fontSize: 20,
                               fontStyle: FontStyle.italic,
@@ -427,13 +440,13 @@ class _ApplyFormState extends State<ApplyForm> {
                     width: double.infinity,
                     height: 50,
                     child: CustomButton(
-                      onPressed: () {
+                      onPressed: () async {
                         if (_formKey.currentState!.validate()) {
                           _formKey.currentState!.save();
-                          submitForm();
+                          await submitForm();
                           Navigator.push(
                             context,
-                            MaterialPageRoute(builder: (context) => NavScreen(name: widget.name, frnno: widget.frnno,)),
+                            MaterialPageRoute(builder: (context) => NavScreen()),
                           );
                         }
                       },

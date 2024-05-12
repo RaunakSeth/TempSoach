@@ -1,11 +1,15 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:pinput/pinput.dart';
 import 'package:testing/screens/Home_screen/HomeScreen.dart';
 import 'package:testing/screens/navScreen.dart';
 import 'package:testing/widget/CustomButton.dart';
 import 'package:dio/dio.dart';
+
+import '../../ApiManagerClass.dart';
+import '../../Farmer.dart';
 
 
 class VerifyScreen extends StatefulWidget {
@@ -18,53 +22,25 @@ class VerifyScreen extends StatefulWidget {
 
 class _VerifyScreenState extends State<VerifyScreen> {
   String? otpCode;
-  String? name;
-  String? frnno;
-  AndroidOptions _getAndroidOptions() => const AndroidOptions(
-    encryptedSharedPreferences: true,
-  );
-  Future<void> updateprofile(String? value) async {
-    final storage = FlutterSecureStorage(aOptions: _getAndroidOptions());
-    try {
-      Dio dio = Dio();
-      Response response = await dio.get(
-          'https://vgfa-backend.onrender.com/api/auth/farmer/me',
-          options: Options(headers: {
-            "Authorization":"Bearer $value",
-          }));
-      print(response.data['message']);
-      if (response.data['type']== "success") {
-        name=response.data['data']['user']['first_name']+" "+response.data['data']['user']['last_name'];
-        frnno=response.data['data']['user']['frn_number'];
-      }
-    } catch (e) {
-      print(e.toString());
-    }
-  }
+  ApiManagerClass api=ApiManagerClass();
   Future<void> verifyOTP(BuildContext context) async {
-    final storage = FlutterSecureStorage(aOptions: _getAndroidOptions());
     try {
-      Dio dio = Dio();
-      Response response = await dio.post(
-        'https://vgfa-backend.onrender.com/api/auth/farmer/verify',
-        data: {
-          "phone": widget.phone,
-          "otp": otpCode,
-        },
-      );
-      print(response.data); // For debugging, you can remove this later
-      print("Token value"+response.data['data']['token']);
-      await storage.write(key: "Token Key", value: response.data['data']['token']);
-      // Access 'type' property accordingly
-      if (response.data['type'] == "success") {
-        // Navigate to the home screen if verification is successful
-       await updateprofile(response.data['data']['token']);
+      bool response=await api.verify(phone: widget.phone, otp:otpCode);
+      if (response) {
        Navigator.pushReplacement(
          context,
-         MaterialPageRoute(builder: (context) => NavScreen(name: name, frnno: frnno, phone: widget.phone)), // Pass the phone number
+         MaterialPageRoute(builder: (context) => NavScreen()), // Pass the phone number
        );
       } else {
-        // Handle failure cases if necessary
+        Fluttertoast.showToast(
+            msg: "Error in Verification",
+            toastLength: Toast.LENGTH_LONG,
+            gravity: ToastGravity.BOTTOM,
+            timeInSecForIosWeb: 1,
+            backgroundColor: Colors.grey,
+            textColor: Colors.white,
+            fontSize: 16.0
+        );
       }
     } catch (e) {
       print(e.toString()); // Print any errors for debugging

@@ -17,42 +17,16 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
   AndroidOptions _getAndroidOptions() => const AndroidOptions(
     encryptedSharedPreferences: true,
   );
-  String? name;
-  String? frnno;
-
-  Future<void> updateprofile(String? value) async {
-
-    try {
-      Dio dio = Dio();
-      Response response = await dio.get(
-          'https://vgfa-backend.onrender.com/api/auth/farmer/me',
-          options: Options(headers: {
-            "Authorization":"Bearer $value",
-          }));
-      print(response.data['message']);
-      if (response.data['type']== "success") {
-        name=response.data['data']['user']['first_name']+" "+response.data['data']['user']['last_name'];
-        frnno=response.data['data']['user']['frn_number'];
-      }
-    } catch (e) {
-      print(e.toString());
-    }
-  }
   Future<void> _initializeState() async {
     final storage = FlutterSecureStorage(aOptions: _getAndroidOptions());
     String? value = await storage.read(key: "Token Key");
     if(value != null) {
-      final storage = FlutterSecureStorage(aOptions: _getAndroidOptions());
-      String? value = await storage.read(key: "Token Key");
-      await updateprofile(value);
-      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => NavScreen(name:name,frnno: frnno)));
+      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => NavScreen()));
     }
   }
   @override
   void initState() {
     super.initState();
-    name='Raunak Seth';
-    frnno='3543';
     _initializeState();
   }
 

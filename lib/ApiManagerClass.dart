@@ -1,73 +1,169 @@
+import 'dart:convert';
 import 'package:dio/dio.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'Farmer.dart';
 
 class ApiManagerClass {
-  String? name;
-  String? frnno;
-
-  Future<void> updateprofile(String? value) async {
+  Dio dio = Dio();
+  var headers;
+  AndroidOptions _getAndroidOptions() => const AndroidOptions(
+    encryptedSharedPreferences: true,
+  );
+  Future <void> init() async {
+    final storage = FlutterSecureStorage(aOptions: _getAndroidOptions());
+    String? value = await storage.read(key: "Token Key");
+    headers = {
+      'Authorization':
+      'Bearer $value'
+    };
+  }
+  Future<bool> register({
+    required String phone,
+    required String firstName,
+    required String lastName,
+    required String panchayatCentre,
+    required String gender,
+    required String dob,
+    required String frnNumber,
+    required String address,
+  }) async {
+    var data = json.encode({
+      "phone": phone,
+      "first_name": firstName,
+      "last_name": lastName,
+      "panchayat_centre": panchayatCentre,
+      "gender": gender,
+      "dob": dob,
+      "frn_number": frnNumber,
+      "address": address
+    });
     try {
-      Dio dio = Dio();
-      Response response = await dio.get(
-        'https://vgfa-backend.onrender.com/api/auth/farmer/me',
-        options: Options(headers: {
-          "Authorization": "Bearer $value",
-        }),
+      await init();
+      var response = await dio.post(
+        'https://vgfa-backend.onrender.com/api/auth/farmer/register',
+        data: data,
       );
-      if (response.data['type'] == "success") {
-        name = response.data['data']['user']['first_name'] +
-            " " +
-            response.data['data']['user']['last_name'];
-        frnno = response.data['data']['user']['frn_number'];
-      }
+      print(json.encode(response.data));
+      print(response.statusMessage);
+      return true;
     } catch (e) {
-      print(e.toString());
+      print("Error function register: $e");
+      return false;
     }
   }
-
-  Future<void> submitForm({
-    required String token,
-    required String cropType,
-    required double landArea,
-    required String landUnit,
-    required double expectedProduction,
-    required String productionUnit,
-    required double issuePercentage,
-    required int quantity,
-    required String equivalentVFGAUnit,
-    required String? phone,
+  Future<bool> login({
+    required String phone,
   }) async {
+    var data = json.encode({
+      "phone": phone,
+    });
     try {
-      // Convert land area and expected production to the appropriate units
-      if (landUnit == 'hectares') {
-        landArea *= 10000; // Convert hectares to sqm
-      } // else it's in acres, no conversion needed
-
-      if (productionUnit == 'tons') {
-        expectedProduction *= 1000; // Convert tons to kg
-      } // else it's in kg, no conversion needed
-
-      Dio dio = Dio();
-      Response response = await dio.post(
-        'http://localhost:3000/api/forms/create',
-        data: {
-          'cropType': cropType,
-          'landArea': landArea.toInt(), // Convert to int
-          'expextedProduction': expectedProduction.toInt(), // Convert to int
-          'issuePercent': issuePercentage.toInt(), // Convert to int
-          'quantity': quantity,
-          'vgfaUnitEq': equivalentVFGAUnit,
-          'farmer': phone,
-        },
-        options: Options(headers: {
-          'Authorization': 'Bearer $token',
-        }),
+      await init();
+      var response = await dio.post(
+        'https://vgfa-backend.onrender.com/api/auth/farmer/login',
+        data: data,
       );
-      print(response.data);
-      // Handle response
+      print(json.encode(response.data));
+      print(response.statusMessage);
+      return true;
     } catch (e) {
-      print(e.toString());
-      // Handle error
+      print("Error function login: $e");
+      return false;
+    }
+  }
+  Future<bool> verify({
+    required String? phone,
+    required String? otp,
+  }) async {
+    var data = json.encode({
+      "phone": phone,
+      "otp":otp
+    });
+    try {
+      await init();
+      var response = await dio.post(
+        'https://vgfa-backend.onrender.com/api/auth/farmer/verify',
+        data: data,
+      );
+      final storage = FlutterSecureStorage(aOptions: _getAndroidOptions());
+      await storage.write(key: "Token Key", value: response.data['data']['token']);
+      print(json.encode(response.data));
+      print(response.statusMessage);
+      return true;
+    } catch (e) {
+      print("Error function verify: $e");
+      return false;
+    }
+  }
+  Future<Farmer> data() async{
+    Farmer farmer=Farmer();
+    try {
+      await init();
+      var response = await dio.get(
+        'https://vgfa-backend.onrender.com/api/auth/farmer/me',
+        options: Options(
+          headers: headers,
+        ),
+      );
+      print(json.encode(response.data));
+      var userData = response.data['data']['user'];
+      farmer = Farmer(
+        id: userData['_id'],
+        firstName: userData['first_name'],
+        lastName: userData['last_name'],
+        phone: userData['phone'],
+        dob: userData['dob'],
+        panchayatCentre: userData['panchayat_centre'],
+        gender: userData['gender'],
+        frnNumber: userData['frn_number'],
+        role: userData['role'],
+        address: userData['address'],
+        isAccountVerified: userData['isAccountVerified'],
+        approved: userData['approved'],
+        createdAt: userData['createdAt'] != null ? DateTime.parse(userData['createdAt']) : null,
+        updatedAt: userData['updatedAt'] != null ? DateTime.parse(userData['updatedAt']) : null,
+        v: userData['__v'],
+      );
+      print(response.statusMessage);
+      return farmer;
+    } catch (e) {
+      print("Error function data: $e");
+      return farmer;
+    }
+  }
+  Future<bool> createForm({
+    required String cropType,
+    required int landArea,
+    required int expectedProduction,
+    required int issuePercent,
+    required int quantity,
+    required int vgfaUnitEq,
+    required String? farmer,
+  }) async {
+    var data = json.encode({
+      "cropType": cropType,
+      "landArea": landArea,
+      "expectedProduction": expectedProduction,
+      "issuePercent": issuePercent,
+      "quantity": quantity,
+      "vgfaUnitEq": vgfaUnitEq,
+      "farmer": farmer,
+    });
+    try {
+      await init();
+      var response = await dio.post(
+        'https://vgfa-backend.onrender.com/api/forms/create',
+        options: Options(
+          headers: headers,
+        ),
+        data: data,
+      );
+      print(json.encode(response.data));
+      print(response.statusMessage);
+      return true;
+    } catch (e) {
+      print("Error function Api: $e");
+      return false;
     }
   }
 }

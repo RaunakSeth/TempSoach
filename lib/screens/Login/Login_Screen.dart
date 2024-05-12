@@ -2,6 +2,8 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:country_picker/country_picker.dart';
 import 'package:flutter/services.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:testing/ApiManagerClass.dart';
 import 'package:testing/widget/CustomButton.dart';
 
 import 'VerifyScreen.dart';
@@ -15,7 +17,7 @@ class Login_Screen extends StatefulWidget {
 
 class _Login_ScreenState extends State<Login_Screen> {
   final TextEditingController phoneController = TextEditingController();
-
+  ApiManagerClass api=ApiManagerClass();
   Country selectedCountry = Country(
     phoneCode: "91",
     countryCode: "IN",
@@ -31,25 +33,27 @@ class _Login_ScreenState extends State<Login_Screen> {
 
   Future<void> LoginUser(BuildContext context) async {
     try {
-      print("+91"+phoneController.text);
-      Dio dio = Dio();
-      Response response = await dio.post(
-        'https://vgfa-backend.onrender.com/api/auth/farmer/login',
-        data: {"phone":"+91"+phoneController.text},
-      );
-      print(response);
-
-
-      // var responseData = json.decode(response.data);
-      print(response.data);// Access 'type' property accordingly
-      if (response.data['type']== "success") {
-        Navigator.pushReplacement(context, MaterialPageRoute(
-            builder: (context)=>  VerifyScreen(phone:"+91"+phoneController.text)
-
-        ),
-        );
-      } else {
-      }
+      print("+91" + phoneController.text);
+      bool response=await api.login(phone:"+91" + phoneController.text);
+      if(response)
+        {
+      Navigator.pushReplacement(context, MaterialPageRoute(
+          builder: (context) =>
+              VerifyScreen(phone: "+91" + phoneController.text)
+      ),
+      );}
+      else
+        {
+          Fluttertoast.showToast(
+              msg: "Error in Login",
+              toastLength: Toast.LENGTH_LONG,
+              gravity: ToastGravity.BOTTOM,
+              timeInSecForIosWeb: 1,
+              backgroundColor: Colors.grey,
+              textColor: Colors.white,
+              fontSize: 16.0
+          );
+        }
     } catch (e) {
       print(e.toString());
     }

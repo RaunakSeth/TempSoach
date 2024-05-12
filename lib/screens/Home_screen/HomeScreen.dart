@@ -7,42 +7,39 @@ import 'package:testing/screens/Home_screen/Status_form/StatusForm.dart';
 import 'package:testing/theme/app_decoration.dart';
 import 'package:testing/widgets/custom_outlined_button.dart';
 
+import '../../ApiManagerClass.dart';
+import '../../Farmer.dart';
+
 class HomeScreen extends StatefulWidget {
-  final String? name;
-  final String? frnno;
-  final String? phone;
-  final String? token; // Add token here
+ // Add token here
   const HomeScreen(
-      {Key? key,
-        @required this.name,
-        @required this.frnno,
-        @required this.phone,
-        @required this.token})
-      : super(key: key);
+      {Key? key}) : super(key: key);
 
   @override
   State<HomeScreen> createState() => _HomeScreenState();
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  late String _token; // Initialize token
-
+  String? name;
+  String? frnno;
+  ApiManagerClass api=ApiManagerClass();
   @override
   void initState() {
     super.initState();
-    _initializeState();
+    init();
   }
-
-  Future<void> _initializeState() async {
-    final storage = FlutterSecureStorage();
-    String? token = await storage.read(key: "Token Key");
-    if (token != null) {
-      setState(() {
-        _token = token;
-      });
+  void init() async{
+    await updateprofile();
+  }
+  Future<void> updateprofile() async {
+    try {
+      Farmer list=await api.data();
+      name=list.firstName!+list.lastName!;
+      frnno=list.frnNumber!;
+    } catch (e) {
+      print(e.toString());
     }
   }
-
   Widget _buildAppBar() {
     return AppBar(
       automaticallyImplyLeading: false,
@@ -68,11 +65,11 @@ class _HomeScreenState extends State<HomeScreen> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      widget.name ?? "", // Check for null
+                      name?? "", // Check for null
                       style: const TextStyle(color: Colors.white, fontSize: 25.0),
                     ),
                     Text(
-                      'Frn No:${widget.frnno ?? ""}', // Check for null
+                      'Frn No:${frnno?? ""}', // Check for null
                       style: const TextStyle(color: Colors.white, fontSize: 16.0),
                     ),
                   ],
@@ -101,68 +98,81 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
     );
   }
-
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: PreferredSize(
-        preferredSize: const Size.fromHeight(90),
-        child: _buildAppBar(),
-      ),
-      body: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: <Widget>[
-            Stack(
-              clipBehavior: Clip.none,
-              children: [
-                CustomPaint(
-                  size: Size(MediaQuery.of(context).size.width, 250),
-                  painter: CurvePainter(),
-                ),
-                Positioned(
-                  top: 0,
-                  left: 0,
-                  right: 0,
-                  bottom: 0,
-                  child: SizedBox(
-                    height: 440,
-                    width: 400,
-                    child: Column(
-                      children: [
-                        const SizedBox(height: 10,),
-                        _buildTwelve(context),
-                      ],
-                    ),
-                  ),
-                ),
-              ],
-            ),
-
-            const SizedBox(height: 10,),
-            const Row(
-                children:[
-                  SizedBox(width: 20,),
-                  Align(
-                    alignment: Alignment.topLeft,
-                    child: Text(
-                      "Other Amenities",
-                      style: TextStyle(
-                        color: Colors.black,
-                        fontWeight: FontWeight.normal,
-                        fontSize: 24,
-                      ),
-                    ),
-                  ),
-                ]
-            ),
-            _totallistedunits(context),
-          ],
-        ),
-      ),
+    return FutureBuilder(
+      future: updateprofile(),
+      builder: (context, _key) {
+        switch (_key.connectionState) {
+          case ConnectionState.waiting:
+            return Default();
+          default:
+            return Default();
+        }
+      },
     );
   }
 
+  Widget Default()
+{
+  return Scaffold(
+    appBar: PreferredSize(
+      preferredSize: const Size.fromHeight(90),
+      child: _buildAppBar(),
+    ),
+    body: SingleChildScrollView(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: <Widget>[
+          Stack(
+            clipBehavior: Clip.none,
+            children: [
+              CustomPaint(
+                size: Size(MediaQuery.of(context).size.width, 250),
+                painter: CurvePainter(),
+              ),
+              Positioned(
+                top: 0,
+                left: 0,
+                right: 0,
+                bottom: 0,
+                child: SizedBox(
+                  height: 440,
+                  width: 400,
+                  child: Column(
+                    children: [
+                      const SizedBox(height: 10,),
+                      _buildTwelve(context),
+                    ],
+                  ),
+                ),
+              ),
+            ],
+          ),
+
+          const SizedBox(height: 10,),
+          const Row(
+              children:[
+                SizedBox(width: 20,),
+                Align(
+                  alignment: Alignment.topLeft,
+                  child: Text(
+                    "Other Amenities",
+                    style: TextStyle(
+                      color: Colors.black,
+                      fontWeight: FontWeight.normal,
+                      fontSize: 24,
+                    ),
+                  ),
+                ),
+              ]
+          ),
+          _totallistedunits(context),
+        ],
+      ),
+    ),
+  );
+}
   Widget _buildTwelve(BuildContext context) {
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 20),
@@ -184,7 +194,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   onPressed: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => ApplyForm(phone: widget.phone ?? "", token: widget.token ?? "", name: widget.name ?? "", frnno: widget.frnno ?? "",)),
+                      MaterialPageRoute(builder: (context) => ApplyForm()),
                     );
                   },
                 ),
