@@ -27,6 +27,8 @@ class _NavScreenState extends State<NavScreen> {
       HomeScreen(),
       TransactionScreen(),
     ];
+    _controller.index=1;
+    _selectedIndex=1;
   }
 
   void _onItemTapped(int index) {
