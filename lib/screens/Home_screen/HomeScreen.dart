@@ -34,7 +34,7 @@ class _HomeScreenState extends State<HomeScreen> {
   Future<void> updateprofile() async {
     try {
       Farmer list=await api.data();
-      name=list.firstName!+list.lastName!;
+      name="${list.firstName!} ${list.lastName!}";
       frnno=list.frnNumber!;
     } catch (e) {
       print(e.toString());
