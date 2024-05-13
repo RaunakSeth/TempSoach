@@ -1,6 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:testing/ApiManagerClass.dart';
 import 'package:testing/screens/WelcomeScreen.dart';
 import '../../widget/CustomButton.dart';
 
@@ -15,6 +17,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   AndroidOptions _getAndroidOptions() => const AndroidOptions(
     encryptedSharedPreferences: true,
   );
+  ApiManagerClass api=ApiManagerClass();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   TextEditingController _firstNameController = TextEditingController(text: 'John');
   TextEditingController _lastNameController = TextEditingController(text: 'Doe');
@@ -24,15 +27,83 @@ class _ProfileScreenState extends State<ProfileScreen> {
   TextEditingController _centreController = TextEditingController(text: 'Centre Name');
   TextEditingController _frnNumberController = TextEditingController(text: '123456789');
   TextEditingController _addressController = TextEditingController(text: '123 Street, City, Country');
-
+  String phone="";
   bool _isEditing = false;
-
-  void _toggleEdit() {
+  @override
+  void initState() {
+    super.initState();
+    init();
+  }
+  Future<void> init() async{
+   await profileValues();
+  }
+  Future<void>profileValues() async{
+    try{
+      var response=await api.data();
+      _firstNameController.text= response.firstName!;
+      _lastNameController.text=response.lastName!;
+      _dobController.text=response.dob!;
+      _genderController.text=response.gender!;
+      _panchayatController.text=response.panchayatCentre!;
+      _centreController.text=response.panchayatCentre!;
+      _frnNumberController.text=response.frnNumber!;
+      _addressController.text=response.address!;
+      phone=response.phone!;
+    }
+    catch(e){
+      Fluttertoast.showToast(
+          msg: "Error in Fetching Values",
+          toastLength: Toast.LENGTH_LONG,
+          gravity: ToastGravity.BOTTOM,
+          timeInSecForIosWeb: 1,
+          backgroundColor: Colors.grey,
+          textColor: Colors.white,
+          fontSize: 16.0
+      );
+      print(e.toString());
+    }
+  }
+  void _toggleEdit()  {
     setState(() {
       _isEditing = !_isEditing;
     });
   }
-
+  Future<void> updatevalues()async{
+      var response=await api.update(
+          phone: phone,
+          firstName: _firstNameController.text,
+          lastName: _lastNameController.text,
+          panchayatCentre: _panchayatController.text,
+          gender: _genderController.text,
+          dob: _dobController.text,
+          frnNumber: _frnNumberController.text,
+          address: _addressController.text);
+      if(response)
+      {
+        Fluttertoast.showToast(
+            msg: "Values updated successfully",
+            toastLength: Toast.LENGTH_LONG,
+            gravity: ToastGravity.BOTTOM,
+            timeInSecForIosWeb: 1,
+            backgroundColor: Colors.grey,
+            textColor: Colors.white,
+            fontSize: 16.0
+        );
+        await profileValues();
+      }
+      else
+      {
+        Fluttertoast.showToast(
+            msg: "Error in Updating Values",
+            toastLength: Toast.LENGTH_LONG,
+            gravity: ToastGravity.BOTTOM,
+            timeInSecForIosWeb: 1,
+            backgroundColor: Colors.grey,
+            textColor: Colors.white,
+            fontSize: 16.0
+        );
+      }
+  }
   Future<void> _logout() async {
     final storage = FlutterSecureStorage(aOptions: _getAndroidOptions());
     await storage.delete(key: "Token Key");
@@ -55,7 +126,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
               color: Colors.black,
               size: 30,
             ),
-            onPressed: _toggleEdit,
+            onPressed: () async {
+                if(_isEditing) {
+                  await updatevalues();
+                }
+              _toggleEdit();
+            },
           ),
         ],
       ),
@@ -99,6 +175,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           labelText: 'First Name',
                           border: OutlineInputBorder(),
                         ),
+                        onChanged: (value) {
+                        setState(() {
+                        _firstNameController.text = value;
+                         });}
                       ),
                       SizedBox(height: 10),
                       TextFormField(
@@ -108,6 +188,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           labelText: 'Last Name',
                           border: OutlineInputBorder(),
                         ),
+                          onChanged: (value) {
+                            setState(() {
+                              _lastNameController.text = value;
+                            });}
                       ),
                       SizedBox(height: 10),
                       TextFormField(
@@ -117,6 +201,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           labelText: 'Date of Birth',
                           border: OutlineInputBorder(),
                         ),
+                          onChanged: (value) {
+                            setState(() {
+                              _dobController.text = value;
+                            });}
                       ),
                       SizedBox(height: 10),
                       TextFormField(
@@ -126,6 +214,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           labelText: 'Gender',
                           border: OutlineInputBorder(),
                         ),
+                          onChanged: (value) {
+                            setState(() {
+                              _genderController.text = value;
+                            });}
                       ),
                       SizedBox(height: 10),
                       TextFormField(
@@ -135,6 +227,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           labelText: 'Panchayat',
                           border: OutlineInputBorder(),
                         ),
+                          onChanged: (value) {
+                            setState(() {
+                              _panchayatController.text = value;
+                            });}
                       ),
                       SizedBox(height: 10),
                       TextFormField(
@@ -144,6 +240,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           labelText: 'Centre',
                           border: OutlineInputBorder(),
                         ),
+                          onChanged: (value) {
+                            setState(() {
+                              _centreController.text = value;
+                            });}
                       ),
                       SizedBox(height: 10),
                       TextFormField(
@@ -153,6 +253,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           labelText: 'FRN Number',
                           border: OutlineInputBorder(),
                         ),
+                          onChanged: (value) {
+                            setState(() {
+                              _frnNumberController.text = value;
+                            });}
                       ),
                       SizedBox(height: 10),
                       TextFormField(
@@ -162,6 +266,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           labelText: 'Address',
                           border: OutlineInputBorder(),
                         ),
+                          onChanged: (value) {
+                            setState(() {
+                              _addressController.text = value;
+                            });}
                       ),
                     ],
                   ),

@@ -131,6 +131,43 @@ class ApiManagerClass {
       return farmer;
     }
   }
+  Future<bool> update({
+    required String phone,
+    required String firstName,
+    required String lastName,
+    required String panchayatCentre,
+    required String gender,
+    required String dob,
+    required String frnNumber,
+    required String address,
+  }) async {
+    var data = json.encode({
+      "phone":phone,
+      "first_name": firstName,
+      "last_name": lastName,
+      "panchayat_centre": panchayatCentre,
+      "gender": gender,
+      "dob": dob,
+      "frn_number": frnNumber,
+      "address": address
+    });
+    try {
+      await init();
+      var response = await dio.put(
+        'https://vgfa-backend.onrender.com/api/auth/farmer/update',
+        data: data,
+        options: Options(
+          headers: headers,
+        ),
+      );
+      print(json.encode(response.data));
+      print(response.statusMessage);
+      return true;
+    } catch (e) {
+      print("Error function update: $e");
+      return false;
+    }
+  }
   Future<bool> createForm({
     required String cropType,
     required int landArea,
