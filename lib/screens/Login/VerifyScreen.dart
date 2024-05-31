@@ -1,15 +1,10 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:pinput/pinput.dart';
-import 'package:testing/screens/Home_screen/HomeScreen.dart';
 import 'package:testing/screens/navScreen.dart';
 import 'package:testing/widget/CustomButton.dart';
-import 'package:dio/dio.dart';
-
 import '../../ApiManagerClass.dart';
-import '../../Farmer.dart';
+
 
 
 class VerifyScreen extends StatefulWidget {

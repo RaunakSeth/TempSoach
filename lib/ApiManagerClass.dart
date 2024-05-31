@@ -5,6 +5,7 @@ import 'Farmer.dart';
 
 class ApiManagerClass {
   Dio dio = Dio();
+  var baseUrl = "http://vgfa-env-1.eba-brkixzb4.ap-south-1.elasticbeanstalk.com";
   var headers;
   AndroidOptions _getAndroidOptions() => const AndroidOptions(
     encryptedSharedPreferences: true,
@@ -40,7 +41,7 @@ class ApiManagerClass {
     try {
       await init();
       var response = await dio.post(
-        'https://vgfa-backend.onrender.com/api/auth/farmer/register',
+        'http://vgfa-env-1.eba-brkixzb4.ap-south-1.elasticbeanstalk.com/api/auth/farmer/register',
         data: data,
       );
       print(json.encode(response.data));
@@ -60,7 +61,7 @@ class ApiManagerClass {
     try {
       await init();
       var response = await dio.post(
-        'https://vgfa-backend.onrender.com/api/auth/farmer/login',
+        'http://vgfa-env-1.eba-brkixzb4.ap-south-1.elasticbeanstalk.com/api/auth/farmer/login',
         data: data,
       );
       print(json.encode(response.data));
@@ -82,7 +83,7 @@ class ApiManagerClass {
     try {
       await init();
       var response = await dio.post(
-        'https://vgfa-backend.onrender.com/api/auth/farmer/verify',
+        'http://vgfa-env-1.eba-brkixzb4.ap-south-1.elasticbeanstalk.com/api/auth/farmer/verify',
         data: data,
       );
       final storage = FlutterSecureStorage(aOptions: _getAndroidOptions());
@@ -100,7 +101,7 @@ class ApiManagerClass {
     try {
       await init();
       var response = await dio.get(
-        'https://vgfa-backend.onrender.com/api/auth/farmer/me',
+        'http://vgfa-env-1.eba-brkixzb4.ap-south-1.elasticbeanstalk.com/api/auth/farmer/me',
         options: Options(
           headers: headers,
         ),
@@ -154,7 +155,7 @@ class ApiManagerClass {
     try {
       await init();
       var response = await dio.put(
-        'https://vgfa-backend.onrender.com/api/auth/farmer/update',
+        'http://vgfa-env-1.eba-brkixzb4.ap-south-1.elasticbeanstalk.com/api/auth/farmer/update',
         data: data,
         options: Options(
           headers: headers,
@@ -189,7 +190,7 @@ class ApiManagerClass {
     try {
       await init();
       var response = await dio.post(
-        'https://vgfa-backend.onrender.com/api/forms/create',
+        'http://vgfa-env-1.eba-brkixzb4.ap-south-1.elasticbeanstalk.com/api/forms/create',
         options: Options(
           headers: headers,
         ),
