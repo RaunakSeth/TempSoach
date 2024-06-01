@@ -46,7 +46,7 @@ class _TransactionScreenState extends State<TransactionScreen> {
                     "Transaction History",
                     style: TextStyle(
                       color: Colors.white,
-                      fontSize: 30,
+                      fontSize: 32,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
