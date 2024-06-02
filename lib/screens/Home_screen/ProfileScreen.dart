@@ -1,6 +1,7 @@
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -238,7 +239,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   child: Container(
                     height: 500,
                     decoration: BoxDecoration(
-                      color: const Color(0xFFF5F5F5),
                       borderRadius: BorderRadius.circular(10.0),
                       border: Border.all(
                           width: 2, color: const Color(0xFFB9B9B9)),
@@ -249,9 +249,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           buildTextField(
-                              controller: _firstNameController,
-                              label: 'First Name',
-                              isEnabled: _isEditing),
+                            controller: _firstNameController,
+                            label: 'First Name',
+                            isEnabled: _isEditing,
+                          ),
                           const SizedBox(height: 10),
                           buildTextField(
                               controller: _lastNameController,
