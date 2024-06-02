@@ -369,6 +369,7 @@ class _Register_ScreenState extends State<Register_Screen> {
                     ),
                   ),
                 ),
+                const SizedBox(height: 10),
                 SizedBox(
                   width: double.infinity,
                   height: 50,

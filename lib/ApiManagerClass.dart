@@ -154,6 +154,7 @@ class ApiManagerClass {
         soilHealthReport: userData['SoilHealthReport'],
       );
       print(response.statusMessage);
+      print(response.data);
       return farmer;
     } catch (e) {
       print("Error function data: $e");

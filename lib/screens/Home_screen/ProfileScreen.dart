@@ -4,12 +4,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:testing/ApiManagerClass.dart';
 import 'package:testing/screens/WelcomeScreen.dart';
 import 'dart:io';
 import 'package:testing/widget/CustomButton.dart';
+import 'package:testing/widgets/DocumentUploadView.dart';
+import 'package:testing/widgets/TextIconButton.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
@@ -24,7 +27,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   );
   ApiManagerClass api = ApiManagerClass();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-
+  final GlobalKey<FormState> _formKey1 = GlobalKey<FormState>();
   TextEditingController _firstNameController = TextEditingController(text: 'John');
   TextEditingController _lastNameController = TextEditingController(text: 'Doe');
   TextEditingController _dobController = TextEditingController(text: '01/01/1990');
@@ -35,16 +38,22 @@ class _ProfileScreenState extends State<ProfileScreen> {
   TextEditingController _addressController = TextEditingController(text: '123 Street, City, Country');
   String phone = "";
   bool _isEditing = false;
-
-  File? _image;
-  final picker = ImagePicker();
+  bool _isEditingDoc=false;
+  Widget icon=Icon(Icons.upload_file);
+  // File? _image;
+  // final picker = ImagePicker();
   FilePickerResult? profile;
   FilePickerResult? LandOwnership;
   FilePickerResult? CropHarvestRecords;
   FilePickerResult? Certification;
   FilePickerResult? SoilHealthReport;
   FilePickerResult? FarmPhotos;
-
+  String? profileName=null;
+  String? landOwnershipName=null;
+  String? cropHarvestRecordsName=null;
+  String? certificationName=null;
+  String? soilHealthReportName=null;
+  String? farmPhotosName=null;
   @override
   void initState() {
     super.initState();
@@ -67,6 +76,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
       _frnNumberController.text = response.frnNumber!;
       _addressController.text = response.address!;
       phone = response.phone!;
+      setState(() {
+        landOwnershipName = response.landOwnership.toString().substring(23);
+        cropHarvestRecordsName = response.cropHarvestRecords.toString().substring(23);
+        certificationName = response.certification.toString().substring(23);
+        soilHealthReportName = response.soilHealthReport.toString().substring(23);
+        farmPhotosName = response.farmPhotos?[0].toString().substring(23); // Assigning the first farm photo as an example
+        icon=Icon(Icons.check_circle);
+      });
     } catch (e) {
       Fluttertoast.showToast(
           msg: "Error in Fetching Values",
@@ -79,7 +96,25 @@ class _ProfileScreenState extends State<ProfileScreen> {
       print(e.toString());
     }
   }
+ void _toggleDocumentEdit()
+ {
+   if(!_isEditingDoc)
+     {
+       setState(() {
+         icon=Icon(Icons.upload_file);
+         landOwnershipName = "Upload";
+         cropHarvestRecordsName = "Upload";
+         certificationName = "Upload";
+         soilHealthReportName = "Upload";
+         farmPhotosName = "Upload";
 
+       });
+     }
+     setState(() {
+       _isEditingDoc=!_isEditingDoc;
+     });
+
+ }
   void _toggleEdit() {
     setState(() {
       _isEditing = !_isEditing;
@@ -87,6 +122,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
   }
 
   Future<void> updatevalues() async {
+    setState(() {
+      icon=SpinKitPouringHourGlass(
+      color: Colors.green,
+      size: 24.0,
+      );
+    });
     var response = await api.update(
         phone: phone,
         firstName: _firstNameController.text,
@@ -103,6 +144,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
         SoilHealthReport:SoilHealthReport?.files.first,
         FarmPhotos:FarmPhotos?.files.first);
     if (response) {
+      setState(() {
+        icon=Icon(Icons.check_circle);
+        landOwnershipName = "Uploaded";
+        cropHarvestRecordsName = "Uploaded";
+        certificationName = "Uploaded";
+        soilHealthReportName = "Uploaded";
+        farmPhotosName = "Uploaded";
+      });
       Fluttertoast.showToast(
           msg: "Values updated successfully",
           toastLength: Toast.LENGTH_LONG,
@@ -171,14 +220,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
             (Route<dynamic> route) => false);
   }
 
-  Future<void> _pickImage() async {
-    final pickedFile = await picker.getImage(source: ImageSource.gallery);
-    setState(() {
-      if (pickedFile != null) {
-        _image = File(pickedFile.path);
-      }
-    });
-  }
+  // Future<void> _pickImage() async {
+  //   final pickedFile = await picker.getImage(source: ImageSource.gallery);
+  //   setState(() {
+  //     if (pickedFile != null) {
+  //       _image = File(pickedFile.path);
+  //     }
+  //   });
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -186,21 +235,21 @@ class _ProfileScreenState extends State<ProfileScreen> {
       backgroundColor: Colors.white,
       appBar: AppBar(
         backgroundColor: const Color(0xFFFFFFFF),
-        actions: [
-          IconButton(
-            icon: Icon(
-              Icons.edit,
-              color: Colors.black,
-              size: 30,
-            ),
-            onPressed: () async {
-              if (_isEditing) {
-                await updatevalues();
-              }
-              _toggleEdit();
-            },
-          ),
-        ],
+        // actions: [ IconButton(
+        //   icon: Icon(
+        //     Icons.edit_outlined,
+        //     color: Colors.black,
+        //     size: 30,
+        //   ),
+        //   onPressed: () async {
+        //     if (_isEditing) {
+        //       await updatevalues();
+        //     }
+        //     _toggleEdit();
+        //   },
+        // ),
+        //
+        // ],
       ),
       body: SafeArea(
         child: Padding(
@@ -219,21 +268,49 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     ),
                   ),
                 ),
+                const SizedBox(height: 20,),
+                GestureDetector(
+                  onTap: () => pickfile("Profile"),
+                  child: CircleAvatar(
+                    radius: 50,
+                    // backgroundImage: _image == null
+                    //     ? AssetImage('assets/profile_placeholder.png')
+                    //     : FileImage(_image!) as ImageProvider,
+                  ),
+                ),
                 const SizedBox(
                   height: 20,
                 ),
-                // GestureDetector(
-                //   onTap: _pickImage,
-                //   child: CircleAvatar(
-                //     radius: 50,
-                //     backgroundImage: _image == null
-                //         ? AssetImage('assets/profile_placeholder.png')
-                //         : FileImage(_image!) as ImageProvider,
-                //   ),
-                // ),
-                const SizedBox(
-                  height: 20,
-                ),
+                SizedBox(
+                  height: 40,
+                  child: Row(
+                      children:<Widget> [
+                      Padding(padding: const EdgeInsets.all(2),),
+                       TextIconButton(
+                        text: 'Edit',
+                        icon: Icon(
+                          Icons.edit_outlined,
+                          color: Colors.black,
+                          size: 30,
+                        ),
+                        onPressed: () async {
+                          if (_isEditing) {
+                            await updatevalues();
+                          }
+                          _toggleEdit();
+                        },
+                      )
+                      ],
+                    ),
+                  ),
+                  // child: Text(
+                  //   'Edit',
+                  //   style: TextStyle(
+                  //     color: Colors.black,
+                  //     fontWeight: FontWeight.normal,
+                  //     fontSize: 30,
+                  //   )
+                  // ),
                 Form(
                   key: _formKey,
                   child: Container(
@@ -288,59 +365,93 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               controller: _addressController,
                               label: 'Address',
                               isEnabled: _isEditing),
-                          const SizedBox(height: 10),
-                          SizedBox(
-                            width: double.infinity,
-                            height: 50,
-                            child: CustomButton(
-                              onPressed: () => pickfile("Profile"),
-                              text: "Pick profile Photo",
-                            ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 20),
+                SizedBox(
+                  height: 40,
+                  child: Row(
+                    children:<Widget> [
+                      Padding(padding: const EdgeInsets.all(2),),
+                        TextIconButton(
+                          text: 'Update Documents',
+                          icon: Icon(
+                            Icons.cloud_upload,
+                            color: Colors.black,
+                            size: 30,
+                          ),
+                          onPressed: () async {
+                            if (_isEditingDoc) {
+                              await updatevalues();
+                            }
+                            _toggleDocumentEdit();
+                          },
+                        ),
+                      ]
+                  ),
+                ),
+                Form(
+                  key: _formKey1,
+                  child: Container(
+                    height: 500,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(10.0),
+                      border: Border.all(
+                          width: 2, color: const Color(0xFFB9B9B9)),
+                    ),
+                    padding: const EdgeInsets.all(20),
+                    child: SingleChildScrollView(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          // DocumentUploadView(
+                          //   title: 'Profile Photo',
+                          //   description: '*Please upload your profile photo.',
+                          //   onPressed: () => pickfile("ProfilePhoto"),
+                          //   buttonText: "Pick Profile Photo",
+                          // ),
+                          // const SizedBox(height: 10),
+                          DocumentUploadView(
+                            title: 'Land Ownership',
+                            description: '*Land ownership certificate (patta), Land lease agreement, Land records documentation',
+                            onPressed: () => pickfile("LandOwnership"),
+                            icon: icon,
+                            buttonText: landOwnershipName==null?"Upload":landOwnershipName.toString(),
                           ),
                           const SizedBox(height: 10),
-                          SizedBox(
-                            width: double.infinity,
-                            height: 50,
-                            child: CustomButton(
-                              onPressed: () => pickfile("LandOwnership"),
-                              text: "Pick LandOwnership",
-                            ),
+                          DocumentUploadView(
+                            title: 'Crop Harvest Records',
+                            description: '*Harvest Summary Reports, Crop Yield Records, Production Volume Logs',
+                            onPressed: () => pickfile("CropHarvestRecords"),
+                            icon: icon,
+                            buttonText: cropHarvestRecordsName==null?"Upload":cropHarvestRecordsName.toString(),
                           ),
                           const SizedBox(height: 10),
-                          SizedBox(
-                            width: double.infinity,
-                            height: 50,
-                            child: CustomButton(
-                              onPressed: () => pickfile("CropHarvestRecords"),
-                              text: "Pick CropHarvestRecords",
-                            ),
+                          DocumentUploadView(
+                            title: 'Certification',
+                            description: '*Organic Certification Documents, Good Agricultural Practices (GAP) Certification, Fair Trade Certification',
+                            onPressed: () => pickfile("Certification"),
+                            icon: icon,
+                            buttonText: certificationName==null?"Upload":certificationName.toString(),
                           ),
                           const SizedBox(height: 10),
-                          SizedBox(
-                            width: double.infinity,
-                            height: 50,
-                            child: CustomButton(
-                              onPressed: () => pickfile("Certification"),
-                              text: "Pick Certification",
-                            ),
+                          DocumentUploadView(
+                            title: 'Soil Health Report',
+                            description: '*Soil Testing Results, Soil Quality Analysis, Soil Fertility Report',
+                            onPressed: () => pickfile("SoilHealthReport"),
+                            icon: icon,
+                            buttonText: soilHealthReportName==null?"Upload":soilHealthReportName.toString(),
                           ),
                           const SizedBox(height: 10),
-                          SizedBox(
-                            width: double.infinity,
-                            height: 50,
-                            child: CustomButton(
-                              onPressed: () => pickfile("SoilHealthReport"),
-                              text: "Pick SoilHealthReport",
-                            ),
-                          ),
-                          const SizedBox(height: 10),
-                          SizedBox(
-                            width: double.infinity,
-                            height: 50,
-                            child: CustomButton(
-                              onPressed: () => pickfile("FarmPhotos"),
-                              text: "Pick FarmPhotos",
-                            ),
+                          DocumentUploadView(
+                            title: 'Farm Photos',
+                            description: '*Current Crop Photos, Farm Infrastructure Images, Seasonal Progress Photos',
+                            onPressed: () => pickfile("FarmPhotos"),
+                            icon: icon,
+                            buttonText: farmPhotosName==null?"Upload":farmPhotosName.toString(),
                           ),
                         ],
                       ),
@@ -366,22 +477,50 @@ class _ProfileScreenState extends State<ProfileScreen> {
     );
   }
 
-  Widget buildTextField(
-      {required TextEditingController controller,
-        required String label,
-        required bool isEnabled}) {
-    return TextFormField(
-      controller: controller,
-      enabled: isEnabled,
-      decoration: InputDecoration(
-        labelText: label,
-        border: OutlineInputBorder(),
-      ),
-      onChanged: (value) {
-        setState(() {
-          controller.text = value;
-        });
-      },
+  Widget buildTextField({
+    required TextEditingController controller,
+    required String label,
+    required bool isEnabled,
+  }) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start, // Align children to the start (left)
+      children: [
+        Padding(
+          padding: const EdgeInsets.only(bottom: 8.0), // Adds space between the label and the text field
+          child: Text(
+            label,
+            style: TextStyle(
+              color: Colors.grey, // Adjust the color to match the design
+              fontSize: 16, // Adjust the font size if needed
+            ),
+          ),
+        ),
+        TextFormField(
+          controller: controller,
+          enabled: isEnabled,
+          decoration: InputDecoration(
+            border: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(5.0), // Rounded corners
+              borderSide: BorderSide(color: Colors.grey), // Border color
+            ),
+            enabledBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(5.0), // Rounded corners
+              borderSide: BorderSide(color: Colors.grey), // Border color for enabled state
+            ),
+            focusedBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(5.0), // Rounded corners
+              borderSide: BorderSide(color: Colors.blue), // Border color for focused state
+            ),
+            contentPadding: EdgeInsets.symmetric(horizontal: 10, vertical: 15), // Adjusts the padding
+          ),
+          onChanged: (value) {
+            setState(() {
+              controller.text = value;
+            });
+          },
+        ),
+      ],
     );
   }
+
 }
