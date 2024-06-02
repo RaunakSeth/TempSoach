@@ -1,3 +1,4 @@
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -36,6 +37,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   File? _image;
   final picker = ImagePicker();
+  FilePickerResult? profile;
+  FilePickerResult? LandOwnership;
+  FilePickerResult? CropHarvestRecords;
+  FilePickerResult? Certification;
+  FilePickerResult? SoilHealthReport;
+  FilePickerResult? FarmPhotos;
 
   @override
   void initState() {
@@ -87,7 +94,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
         gender: _genderController.text,
         dob: _dobController.text,
         frnNumber: _frnNumberController.text,
-        address: _addressController.text);
+        address: _addressController.text,
+        profilePicture:profile?.files.first,
+        LandOwnership:LandOwnership?.files.first,
+        CropHarvestRecords:CropHarvestRecords?.files.first,
+        Certification:Certification?.files.first,
+        SoilHealthReport:SoilHealthReport?.files.first,
+        FarmPhotos:FarmPhotos?.files.first);
     if (response) {
       Fluttertoast.showToast(
           msg: "Values updated successfully",
@@ -104,6 +117,44 @@ class _ProfileScreenState extends State<ProfileScreen> {
           toastLength: Toast.LENGTH_LONG,
           gravity: ToastGravity.BOTTOM,
           timeInSecForIosWeb: 1,
+          backgroundColor: Colors.grey,
+          textColor: Colors.white,
+          fontSize: 16.0);
+    }
+  }
+
+  Future<void> pickfile(String type) async {
+    FilePickerResult? result = await FilePicker.platform.pickFiles();
+
+    if (result != null) {
+      setState(() {
+        switch (type) {
+          case "Profile":
+            profile = result;
+            break;
+          case "LandOwnership":
+            LandOwnership = result;
+            break;
+          case "CropHarvestRecords":
+            CropHarvestRecords = result;
+            break;
+          case "Certification":
+            Certification = result;
+            break;
+          case "SoilHealthReport":
+            SoilHealthReport = result;
+            break;
+          case "FarmPhotos":
+            FarmPhotos = result;
+            break;
+        }
+      });
+    } else {
+      // User canceled the picker
+      Fluttertoast.showToast(
+          msg: "No file selected",
+          toastLength: Toast.LENGTH_LONG,
+          gravity: ToastGravity.BOTTOM,
           backgroundColor: Colors.grey,
           textColor: Colors.white,
           fontSize: 16.0);
@@ -170,15 +221,15 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 const SizedBox(
                   height: 20,
                 ),
-                GestureDetector(
-                  onTap: _pickImage,
-                  child: CircleAvatar(
-                    radius: 50,
-                    backgroundImage: _image == null
-                        ? AssetImage('assets/profile_placeholder.png')
-                        : FileImage(_image!) as ImageProvider,
-                  ),
-                ),
+                // GestureDetector(
+                //   onTap: _pickImage,
+                //   child: CircleAvatar(
+                //     radius: 50,
+                //     backgroundImage: _image == null
+                //         ? AssetImage('assets/profile_placeholder.png')
+                //         : FileImage(_image!) as ImageProvider,
+                //   ),
+                // ),
                 const SizedBox(
                   height: 20,
                 ),
@@ -236,6 +287,60 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               controller: _addressController,
                               label: 'Address',
                               isEnabled: _isEditing),
+                          const SizedBox(height: 10),
+                          SizedBox(
+                            width: double.infinity,
+                            height: 50,
+                            child: CustomButton(
+                              onPressed: () => pickfile("Profile"),
+                              text: "Pick profile Photo",
+                            ),
+                          ),
+                          const SizedBox(height: 10),
+                          SizedBox(
+                            width: double.infinity,
+                            height: 50,
+                            child: CustomButton(
+                              onPressed: () => pickfile("LandOwnership"),
+                              text: "Pick LandOwnership",
+                            ),
+                          ),
+                          const SizedBox(height: 10),
+                          SizedBox(
+                            width: double.infinity,
+                            height: 50,
+                            child: CustomButton(
+                              onPressed: () => pickfile("CropHarvestRecords"),
+                              text: "Pick CropHarvestRecords",
+                            ),
+                          ),
+                          const SizedBox(height: 10),
+                          SizedBox(
+                            width: double.infinity,
+                            height: 50,
+                            child: CustomButton(
+                              onPressed: () => pickfile("Certification"),
+                              text: "Pick Certification",
+                            ),
+                          ),
+                          const SizedBox(height: 10),
+                          SizedBox(
+                            width: double.infinity,
+                            height: 50,
+                            child: CustomButton(
+                              onPressed: () => pickfile("SoilHealthReport"),
+                              text: "Pick SoilHealthReport",
+                            ),
+                          ),
+                          const SizedBox(height: 10),
+                          SizedBox(
+                            width: double.infinity,
+                            height: 50,
+                            child: CustomButton(
+                              onPressed: () => pickfile("FarmPhotos"),
+                              text: "Pick FarmPhotos",
+                            ),
+                          ),
                         ],
                       ),
                     ),

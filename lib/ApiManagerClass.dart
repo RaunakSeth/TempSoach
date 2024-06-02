@@ -1,7 +1,10 @@
 import 'dart:convert';
+import 'dart:io';
 import 'package:dio/dio.dart';
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'Farmer.dart';
+import 'package:http/http.dart' as http;
 
 class ApiManagerClass {
   Dio dio = Dio();
@@ -27,8 +30,15 @@ class ApiManagerClass {
     required String dob,
     required String frnNumber,
     required String address,
+    File? profilePicture,
+    File? LandOwnership,
+    File? CropHarvestRecords,
+    File? Certification,
+    File? SoilHealthReport,
+    File? FarmPhotos
   }) async {
-    var data = json.encode({
+    // Create a temporary map to hold the data
+    final Map<String, dynamic> tempData = {
       "phone": phone,
       "first_name": firstName,
       "last_name": lastName,
@@ -36,8 +46,19 @@ class ApiManagerClass {
       "gender": gender,
       "dob": dob,
       "frn_number": frnNumber,
-      "address": address
-    });
+      "address": address,
+    };
+
+    // Conditionally add files to the map if they are not null
+    if (profilePicture != null) tempData["profile_picture"] = profilePicture;
+    if (LandOwnership != null) tempData["land_ownership"] = LandOwnership;
+    if (CropHarvestRecords != null) tempData["crop_harvest_records"] = CropHarvestRecords;
+    if (Certification != null) tempData["certification"] = Certification;
+    if (SoilHealthReport != null) tempData["soil_health_report"] = SoilHealthReport;
+    if (FarmPhotos != null) tempData["farm_photos"] = FarmPhotos;
+
+    // Declare the final data variable with the built map
+    final data = json.encode(tempData);
     try {
       await init();
       var response = await dio.post(
@@ -96,8 +117,8 @@ class ApiManagerClass {
       return false;
     }
   }
-  Future<Farmer> data() async{
-    Farmer farmer=Farmer();
+  Future<Farmer> data() async {
+    Farmer farmer = Farmer();
     try {
       await init();
       var response = await dio.get(
@@ -124,6 +145,13 @@ class ApiManagerClass {
         createdAt: userData['createdAt'] != null ? DateTime.parse(userData['createdAt']) : null,
         updatedAt: userData['updatedAt'] != null ? DateTime.parse(userData['updatedAt']) : null,
         v: userData['__v'],
+        farmPhotos: userData['FarmPhotos'] != null ? List<String>.from(userData['FarmPhotos']) : null,
+        tags: userData['tags'] != null ? List<String>.from(userData['tags']) : null,
+        imageUrl: userData['imageUrl'],
+        certification: userData['Certification'],
+        cropHarvestRecords: userData['CropHarvestRecords'],
+        landOwnership: userData['LandOwnership'],
+        soilHealthReport: userData['SoilHealthReport'],
       );
       print(response.statusMessage);
       return farmer;
@@ -132,6 +160,7 @@ class ApiManagerClass {
       return farmer;
     }
   }
+
   Future<bool> update({
     required String phone,
     required String firstName,
@@ -141,31 +170,58 @@ class ApiManagerClass {
     required String dob,
     required String frnNumber,
     required String address,
+    PlatformFile? profilePicture,
+    PlatformFile? LandOwnership,
+    PlatformFile? CropHarvestRecords,
+    PlatformFile? Certification,
+    PlatformFile? SoilHealthReport,
+    PlatformFile? FarmPhotos,
   }) async {
-    var data = json.encode({
-      "phone":phone,
-      "first_name": firstName,
-      "last_name": lastName,
-      "panchayat_centre": panchayatCentre,
-      "gender": gender,
-      "dob": dob,
-      "frn_number": frnNumber,
-      "address": address
+    var request = http.MultipartRequest(
+        'PUT',
+        Uri.parse('http://vgfa-env-1.eba-brkixzb4.ap-south-1.elasticbeanstalk.com/api/auth/farmer/update')
+    );
+
+    request.fields.addAll({
+      'phone': phone,
+      'first_name': firstName,
+      'last_name': lastName,
+      'panchayat_centre': panchayatCentre,
+      'gender': gender,
+      'dob': dob,
+      'frn_number': frnNumber,
+      'address': address,
     });
-    try {
-      await init();
-      var response = await dio.put(
-        'http://vgfa-env-1.eba-brkixzb4.ap-south-1.elasticbeanstalk.com/api/auth/farmer/update',
-        data: data,
-        options: Options(
-          headers: headers,
-        ),
-      );
-      print(json.encode(response.data));
-      print(response.statusMessage);
+    if (profilePicture != null) {
+      request.files.add(await http.MultipartFile.fromPath('profilePicture', profilePicture.path.toString()));
+    }
+    if (LandOwnership != null) {
+      request.files.add(await http.MultipartFile.fromPath('LandOwnership', LandOwnership.path.toString()));
+    }
+    if (CropHarvestRecords != null) {
+      request.files.add(await http.MultipartFile.fromPath('CropHarvestRecords', CropHarvestRecords.path.toString()));
+    }
+    if (Certification != null) {
+      request.files.add(await http.MultipartFile.fromPath('Certification', Certification.path.toString()));
+    }
+    if (SoilHealthReport != null) {
+      request.files.add(await http.MultipartFile.fromPath('SoilHealthReport', SoilHealthReport.path.toString()));
+    }
+    if (FarmPhotos != null) {
+      request.files.add(await http.MultipartFile.fromPath('FarmPhotos', FarmPhotos.path.toString()));
+
+    }
+
+    request.headers.addAll(headers);
+
+    http.StreamedResponse response = await request.send();
+
+    if (response.statusCode == 200) {
+      String responseBody = await response.stream.bytesToString();
+      print(responseBody);
       return true;
-    } catch (e) {
-      print("Error function update: $e");
+    } else {
+      print(response.reasonPhrase);
       return false;
     }
   }
