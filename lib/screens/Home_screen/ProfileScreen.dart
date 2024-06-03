@@ -1,6 +1,7 @@
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:testing/ApiManagerClass.dart';
 import 'package:testing/screens/WelcomeScreen.dart';
@@ -22,14 +23,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
   ApiManagerClass api = ApiManagerClass();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final GlobalKey<FormState> _formKey1 = GlobalKey<FormState>();
-  TextEditingController _firstNameController = TextEditingController(text: 'John');
-  TextEditingController _lastNameController = TextEditingController(text: 'Doe');
-  TextEditingController _dobController = TextEditingController(text: '01/01/1990');
-  TextEditingController _genderController = TextEditingController(text: 'Male');
-  TextEditingController _panchayatController = TextEditingController(text: 'Panchayat Name');
-  TextEditingController _centreController = TextEditingController(text: 'Centre Name');
-  TextEditingController _frnNumberController = TextEditingController(text: '123456789');
-  TextEditingController _addressController = TextEditingController(text: '123 Street, City, Country');
+  final TextEditingController _firstNameController = TextEditingController(text: 'John');
+  final TextEditingController _lastNameController = TextEditingController(text: 'Doe');
+  final TextEditingController _dobController = TextEditingController(text: '01/01/1990');
+  final TextEditingController _genderController = TextEditingController(text: 'Male');
+  final TextEditingController _panchayatController = TextEditingController(text: 'Panchayat Name');
+  final TextEditingController _centreController = TextEditingController(text: 'Centre Name');
+  final TextEditingController _frnNumberController = TextEditingController(text: '123456789');
+  final TextEditingController _addressController = TextEditingController(text: '123 Street, City, Country');
   String phone = "";
   bool _isEditing = false;
   bool _isEditingDoc=false;
@@ -463,6 +464,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     text: "Logout",
                   ),
                 ),
+                SizedBox(height: 20,),
               ],
             ),
           ),

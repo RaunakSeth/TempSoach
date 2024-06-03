@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:testing/screens/Home_screen/Status_form/status.dart';
 import 'package:timeline_tile/timeline_tile.dart';
 
 class Status {
@@ -26,8 +25,7 @@ class StatusTimelineTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: 150,
-      padding: const EdgeInsets.symmetric(horizontal: 10.0),
+      width: 90, // Adjust the width to fit within the total width of
       child: TimelineTile(
         axis: TimelineAxis.horizontal,
         alignment: TimelineAlign.center,
@@ -37,6 +35,7 @@ class StatusTimelineTile extends StatelessWidget {
           width: 30,
           height: 30,
           indicator: getIndicatorIcon(),
+          drawGap: false, // Ensure no gap is drawn between lines
         ),
         beforeLineStyle: LineStyle(
           thickness: 4,
@@ -53,8 +52,9 @@ class StatusTimelineTile extends StatelessWidget {
               status.name,
               textAlign: TextAlign.center,
               style: const TextStyle(
-                color: Colors.black,
-                fontWeight: FontWeight.bold,
+                  color: Colors.black,
+                  fontWeight: FontWeight.bold,
+                  fontSize: 12
               ),
             ),
           ),
