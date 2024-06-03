@@ -536,11 +536,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   child: SizedBox(
                     height: 20,
                   ),
-                ),],
-
-                SizedBox(height: 20,),
-              ],
-
+                ),
+            ],
             ),
           ),
         ),
