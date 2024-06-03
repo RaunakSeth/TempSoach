@@ -1,15 +1,9 @@
 import 'package:file_picker/file_picker.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:testing/ApiManagerClass.dart';
 import 'package:testing/screens/WelcomeScreen.dart';
-import 'dart:io';
 import 'package:testing/widget/CustomButton.dart';
 import 'package:testing/widgets/DocumentUploadView.dart';
 import 'package:testing/widgets/TextIconButton.dart';

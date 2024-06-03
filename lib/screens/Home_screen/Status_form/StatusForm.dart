@@ -1,8 +1,5 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
-import 'package:testing/screens/Home_screen/HomeScreen.dart';
-import 'package:testing/screens/Home_screen/Status_form/TimeLineTileUI.dart';
+import 'package:testing/screens/Home_screen/Status_form/timeline_tile.dart';
 import 'package:testing/widget/CustomButton.dart';
 
 class StatusFrom extends StatefulWidget {
@@ -22,16 +19,31 @@ class _StatusFromState extends State<StatusFrom> {
 
   @override
   Widget build(BuildContext context) {
+    final List<Status> statuses = [
+      Status(name: 'Application Submitted', isCompleted: true),
+      Status(name: 'Approved by member of pool of farmers', isCompleted: true),
+      Status(name: 'Approved by Gram Panchayat', isCompleted: false),
+      Status(name: 'Approved by Govt. Officials', isCompleted: false),
+      Status(name: 'Approved by SEBI', isCompleted: false),
+    ];
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       home: Scaffold(
           appBar: AppBar(
-            title: Align(
-              alignment: Alignment.topRight,
-              child: Image.asset(
-                'assets/logo_soach.png',
-                height: 40, // Adjust the height as necessary
-              ),
+            title: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                IconButton(
+                  icon: Icon(Icons.arrow_back, color: Colors.black),
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                ),
+                Image.asset(
+                  'assets/logo_soach.png',
+                  height: 40,
+                ),
+              ],
             ),
           ),
           body:SafeArea(
@@ -43,7 +55,7 @@ class _StatusFromState extends State<StatusFrom> {
                     Align(
                       alignment: Alignment.topLeft,
                       child: SizedBox(
-                        height: 100,
+                        height: 90,
                         width: 300,
                         child: Text("Check Application Status",
                           style: TextStyle(
@@ -54,12 +66,19 @@ class _StatusFromState extends State<StatusFrom> {
                         ),
                       ),
                     ),
-                    const SizedBox(
-                      height: 20,
-                    ),
                     Container(
                       height: 150,
-                      color: Colors.red,
+                      child: ListView.builder(
+                        scrollDirection: Axis.horizontal,
+                        itemCount: statuses.length,
+                        itemBuilder: (context, index) {return StatusTimelineTile(
+                          isFirst: index == 0,
+                          isInProgress: index == 2,
+                          isLast: index == statuses.length - 1,
+                          status: statuses[index],
+                        );
+                          },
+                      ),
                     ),
                     const SizedBox(
                       height: 20,
