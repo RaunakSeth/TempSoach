@@ -87,7 +87,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       color: Colors.white,
                     )
                 ),
-                const SizedBox(width: 35,),
+                const SizedBox(width: 30,),
                 const Icon(Icons.notifications, color: Colors.white,),
                 const SizedBox(width: 5,),
                 const Icon(Icons.settings, color: Colors.white,)

@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
@@ -23,14 +24,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
   ApiManagerClass api = ApiManagerClass();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final GlobalKey<FormState> _formKey1 = GlobalKey<FormState>();
-  final TextEditingController _firstNameController = TextEditingController(text: 'John');
-  final TextEditingController _lastNameController = TextEditingController(text: 'Doe');
-  final TextEditingController _dobController = TextEditingController(text: '01/01/1990');
-  final TextEditingController _genderController = TextEditingController(text: 'Male');
-  final TextEditingController _panchayatController = TextEditingController(text: 'Panchayat Name');
-  final TextEditingController _centreController = TextEditingController(text: 'Centre Name');
-  final TextEditingController _frnNumberController = TextEditingController(text: '123456789');
-  final TextEditingController _addressController = TextEditingController(text: '123 Street, City, Country');
+  TextEditingController _firstNameController = TextEditingController(text: '');
+  TextEditingController _lastNameController = TextEditingController(text: '');
+  TextEditingController _dobController = TextEditingController(text: '');
+  TextEditingController _genderController = TextEditingController(text: '');
+  TextEditingController _panchayatController = TextEditingController(text: '');
+  TextEditingController _centreController = TextEditingController(text: '');
+  TextEditingController _frnNumberController = TextEditingController(text: '');
+  TextEditingController _addressController = TextEditingController(text: '');
   String phone = "";
   bool _isEditing = false;
   bool _isEditingDoc=false;
@@ -72,6 +73,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
       _addressController.text = response.address!;
       phone = response.phone!;
       setState(() {
+        profileName=response.imageUrl!=null?"http://vgfa-env-1.eba-brkixzb4.ap-south-1.elasticbeanstalk.com"+response.imageUrl.toString():null;
         landOwnershipName = response.landOwnership.toString().substring(23);
         cropHarvestRecordsName = response.cropHarvestRecords.toString().substring(23);
         certificationName = response.certification.toString().substring(23);
@@ -115,8 +117,39 @@ class _ProfileScreenState extends State<ProfileScreen> {
       _isEditing = !_isEditing;
     });
   }
-
   Future<void> updatevalues() async {
+    var response = await api.update(
+        phone: phone,
+        firstName: _firstNameController.text,
+        lastName: _lastNameController.text,
+        panchayatCentre: _panchayatController.text,
+        gender: _genderController.text,
+        dob: _dobController.text,
+        frnNumber: _frnNumberController.text,
+        address: _addressController.text,
+        );
+    if (response) {
+      Fluttertoast.showToast(
+          msg: "Values updated successfully",
+          toastLength: Toast.LENGTH_LONG,
+          gravity: ToastGravity.BOTTOM,
+          timeInSecForIosWeb: 1,
+          backgroundColor: Colors.grey,
+          textColor: Colors.white,
+          fontSize: 16.0);
+      await profileValues();
+    } else {
+      Fluttertoast.showToast(
+          msg: "Error in Updating Values",
+          toastLength: Toast.LENGTH_LONG,
+          gravity: ToastGravity.BOTTOM,
+          timeInSecForIosWeb: 1,
+          backgroundColor: Colors.grey,
+          textColor: Colors.white,
+          fontSize: 16.0);
+    }
+  }
+  Future<void> updatevaluesDoc() async {
     setState(() {
       icon=SpinKitPouringHourGlass(
       color: Colors.green,
@@ -215,36 +248,47 @@ class _ProfileScreenState extends State<ProfileScreen> {
             (Route<dynamic> route) => false);
   }
 
-  // Future<void> _pickImage() async {
-  //   final pickedFile = await picker.getImage(source: ImageSource.gallery);
-  //   setState(() {
-  //     if (pickedFile != null) {
-  //       _image = File(pickedFile.path);
-  //     }
-  //   });
-  // }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
         backgroundColor: const Color(0xFFFFFFFF),
-        // actions: [ IconButton(
-        //   icon: Icon(
-        //     Icons.edit_outlined,
-        //     color: Colors.black,
-        //     size: 30,
-        //   ),
-        //   onPressed: () async {
-        //     if (_isEditing) {
-        //       await updatevalues();
-        //     }
-        //     _toggleEdit();
-        //   },
-        // ),
-        //
-        // ],
+        actions: [
+          IconButton(
+            icon: Icon(
+              Icons.edit_outlined,
+              color: Colors.black,
+              size: 30,
+            ),
+            onPressed: () async {
+              if (!_isEditing) {
+                _toggleEdit();
+              }
+            },
+          ),
+          IconButton(
+            icon: Icon(
+              Icons.cloud_upload,
+              color: Colors.black,
+              size: 30,
+            ),
+            onPressed: () async {
+              if (!_isEditingDoc) {
+                _toggleDocumentEdit();
+              }
+            },
+          ),
+          IconButton(
+          icon: Icon(
+            Icons.logout,
+            color: Colors.black,
+            size: 30,
+          ),
+          onPressed: _logout,
+        ),
+
+        ],
       ),
       body: SafeArea(
         child: Padding(
@@ -265,13 +309,18 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 ),
                 const SizedBox(height: 20,),
                 GestureDetector(
-                  onTap: () => pickfile("Profile"),
-                  child: CircleAvatar(
-                    radius: 50,
-                    // backgroundImage: _image == null
-                    //     ? AssetImage('assets/profile_placeholder.png')
-                    //     : FileImage(_image!) as ImageProvider,
-                  ),
+                  onTap: () => _isEditingDoc?pickfile("Profile"):{},
+                  child: CachedNetworkImage(
+                    imageUrl: profileName!=null?"$profileName":"https://static.vecteezy.com/system/resources/thumbnails/009/292/244/small/default-avatar-icon-of-social-media-user-vector.jpg",
+                    placeholder: (context, url) => const CircleAvatar(
+                      backgroundColor: Colors.amber,
+                      radius: 50,
+                    ),
+                    imageBuilder: (context, image) => CircleAvatar(
+                      backgroundImage: image,
+                      radius:50,
+                    ),
+                  )
                 ),
                 const SizedBox(
                   height: 20,
@@ -280,20 +329,21 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   height: 40,
                   child: Row(
                       children:<Widget> [
-                      Padding(padding: const EdgeInsets.all(2),),
+                      Padding(padding: const EdgeInsets.all(4),),
                        TextIconButton(
-                        text: 'Edit',
+                        text: 'Details',
                         icon: Icon(
-                          Icons.edit_outlined,
+                          Icons.description,
                           color: Colors.black,
                           size: 30,
                         ),
-                        onPressed: () async {
-                          if (_isEditing) {
-                            await updatevalues();
-                          }
-                          _toggleEdit();
-                        },
+                        onPressed: ()=>{}
+                        // async {
+                        //   if (_isEditing) {
+                        //     await updatevalues();
+                        //   }
+                        //   _toggleEdit();
+                        // },
                       )
                       ],
                     ),
@@ -309,59 +359,68 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 Form(
                   key: _formKey,
                   child: Container(
-                    height: 500,
+                    // Remove the fixed height to allow the container to adjust to its content
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(10.0),
                       border: Border.all(
-                          width: 2, color: const Color(0xFFB9B9B9)),
+                          width: 2,
+                          color: const Color(0xFFB9B9B9)
+                      ),
                     ),
                     padding: const EdgeInsets.all(20),
-                    child: SingleChildScrollView(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          buildTextField(
-                            controller: _firstNameController,
-                            label: 'First Name',
-                            isEnabled: _isEditing,
-                          ),
-                          const SizedBox(height: 10),
-                          buildTextField(
-                              controller: _lastNameController,
-                              label: 'Last Name',
-                              isEnabled: _isEditing),
-                          const SizedBox(height: 10),
-                          buildTextField(
-                              controller: _dobController,
-                              label: 'Date of Birth',
-                              isEnabled: _isEditing),
-                          const SizedBox(height: 10),
-                          buildTextField(
-                              controller: _genderController,
-                              label: 'Gender',
-                              isEnabled: _isEditing),
-                          const SizedBox(height: 10),
-                          buildTextField(
-                              controller: _panchayatController,
-                              label: 'Panchayat',
-                              isEnabled: _isEditing),
-                          const SizedBox(height: 10),
-                          buildTextField(
-                              controller: _centreController,
-                              label: 'Centre',
-                              isEnabled: _isEditing),
-                          const SizedBox(height: 10),
-                          buildTextField(
-                              controller: _frnNumberController,
-                              label: 'FRN Number',
-                              isEnabled: _isEditing),
-                          const SizedBox(height: 10),
-                          buildTextField(
-                              controller: _addressController,
-                              label: 'Address',
-                              isEnabled: _isEditing),
-                        ],
-                      ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        buildTextField(
+                          controller: _firstNameController,
+                          label: 'First Name',
+                          isEnabled: _isEditing,
+                        ),
+                        const SizedBox(height: 10),
+                        buildTextField(
+                            controller: _lastNameController,
+                            label: 'Last Name',
+                            isEnabled: _isEditing
+                        ),
+                        const SizedBox(height: 10),
+                        buildTextField(
+                            controller: _dobController,
+                            label: 'Date of Birth',
+                            isEnabled: _isEditing
+                        ),
+                        const SizedBox(height: 10),
+                        buildTextField(
+                            controller: _genderController,
+                            label: 'Gender',
+                            isEnabled: _isEditing
+                        ),
+                        const SizedBox(height: 10),
+                        buildTextField(
+                            controller: _panchayatController,
+                            label: 'Panchayat',
+                            isEnabled: _isEditing
+                        ),
+                        const SizedBox(height: 10),
+                        buildTextField(
+                            controller: _centreController,
+                            label: 'Centre',
+                            isEnabled: _isEditing
+                        ),
+                        const SizedBox(height: 10),
+                        buildTextField(
+                            controller: _frnNumberController,
+                            label: 'FRN Number',
+                            isEnabled: _isEditing
+                        ),
+                        const SizedBox(height: 10),
+                        buildTextField(
+                            controller: _addressController,
+                            label: 'Address',
+                            isEnabled: _isEditing
+                        ),
+                        const SizedBox(height: 10),
+                        // Add any additional fields here
+                      ],
                     ),
                   ),
                 ),
@@ -370,7 +429,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   height: 40,
                   child: Row(
                     children:<Widget> [
-                      Padding(padding: const EdgeInsets.all(2),),
+                      Padding(padding: const EdgeInsets.all(4),),
                         TextIconButton(
                           text: 'Update Documents',
                           icon: Icon(
@@ -378,12 +437,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             color: Colors.black,
                             size: 30,
                           ),
-                          onPressed: () async {
-                            if (_isEditingDoc) {
-                              await updatevalues();
-                            }
-                            _toggleDocumentEdit();
-                          },
+                          onPressed: ()=>{}
+                          // async {
+                          //   if (_isEditingDoc) {
+                          //     await updatevaluesDoc();
+                          //   }
+                          //   _toggleDocumentEdit();
+                          // },
                         ),
                       ]
                   ),
@@ -391,81 +451,96 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 Form(
                   key: _formKey1,
                   child: Container(
-                    height: 500,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(10.0),
-                      border: Border.all(
-                          width: 2, color: const Color(0xFFB9B9B9)),
-                    ),
-                    padding: const EdgeInsets.all(20),
-                    child: SingleChildScrollView(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          // DocumentUploadView(
-                          //   title: 'Profile Photo',
-                          //   description: '*Please upload your profile photo.',
-                          //   onPressed: () => pickfile("ProfilePhoto"),
-                          //   buttonText: "Pick Profile Photo",
-                          // ),
-                          // const SizedBox(height: 10),
-                          DocumentUploadView(
-                            title: 'Land Ownership',
-                            description: '*Land ownership certificate (patta), Land lease agreement, Land records documentation',
-                            onPressed: () => pickfile("LandOwnership"),
-                            icon: icon,
-                            buttonText: landOwnershipName==null?"Upload":landOwnershipName.toString(),
-                          ),
-                          const SizedBox(height: 10),
-                          DocumentUploadView(
-                            title: 'Crop Harvest Records',
-                            description: '*Harvest Summary Reports, Crop Yield Records, Production Volume Logs',
-                            onPressed: () => pickfile("CropHarvestRecords"),
-                            icon: icon,
-                            buttonText: cropHarvestRecordsName==null?"Upload":cropHarvestRecordsName.toString(),
-                          ),
-                          const SizedBox(height: 10),
-                          DocumentUploadView(
-                            title: 'Certification',
-                            description: '*Organic Certification Documents, Good Agricultural Practices (GAP) Certification, Fair Trade Certification',
-                            onPressed: () => pickfile("Certification"),
-                            icon: icon,
-                            buttonText: certificationName==null?"Upload":certificationName.toString(),
-                          ),
-                          const SizedBox(height: 10),
-                          DocumentUploadView(
-                            title: 'Soil Health Report',
-                            description: '*Soil Testing Results, Soil Quality Analysis, Soil Fertility Report',
-                            onPressed: () => pickfile("SoilHealthReport"),
-                            icon: icon,
-                            buttonText: soilHealthReportName==null?"Upload":soilHealthReportName.toString(),
-                          ),
-                          const SizedBox(height: 10),
-                          DocumentUploadView(
-                            title: 'Farm Photos',
-                            description: '*Current Crop Photos, Farm Infrastructure Images, Seasonal Progress Photos',
-                            onPressed: () => pickfile("FarmPhotos"),
-                            icon: icon,
-                            buttonText: farmPhotosName==null?"Upload":farmPhotosName.toString(),
-                          ),
-                        ],
-                      ),
+                    padding: const EdgeInsets.all(10),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        // DocumentUploadView(
+                        //   title: 'Profile Photo',
+                        //   description: '*Please upload your profile photo.',
+                        //   onPressed: () => pickfile("ProfilePhoto"),
+                        //   buttonText: "Pick Profile Photo",
+                        // ),
+                        // const SizedBox(height: 10),
+                        DocumentUploadView(
+                          title: 'Land Ownership',
+                          description: '*Land ownership certificate (patta), Land lease agreement, Land records documentation',
+                          onPressed: () => _isEditingDoc?pickfile("LandOwnership"):{},
+                          icon: icon,
+                          buttonText: landOwnershipName == null ? "Upload" : landOwnershipName.toString(),
+                        ),
+                        const SizedBox(height: 10),
+                        DocumentUploadView(
+                          title: 'Crop Harvest Records',
+                          description: '*Harvest Summary Reports, Crop Yield Records, Production Volume Logs',
+                          onPressed: () => _isEditingDoc?pickfile("CropHarvestRecords"):{},
+                          icon: icon,
+                          buttonText: cropHarvestRecordsName == null ? "Upload" : cropHarvestRecordsName.toString(),
+                        ),
+                        const SizedBox(height: 10),
+                        DocumentUploadView(
+                          title: 'Certification',
+                          description: '*Organic Certification Documents, Good Agricultural Practices (GAP) Certification, Fair Trade Certification',
+                          onPressed: () => _isEditingDoc?pickfile("Certification"):{},
+                          icon: icon,
+                          buttonText: certificationName == null ? "Upload" : certificationName.toString(),
+                        ),
+                        const SizedBox(height: 10),
+                        DocumentUploadView(
+                          title: 'Soil Health Report',
+                          description: '*Soil Testing Results, Soil Quality Analysis, Soil Fertility Report',
+                          onPressed: () => _isEditingDoc?pickfile("SoilHealthReport"):{},
+                          icon: icon,
+                          buttonText: soilHealthReportName == null ? "Upload" : soilHealthReportName.toString(),
+                        ),
+                        const SizedBox(height: 10),
+                        DocumentUploadView(
+                          title: 'Farm Photos',
+                          description: '*Current Crop Photos, Farm Infrastructure Images, Seasonal Progress Photos',
+                          onPressed: () => _isEditingDoc?pickfile("FarmPhotos"):{},
+                          icon: icon,
+                          buttonText: farmPhotosName == null ? "Upload" : farmPhotosName.toString(),
+                        ),
+                      ],
                     ),
                   ),
                 ),
-                const SizedBox(
-                  height: 20,
+                Visibility(
+                  visible: _isEditing || _isEditingDoc,
+                  child: SizedBox(
+                    height: 20,
+                  ),
                 ),
-                SizedBox(
+            Visibility(
+              visible: _isEditing || _isEditingDoc,
+              child:SizedBox(
                   width: double.infinity,
                   height: 50,
                   child: CustomButton(
-                    onPressed: _logout,
-                    text: "Logout",
+                    onPressed: () async {
+                      if(_isEditing) {
+                        await updatevalues();
+                        _toggleEdit();
+                      }
+                      if(_isEditingDoc) {
+                        await updatevaluesDoc();
+                        _toggleDocumentEdit();
+                      }
+                    },
+                    text: "Save",
                   ),
                 ),
+              ),
+                Visibility(
+                  visible: _isEditing || _isEditingDoc,
+                  child: SizedBox(
+                    height: 20,
+                  ),
+                ),],
+
                 SizedBox(height: 20,),
               ],
+
             ),
           ),
         ),
@@ -497,22 +572,21 @@ class _ProfileScreenState extends State<ProfileScreen> {
           decoration: InputDecoration(
             border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(5.0), // Rounded corners
-              borderSide: BorderSide(color: Colors.grey), // Border color
+              borderSide: BorderSide(color: isEnabled ? Colors.green : Colors.grey), // Border color based on isEnabled
             ),
             enabledBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(5.0), // Rounded corners
-              borderSide: BorderSide(color: Colors.grey), // Border color for enabled state
+              borderSide: BorderSide(color: Colors.green), // Border color for enabled state
             ),
             focusedBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(5.0), // Rounded corners
-              borderSide: BorderSide(color: Colors.blue), // Border color for focused state
+              borderSide: BorderSide(color: Colors.green.shade900), // Border color for focused state
             ),
             contentPadding: EdgeInsets.symmetric(horizontal: 10, vertical: 15), // Adjusts the padding
           ),
+          style: TextStyle(color: isEnabled ? Colors.grey : Colors.black), // Text color based on isEnabled
           onChanged: (value) {
-            setState(() {
-              controller.text = value;
-            });
+            // No need to call setState here, controller.text is automatically updated
           },
         ),
       ],
