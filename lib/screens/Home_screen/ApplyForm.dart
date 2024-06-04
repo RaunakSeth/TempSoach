@@ -41,40 +41,56 @@ class _ApplyFormState extends State<ApplyForm> {
           "issuePercent: ${_issuePercentage.toInt()},"+
           "quantity: ${_quantity.toInt()},"+
           "vgfaUnitEq: ${_equivalentVFGAUnit.toInt()},");
-        var list=await api.data();
-        phone=list.phone;
-        var response=await api.createForm(
-            cropType: _cropType,
-            landArea: _landArea.toInt(),
-            expectedProduction: _expectedProduction.toInt(),
-            issuePercent: _issuePercentage.toInt(),
-            quantity: _quantity.toInt(),
-            vgfaUnitEq: _equivalentVFGAUnit.toInt(),
-            farmer: phone);
-         if(response)
-          {
-            Fluttertoast.showToast(
-                msg: "Successfully submitted apply Form",
-                toastLength: Toast.LENGTH_LONG,
-                gravity: ToastGravity.BOTTOM,
-                timeInSecForIosWeb: 1,
-                backgroundColor: Colors.grey,
-                textColor: Colors.white,
-                fontSize: 16.0
-            );
-          }
-         else
-           {
-             Fluttertoast.showToast(
-                 msg: "Error in Applying submit",
-                 toastLength: Toast.LENGTH_LONG,
-                 gravity: ToastGravity.BOTTOM,
-                 timeInSecForIosWeb: 1,
-                 backgroundColor: Colors.grey,
-                 textColor: Colors.white,
-                 fontSize: 16.0
-             );
-           }
+      var list=await api.data();
+      phone=list.phone;
+      var response=await api.createForm(
+          cropType: _cropType,
+          landArea: _landArea.toInt(),
+          expectedProduction: _expectedProduction.toInt(),
+          issuePercent: _issuePercentage.toInt(),
+          quantity: _quantity.toInt(),
+          vgfaUnitEq: _equivalentVFGAUnit.toInt(),
+          farmer: phone);
+      if(response>=200 && response<300)
+      {
+        Fluttertoast.showToast(
+            msg: "Successfully submitted apply Form",
+            toastLength: Toast.LENGTH_LONG,
+            gravity: ToastGravity.BOTTOM,
+            timeInSecForIosWeb: 1,
+            backgroundColor: Colors.grey,
+            textColor: Colors.white,
+            fontSize: 16.0
+        );
+      }
+      else if(response>=300 && response<400)
+      {
+
+      }
+      else if(response>=400 && response<500)
+      {
+        Fluttertoast.showToast(
+            msg: "Form Already Exist",
+            toastLength: Toast.LENGTH_LONG,
+            gravity: ToastGravity.BOTTOM,
+            timeInSecForIosWeb: 1,
+            backgroundColor: Colors.grey,
+            textColor: Colors.white,
+            fontSize: 16.0
+        );
+      }
+      else
+      {
+        Fluttertoast.showToast(
+            msg: "Error in Applying submit",
+            toastLength: Toast.LENGTH_LONG,
+            gravity: ToastGravity.BOTTOM,
+            timeInSecForIosWeb: 1,
+            backgroundColor: Colors.grey,
+            textColor: Colors.white,
+            fontSize: 16.0
+        );
+      }
     } catch (e) {
       print(e.toString());
       // Handle error
