@@ -226,7 +226,7 @@ class ApiManagerClass {
       return false;
     }
   }
-  Future<bool> createForm({
+  Future<int> createForm({
     required String cropType,
     required int landArea,
     required int expectedProduction,
@@ -255,10 +255,11 @@ class ApiManagerClass {
       );
       print(json.encode(response.data));
       print(response.statusMessage);
-      return true;
-    } catch (e) {
-      print("Error function Api: $e");
-      return false;
+      return int.parse(response.statusCode.toString());
+    } on DioError catch (error) {
+      // Handle error here
+      print(error.response?.statusCode);
+      return int.parse(error.response!.statusCode.toString());// Check for status code
     }
   }
 }
