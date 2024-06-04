@@ -235,23 +235,23 @@ class ApiManagerClass {
     required int vgfaUnitEq,
     required String? farmer,
   }) async {
-    var data = json.encode({
-      "cropType": cropType,
-      "landArea": landArea,
-      "expectedProduction": expectedProduction,
-      "issuePercent": issuePercent,
-      "quantity": quantity,
-      "vgfaUnitEq": vgfaUnitEq,
-      "farmer": farmer,
+    var datas = json.encode({
+      "cropType":cropType,
+      "landArea":landArea,
+      "expextedProduction":expectedProduction,
+      "issuePercent":issuePercent,
+      "quantity":quantity,
+      "vgfaUnitEq":vgfaUnitEq
     });
     try {
       await init();
-      var response = await dio.post(
+      var response = await dio.request(
         'http://vgfa-env-1.eba-brkixzb4.ap-south-1.elasticbeanstalk.com/api/forms/create',
         options: Options(
+          method: 'POST',
           headers: headers,
         ),
-        data: data,
+        data: datas,
       );
       print(json.encode(response.data));
       print(response.statusMessage);
