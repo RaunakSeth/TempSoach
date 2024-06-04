@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:testing/screens/Home_screen/Status_form/timeline_tile.dart';
 import 'package:testing/widget/CustomButton.dart';
+import 'package:testing/ApiManagerClass.dart';
+
+import '../../../widgets/FarmerStatusCheck.dart';
+import '../../navScreen.dart';
 
 class StatusFrom extends StatefulWidget {
   const StatusFrom({Key? key}) : super(key: key);
@@ -16,6 +20,36 @@ class _StatusFromState extends State<StatusFrom> {
   bool isContainer4Visible = false;
   bool isContainer5Visible = false;
   String description = '';
+  ApiManagerClass api = ApiManagerClass();
+
+  @override
+  void initState() {
+    super.initState();
+    checkMissingFieldsOnLoad();
+  }
+
+  Future<void> checkMissingFieldsOnLoad() async {
+    List<String>? missingFields = await api.status();
+    if (missingFields != null && missingFields.isNotEmpty) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return FarmerStatusCheck(
+              missingFields: missingFields,
+              onPressed: () {
+                Navigator.pushAndRemoveUntil(
+                  context,
+                  MaterialPageRoute(builder: (context) => NavScreen()),
+                      (Route<dynamic> route) => false,
+                );// Navigate back to previous screen
+              },
+            );
+          },
+        );
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
