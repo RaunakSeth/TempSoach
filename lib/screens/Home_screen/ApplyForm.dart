@@ -5,6 +5,7 @@ import 'package:testing/screens/navScreen.dart';
 import 'package:testing/widget/CustomButton.dart';
 
 class ApplyForm extends StatefulWidget {
+
   const ApplyForm({Key? key}) : super(key: key);
 
   @override
@@ -13,17 +14,16 @@ class ApplyForm extends StatefulWidget {
 
 class _ApplyFormState extends State<ApplyForm> {
   final _formKey = GlobalKey<FormState>();
-  String _cropType = 'Enter crop';
-  String _landUnit = 'acres';
-  String _productionUnit = 'kg';
+  String _cropType = 'Enter crop'; // Set a default value for _cropType
+  String _landUnit = 'acres'; // Default land unit
+  String _productionUnit = 'kg'; // Default production unit
   double _landArea = 0.0;
   double _expectedProduction = 0.0;
   double _issuePercentage = 0.0;
   int _quantity = 0;
   int _equivalentVFGAUnit = 0;
   String? phone;
-  ApiManagerClass api = ApiManagerClass();
-
+  ApiManagerClass api=ApiManagerClass();
   Future<void> submitForm() async {
     try {
       // Convert land area and expected production to the appropriate units
@@ -41,71 +41,46 @@ class _ApplyFormState extends State<ApplyForm> {
           "issuePercent: ${_issuePercentage.toInt()},"+
           "quantity: ${_quantity.toInt()},"+
           "vgfaUnitEq: ${_equivalentVFGAUnit.toInt()},");
-      var list=await api.data();
-      phone=list.phone;
-      var response=await api.createForm(
-          cropType: _cropType,
-          landArea: _landArea.toInt(),
-          expectedProduction: _expectedProduction.toInt(),
-          issuePercent: _issuePercentage.toInt(),
-          quantity: _quantity.toInt(),
-          vgfaUnitEq: _equivalentVFGAUnit.toInt(),
-          farmer: phone);
-      if(response>=200 && response<300)
-      {
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(builder: (context) => NavScreen()), // Pass the phone number
-        );
-        Fluttertoast.showToast(
-            msg: "Successfully submitted apply Form",
-            toastLength: Toast.LENGTH_LONG,
-            gravity: ToastGravity.BOTTOM,
-            timeInSecForIosWeb: 1,
-            backgroundColor: Colors.grey,
-            textColor: Colors.white,
-            fontSize: 16.0
-        );
-
-      }
-      else if(response>=300 && response<400)
-      {
-
-      }
-      else if(response>=400 && response<500)
-      {
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(builder: (context) => NavScreen()), // Pass the phone number
-        );
-        Fluttertoast.showToast(
-            msg: "Form Already Exist",
-            toastLength: Toast.LENGTH_LONG,
-            gravity: ToastGravity.BOTTOM,
-            timeInSecForIosWeb: 1,
-            backgroundColor: Colors.grey,
-            textColor: Colors.white,
-            fontSize: 16.0
-        );
-
-
-      }
-      else
-      {
-        Fluttertoast.showToast(
-            msg: "Error in Applying submit",
-            toastLength: Toast.LENGTH_LONG,
-            gravity: ToastGravity.BOTTOM,
-            timeInSecForIosWeb: 1,
-            backgroundColor: Colors.grey,
-            textColor: Colors.white,
-            fontSize: 16.0
-        );
-      }
+        var list=await api.data();
+        phone=list.phone;
+        var response=await api.createForm(
+            cropType: _cropType,
+            landArea: _landArea.toInt(),
+            expectedProduction: _expectedProduction.toInt(),
+            issuePercent: _issuePercentage.toInt(),
+            quantity: _quantity.toInt(),
+            vgfaUnitEq: _equivalentVFGAUnit.toInt(),
+            farmer: phone);
+         if(response)
+          {
+            Fluttertoast.showToast(
+                msg: "Successfully submitted apply Form",
+                toastLength: Toast.LENGTH_LONG,
+                gravity: ToastGravity.BOTTOM,
+                timeInSecForIosWeb: 1,
+                backgroundColor: Colors.grey,
+                textColor: Colors.white,
+                fontSize: 16.0
+            );
+          }
+         else
+           {
+             Fluttertoast.showToast(
+                 msg: "Error in Applying submit",
+                 toastLength: Toast.LENGTH_LONG,
+                 gravity: ToastGravity.BOTTOM,
+                 timeInSecForIosWeb: 1,
+                 backgroundColor: Colors.grey,
+                 textColor: Colors.white,
+                 fontSize: 16.0
+             );
+           }
     } catch (e) {
       print(e.toString());
+      // Handle error
     }
   }
+
 
   @override
   Widget build(BuildContext context) {
@@ -296,7 +271,7 @@ class _ApplyFormState extends State<ApplyForm> {
                                 });
                               },
                               items: <String>[
-                                'Enter crop',
+                                'Enter crop', // This should be unique and match the default value
                                 'Rice',
                                 'Maize',
                                 'Wheat',
@@ -466,6 +441,10 @@ class _ApplyFormState extends State<ApplyForm> {
                         if (_formKey.currentState!.validate()) {
                           _formKey.currentState!.save();
                           await submitForm();
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (context) => NavScreen()),
+                          );
                         }
                       },
                       text: "SUBMIT",
