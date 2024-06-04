@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:testing/ApiManagerClass.dart';
-import 'package:testing/screens/navScreen.dart';
 import 'package:testing/widget/CustomButton.dart';
 
-class ApplyForm extends StatefulWidget {
+import '../../widgets/FarmerStatusCheck.dart';
+import '../navScreen.dart';
 
+class ApplyForm extends StatefulWidget {
   const ApplyForm({Key? key}) : super(key: key);
 
   @override
@@ -23,7 +24,38 @@ class _ApplyFormState extends State<ApplyForm> {
   int _quantity = 0;
   int _equivalentVFGAUnit = 0;
   String? phone;
-  ApiManagerClass api=ApiManagerClass();
+  ApiManagerClass api = ApiManagerClass();
+
+  @override
+  void initState() {
+    super.initState();
+    checkMissingFieldsOnLoad();
+  }
+
+  Future<void> checkMissingFieldsOnLoad() async {
+    List<String>? missingFields = await api.status();
+    if (missingFields != null && missingFields.isNotEmpty) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return FarmerStatusCheck(
+              missingFields: missingFields,
+              onPressed: () {
+                Navigator.pushAndRemoveUntil(
+                  context,
+                  MaterialPageRoute(builder: (context) => NavScreen()),
+                      (Route<dynamic> route) => false,
+                );
+                // Navigate back to previous screen
+              },
+            );
+          },
+        );
+      });
+    }
+  }
+
   Future<void> submitForm() async {
     try {
       // Convert land area and expected production to the appropriate units
@@ -35,60 +67,54 @@ class _ApplyFormState extends State<ApplyForm> {
         _expectedProduction *= 1000; // Convert tons to kg
         print("dome");
       }
-      print("cropType: $_cropType,"+
-          "landArea: ${_landArea.toInt()},"+
-          "expectedProduction: ${_expectedProduction.toInt()},"+
-          "issuePercent: ${_issuePercentage.toInt()},"+
-          "quantity: ${_quantity.toInt()},"+
+      print("cropType: $_cropType," +
+          "landArea: ${_landArea.toInt()}," +
+          "expectedProduction: ${_expectedProduction.toInt()}," +
+          "issuePercent: ${_issuePercentage.toInt()}," +
+          "quantity: ${_quantity.toInt()}," +
           "vgfaUnitEq: ${_equivalentVFGAUnit.toInt()},");
-      var list=await api.data();
-      phone=list.phone;
-      var response=await api.createForm(
-          cropType: _cropType,
-          landArea: _landArea.toInt(),
-          expectedProduction: _expectedProduction.toInt(),
-          issuePercent: _issuePercentage.toInt(),
-          quantity: _quantity.toInt(),
-          vgfaUnitEq: _equivalentVFGAUnit.toInt(),
-          farmer: phone);
-      if(response>=200 && response<300)
-      {
+      var list = await api.data();
+      phone = list.phone;
+      var response = await api.createForm(
+        cropType: _cropType,
+        landArea: _landArea.toInt(),
+        expectedProduction: _expectedProduction.toInt(),
+        issuePercent: _issuePercentage.toInt(),
+        quantity: _quantity.toInt(),
+        vgfaUnitEq: _equivalentVFGAUnit.toInt(),
+        farmer: phone,
+      );
+      if (response >= 200 && response < 300) {
         Fluttertoast.showToast(
-            msg: "Successfully submitted apply Form",
-            toastLength: Toast.LENGTH_LONG,
-            gravity: ToastGravity.BOTTOM,
-            timeInSecForIosWeb: 1,
-            backgroundColor: Colors.grey,
-            textColor: Colors.white,
-            fontSize: 16.0
+          msg: "Successfully submitted apply Form",
+          toastLength: Toast.LENGTH_LONG,
+          gravity: ToastGravity.BOTTOM,
+          timeInSecForIosWeb: 1,
+          backgroundColor: Colors.grey,
+          textColor: Colors.white,
+          fontSize: 16.0,
         );
-      }
-      else if(response>=300 && response<400)
-      {
-
-      }
-      else if(response>=400 && response<500)
-      {
+      } else if (response >= 300 && response < 400) {
+        // Handle 3xx responses
+      } else if (response >= 400 && response < 500) {
         Fluttertoast.showToast(
-            msg: "Form Already Exist",
-            toastLength: Toast.LENGTH_LONG,
-            gravity: ToastGravity.BOTTOM,
-            timeInSecForIosWeb: 1,
-            backgroundColor: Colors.grey,
-            textColor: Colors.white,
-            fontSize: 16.0
+          msg: "Form Already Exist",
+          toastLength: Toast.LENGTH_LONG,
+          gravity: ToastGravity.BOTTOM,
+          timeInSecForIosWeb: 1,
+          backgroundColor: Colors.grey,
+          textColor: Colors.white,
+          fontSize: 16.0,
         );
-      }
-      else
-      {
+      } else {
         Fluttertoast.showToast(
-            msg: "Error in Applying submit",
-            toastLength: Toast.LENGTH_LONG,
-            gravity: ToastGravity.BOTTOM,
-            timeInSecForIosWeb: 1,
-            backgroundColor: Colors.grey,
-            textColor: Colors.white,
-            fontSize: 16.0
+          msg: "Error in Applying submit",
+          toastLength: Toast.LENGTH_LONG,
+          gravity: ToastGravity.BOTTOM,
+          timeInSecForIosWeb: 1,
+          backgroundColor: Colors.grey,
+          textColor: Colors.white,
+          fontSize: 16.0,
         );
       }
     } catch (e) {
@@ -96,7 +122,6 @@ class _ApplyFormState extends State<ApplyForm> {
       // Handle error
     }
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -260,6 +285,7 @@ class _ApplyFormState extends State<ApplyForm> {
                   Container(
                     margin: const EdgeInsets.all(10.0),
                     width: 400,
+                    height: 580,
                     decoration: BoxDecoration(
                       color: const Color(0xffF5F5F5),
                       border: Border.all(
@@ -454,14 +480,7 @@ class _ApplyFormState extends State<ApplyForm> {
                     height: 50,
                     child: CustomButton(
                       onPressed: () async {
-                        if (_formKey.currentState!.validate()) {
-                          _formKey.currentState!.save();
-                          await submitForm();
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(builder: (context) => NavScreen()),
-                          );
-                        }
+                        await submitForm();
                       },
                       text: "SUBMIT",
                     ),
