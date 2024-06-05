@@ -1,3 +1,17 @@
+buildscript {
+    ext.kotlin_version = '1.8.10' // Specify the Kotlin version you are using
+    repositories {
+        google()
+        mavenCentral()
+    }
+    dependencies {
+        classpath 'com.android.tools.build:gradle:8.0.0' // Update to your required version
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+        classpath 'com.google.gms:google-services:4.3.10' // Add if you are using Google services
+        classpath 'com.google.firebase:firebase-crashlytics-gradle:2.9.1' // Add if you are using Firebase Crashlytics
+    }
+}
+
 allprojects {
     repositories {
         google()

@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<network-security-config>
+    <domain-config cleartextTrafficPermitted="true">
+        <domain includeSubdomains="true">vgfa-env-1.eba-brkixzb4.ap-south-1.elasticbeanstalk.com</domain>
+        <domain includeSubdomains="true">vgfa-env-1.eba-brkixzb4.ap-south-1.elasticbeanstalk.com</domain>
+    </domain-config>
+</network-security-config>
