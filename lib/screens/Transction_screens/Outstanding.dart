@@ -64,7 +64,7 @@ class _OutstandingState extends State<Outstanding> {
         )
             : Text('Form not found or not submitted yet',
           style: TextStyle(color: Colors.black,
-          fontSize: 17),),
+              fontSize: 17),),
       ),
     );
   }

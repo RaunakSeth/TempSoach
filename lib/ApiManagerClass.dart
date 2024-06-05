@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:testing/farmer_list.dart';
 import 'FarmModel.dart';
 import 'Farmer.dart';
 import 'package:http/http.dart' as http;
@@ -323,5 +324,22 @@ class ApiManagerClass {
       return false;
     }
   }
+  // Future<List<Farmer>> getFarmers() async {
+  //   try {
+  //     await init();
+  //     var response = await dio.get(
+  //       '$baseUrl/api/community/',
+  //       options: Options(
+  //         headers: headers,
+  //       ),
+  //     );
+  //     List<Farmer> farmers = (response.data['farmers'] as List)
+  //         .map((farmerData) => farmer_list.fromJson(farmerData)) // Corrected typo here
+  //         .toList();
+  //     return farmers;
+  //   } catch (e) {
+  //     print("Error fetching farmers: $e");
+  //     return [];
+  //   }
+  // }
 }
-

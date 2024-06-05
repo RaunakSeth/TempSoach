@@ -1,14 +1,31 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:testing/ApiManagerClass.dart';
+import 'package:testing/farmer_list.dart'; // Assuming the file is named 'farmer_list.dart'
 
 class CommunityScreen extends StatefulWidget {
-  const CommunityScreen({super.key});
+  const CommunityScreen({Key? key}) : super(key: key);
 
   @override
   State<CommunityScreen> createState() => _CommunityScreenState();
 }
 
 class _CommunityScreenState extends State<CommunityScreen> {
+  late Future<List<farmer_list>> _farmersFuture; // Renamed farmer_list to FarmerList
+
+  // @override
+  // void initState() {
+  //   super.initState();
+  //   _fetchFarmersData(); // Call the function to fetch data when the screen initializes
+  // }
+
+  // Function to fetch farmers data from API
+  // Future<void> _fetchFarmersData() async {
+  //   setState(() {
+  //     _farmersFuture = ApiManagerClass().getFarmers();
+  //   });
+  // }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -17,8 +34,8 @@ class _CommunityScreenState extends State<CommunityScreen> {
         automaticallyImplyLeading: false,
         backgroundColor: Colors.transparent,
         elevation: 0.0,
-        flexibleSpace: ClipPath(// Assuming your custom clipper for the shape
-          child: Stack( // Use a Stack to position elements on top of each other
+        flexibleSpace: ClipPath(
+          child: Stack(
             children: [
               Container(
                 height: 130,
@@ -33,43 +50,41 @@ class _CommunityScreenState extends State<CommunityScreen> {
               ),
               Padding(
                 padding: const EdgeInsets.all(8),
-                child: Container(// Container with padding for better alignment
-                  child: Column(
-                    children: [
-                      SizedBox(height: 30,),
-                      Row(
-                        children: [
-                          SizedBox(width: 10,),
-                          Expanded(//// Expand search bar to fill most of the space
-                              child: TextField(
-                                decoration: InputDecoration(
-                                  fillColor: Colors.white, // Fill color for the textbox
-                                  filled: true, // Enable filling with the fillColor
-                                  hintText: 'Search',
-                                  prefixIcon: const Icon(Icons.search),
-                                  border: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(10.0), // Slightly rounded corners
-                                  ),
-                                ),
-                                onChanged: (value) {
-                                  // Handle search query changes here
-                                },
-                              )
-                          ),
-                          SizedBox(width: 10,),
-                          IconButton( // Bell icon button
-                            icon: const Icon(Icons.notifications,
-                              color: Colors.white,
-                              size: 30,
+                child: Column(
+                  children: [
+                    SizedBox(height: 30,),
+                    Row(
+                      children: [
+                        SizedBox(width: 10,),
+                        Expanded(
+                          child: TextField(
+                            decoration: InputDecoration(
+                              fillColor: Colors.white,
+                              filled: true,
+                              hintText: 'Search',
+                              prefixIcon: const Icon(Icons.search),
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(10.0),
+                              ),
                             ),
-                            onPressed: () {
-                              // Add functionality for bell icon press
+                            onChanged: (value) {
+                              // Handle search query changes here
                             },
                           ),
-                        ],
-                      ),
-                    ],
-                  ),
+                        ),
+                        SizedBox(width: 10,),
+                        IconButton(
+                          icon: const Icon(Icons.notifications,
+                            color: Colors.white,
+                            size: 30,
+                          ),
+                          onPressed: () {
+                            // Add functionality for bell icon press
+                          },
+                        ),
+                      ],
+                    ),
+                  ],
                 ),
               ),
             ],
@@ -100,7 +115,7 @@ class _CommunityScreenState extends State<CommunityScreen> {
                     ),
                   ),
                   const SizedBox(height: 10,),
-                  const UserListItem(name: 'Aman Singh', imagePath: 'assets/person1.png'),
+                  // const UserListItem(name: 'Aman Singh', imagePath: 'assets/person1.png'),
                   const SizedBox(height: 20,),
                   const Align(
                     alignment: Alignment.centerLeft,
@@ -118,7 +133,7 @@ class _CommunityScreenState extends State<CommunityScreen> {
                       itemCount: 10, // Change this to your desired item count
                       itemBuilder: (BuildContext context, int index) {
                         return const UserListItem(name: 'Ashish Kumar',
-                            imagePath: 'assets/person4.png'
+                            // imagePath: 'assets/person4.png'
                         );
                       },
                     ),
@@ -130,33 +145,38 @@ class _CommunityScreenState extends State<CommunityScreen> {
         ],
       ),
     );
-  }
-}
-
-
-class Customshape extends CustomClipper<Path>{
-  @override
-  Path getClip(Size size) {
-    double height = size.height;
-    double width = size.width;
-    var path = Path();
-    path.lineTo(0, height-50);
-    path.quadraticBezierTo(width/2, height, width, height-50);
-    path.lineTo(width, 0);
-    path.close();
-    return path;
-  }
-  @override
-  bool shouldReclip(covariant CustomClipper<Path> oldClipper) {
-    return true;
+      // body: FutureBuilder<List<farmer_list>>( // Changed to FarmerList
+      //   future: _farmersFuture,
+      //   builder: (context, snapshot) {
+      //     if (snapshot.connectionState == ConnectionState.waiting) {
+      //       return Center(child: CircularProgressIndicator());
+      //     } else if (snapshot.hasError) {
+      //       return Center(child: Text('Error: ${snapshot.error}'));
+      //     } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+      //       return Center(child: Text('No farmers found.'));
+      //     } else {
+      //       List<farmer_list> farmers = snapshot.data!;
+      //       return ListView.builder(
+      //         itemCount: farmers.length,
+      //         itemBuilder: (context, index) {
+      //           farmer_list farmer = farmers[index];
+      //           return UserListItem(
+      //             name: '${farmer.firstName} ${farmer.lastName}',
+      //             imageUrl: farmer.imageUrl, // Use 'imageUrl' from farmer object
+      //           );
+      //         },
+      //       );
+      //     }
+      //   },
+      // ),
   }
 }
 
 class UserListItem extends StatelessWidget {
   final String name;
-  final String imagePath; // Path to the asset image
+  final String? imageUrl; // URL to the farmer's image
 
-  const UserListItem({Key? key, required this.name, required this.imagePath});
+  const UserListItem({Key? key, required this.name, this.imageUrl});
 
   @override
   Widget build(BuildContext context) {
@@ -170,18 +190,29 @@ class UserListItem extends StatelessWidget {
         ),
         child: Row(
           children: [
-            CircleAvatar(
-              backgroundImage: AssetImage(imagePath),
-              backgroundColor: Colors.transparent, // Transparent for AssetImage
-              radius: 24.0, // Adjust as needed
-            ),
+            if (imageUrl != null) // Conditionally display the image
+              CircleAvatar(
+                backgroundImage: NetworkImage(imageUrl!), // Use NetworkImage for URL
+                backgroundColor: Colors.transparent, // Transparent for AssetImage
+                radius: 24.0, // Adjust as needed
+              ),
+            if (imageUrl == null) // Conditionally display default people icon
+              CircleAvatar(
+                backgroundColor: Colors.grey, // Placeholder color
+                radius: 24.0, // Adjust as needed
+                child: Icon(
+                  Icons.person,
+                  color: Colors.white, // Icon color
+                  size: 36.0, // Icon size
+                ),
+              ),
             const SizedBox(width: 16.0), // Space between avatar and name
             Expanded(
               child: Text(
                 name,
                 style: const TextStyle(
-                    fontSize: 24.0,
-                    fontWeight: FontWeight.bold
+                  fontSize: 24.0,
+                  fontWeight: FontWeight.bold,
                 ), // Adjust as needed
               ),
             ),
@@ -191,6 +222,3 @@ class UserListItem extends StatelessWidget {
     );
   }
 }
-
-
-
