@@ -5,17 +5,23 @@ class Payment extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Center(
+    return  Center(
       child: Padding(
         padding: const EdgeInsets.all(24),
-        child: ListView.builder(
-          itemCount: 10,
-          itemBuilder: (BuildContext context, int index) {
-            return const UserListItem();
-          },
-        ),
-      ),
-    );
+        child:Text('Payment Not Processed Yet',
+          style: TextStyle(color: Colors.black,
+              fontSize: 17),),),);
+    // Center(
+    //   child: Padding(
+    //     padding: const EdgeInsets.all(24),
+    //     child: ListView.builder(
+    //       itemCount: 10,
+    //       itemBuilder: (BuildContext context, int index) {
+    //         return const UserListItem();
+    //       },
+    //     ),
+    //   ),
+    // );
   }
 }
 

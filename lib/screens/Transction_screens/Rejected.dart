@@ -6,19 +6,25 @@ class Rejected extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Center(
-      child: Padding(
+        child: Padding(
         padding: const EdgeInsets.all(24),
-        child: ListView.builder(
-          itemCount: 4,
-          itemBuilder: (BuildContext context, int index) {
-            return UserListItem(
-                name: 'Ashish Kumar',
-                imagePath: 'assets/person4.png'
-            );
-          },
-        ),
-      ),
-    );
+    child:Text('No Transaction Rejected',
+        style: TextStyle(color: Colors.black,
+            fontSize: 17),),),);
+      // Center(
+      // child: Padding(
+      //   padding: const EdgeInsets.all(24),
+      //   child: ListView.builder(
+    //       itemCount: 4,
+    //       itemBuilder: (BuildContext context, int index) {
+    //         return UserListItem(
+    //             name: 'Ashish Kumar',
+    //             imagePath: 'assets/person4.png'
+    //         );
+    //       },
+    //     ),
+    //   ),
+    // );
   }
 }
 

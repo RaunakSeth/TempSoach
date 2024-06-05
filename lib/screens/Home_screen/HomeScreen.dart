@@ -221,7 +221,6 @@ class _HomeScreenState extends State<HomeScreen> {
                             ),
                           ],
                         ),
-                        const SizedBox(width: 10,),
                         GestureDetector(
                           onTap: () {
                             Navigator.push(
@@ -234,7 +233,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             color: Colors.white,
                           ),
                         ),
-                        SizedBox(width: MediaQuery.of(context).size.width * 0.08), // Adjusted SizedBox width
+                        SizedBox(width: MediaQuery.of(context).size.width * 0.001), // Adjusted SizedBox width
                         Icon(Icons.notifications, color: Colors.white, size: MediaQuery.of(context).size.height * 0.03),
                         SizedBox(width: MediaQuery.of(context).size.width * 0.02), // Adjusted SizedBox width
                         Icon(Icons.settings, color: Colors.white, size: MediaQuery.of(context).size.height * 0.03)
