@@ -55,10 +55,11 @@ class _StatusFromState extends State<StatusFrom> {
   Widget build(BuildContext context) {
     final List<Status> statuses = [
       Status(name: 'Application Submitted', isCompleted: true),
-      Status(name: 'Approved by Pattidar', isCompleted: true),
+      Status(name: 'Approved by Pattidar', isCompleted: false),
       Status(name: 'Approved by Gram Panchayat', isCompleted: false),
       Status(name: 'Approved by Govt. Officials', isCompleted: false),
     ];
+    int firstIndex = 0; // This can be dynamically set based on your logic
 
     return MaterialApp(
       debugShowCheckedModeBanner: false,
@@ -101,23 +102,41 @@ class _StatusFromState extends State<StatusFrom> {
                       ),
                     ),
                   ),
-                  Container(
-                    height: 150, // Adjust the height to fit the tiles
-                    width: 400,
-                    child: Row(
-                      children: statuses.map((status) {
-                        int index = statuses.indexOf(status);
-                        return Container(
-                          width: 92, // Adjust the width to fit within the total width of 300
-                          child: StatusTimelineTile(
-                            isFirst: index == 0,
-                            isInProgress: index == 2,
-                            isLast: index == statuses.length - 1,
-                            status: status,
-                          ),
-                        );
-                      }).toList(),
-                    ),
+                  LayoutBuilder(
+                    builder: (context, constraints) {
+                      double containerHeight = 150; // Default height
+                      double containerWidth = constraints.maxWidth;
+
+                      // Adjust the width based on screen size
+                      if (containerWidth < 400) {
+                        containerWidth = containerWidth; // For small screens
+                      } else if (containerWidth < 800) {
+                        containerWidth = 300; // For medium screens
+                      } else {
+                        containerWidth = 400; // For large screens
+                      }
+
+                      double tileWidth = containerWidth / statuses.length;
+
+                      return Container(
+                        height: containerHeight, // Adjust the height to fit the tiles
+                        width: containerWidth,
+                        child: Row(
+                          children: statuses.map((status) {
+                            int index = statuses.indexOf(status);
+                            return Container(
+                              width: tileWidth, // Adjust the width to fit within the total width of the container
+                              child: StatusTimelineTile(
+                                isFirst: index == firstIndex,
+                                isInProgress: index == firstIndex + 1,
+                                isLast: index == statuses.length - 1,
+                                status: status,
+                              ),
+                            );
+                          }).toList(),
+                        ),
+                      );
+                    },
                   ),
                   const SizedBox(
                     height: 20,

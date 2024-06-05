@@ -1,3 +1,4 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:testing/screens/Transction_screens/Outstanding.dart';
 import 'package:testing/screens/Transction_screens/Payment.dart';
@@ -42,13 +43,16 @@ class _TransactionScreenState extends State<TransactionScreen> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text(
+                  AutoSizeText(
                     "Transaction History",
                     style: TextStyle(
                       color: Colors.white,
                       fontSize: 32,
                       fontWeight: FontWeight.bold,
                     ),
+                    maxLines: 1,
+                    minFontSize: 16,
+                    maxFontSize: 32,
                   ),
                   Icon(Icons.notifications,
                   color: Colors.white,

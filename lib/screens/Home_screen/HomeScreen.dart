@@ -173,15 +173,15 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget Default() {
     return Scaffold(
       appBar: AppBar(
-        toolbarHeight: 100,
+        toolbarHeight: MediaQuery.of(context).size.height * 0.15, // Adjust the height as per your requirement
         automaticallyImplyLeading: false,
         backgroundColor: Colors.transparent,
         elevation: 0.0,
-        flexibleSpace: ClipPath(// Assuming your custom clipper for the shape
+        flexibleSpace: ClipPath( // Assuming your custom clipper for the shape
           child: Stack( // Use a Stack to position elements on top of each other
             children: [
               Container(
-                height: 130,
+                height: MediaQuery.of(context).size.height * 0.15,
                 width: MediaQuery.of(context).size.width,
                 decoration: const BoxDecoration(
                   color: Color(0xFF11AB2F),
@@ -192,7 +192,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
               ),
               Padding(
-                padding: const EdgeInsets.all(8),
+                padding: EdgeInsets.all(MediaQuery.of(context).size.height * 0.02), // Adjust padding as per your requirement
                 child: Column(
                   children: [
                     const SizedBox(height: 25,),
@@ -206,7 +206,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             SizedBox(
-                              width: 150,
+                              width: 150, // Adjust width as per your requirement
                               child: AutoSizeText(
                                 name ?? "", // Check for null
                                 style: TextStyle(color: Colors.white, fontSize: 20),
@@ -222,21 +222,21 @@ class _HomeScreenState extends State<HomeScreen> {
                         ),
                         const SizedBox(width: 10,),
                         GestureDetector(
-                            onTap: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(builder: (context) => const ProfileScreen()),
-                              );
-                            },
-                            child: const Icon(
-                              Icons.edit,
-                              color: Colors.white,
-                            )
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(builder: (context) => const ProfileScreen()),
+                            );
+                          },
+                          child: const Icon(
+                            Icons.edit,
+                            color: Colors.white,
+                          ),
                         ),
-                        const SizedBox(width: 40,),
-                        const Icon(Icons.notifications, color: Colors.white,),
-                        const SizedBox(width: 5,),
-                        const Icon(Icons.settings, color: Colors.white,)
+                        SizedBox(width: MediaQuery.of(context).size.width * 0.10), // Adjusted SizedBox width
+                        Icon(Icons.notifications, color: Colors.white, size: MediaQuery.of(context).size.height * 0.03),
+                        SizedBox(width: MediaQuery.of(context).size.width * 0.02), // Adjusted SizedBox width
+                        Icon(Icons.settings, color: Colors.white, size: MediaQuery.of(context).size.height * 0.03)
                       ],
                     ),
                   ],
@@ -262,8 +262,8 @@ class _HomeScreenState extends State<HomeScreen> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: <Widget>[
                   Container(
-                    height: 180,
-                    width: 360,
+                    height: MediaQuery.of(context).size.width * 0.4, // Adjust height relative to screen width
+                    width: MediaQuery.of(context).size.width * 0.8, // Adjust width relative to screen width
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(16),
                       image: DecorationImage(
