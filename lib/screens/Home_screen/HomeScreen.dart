@@ -210,8 +210,9 @@ class _HomeScreenState extends State<HomeScreen> {
                               width: 150, // Adjust width as per your requirement
                               child: AutoSizeText(
                                 name ?? "", // Check for null
-                                style: TextStyle(color: Colors.white, fontSize: 20),
+                                style: TextStyle(color: Colors.white),
                                 maxLines: 1,
+                                maxFontSize: 20,
                                 minFontSize: 16, // Minimum font size
                               ),
                             ),

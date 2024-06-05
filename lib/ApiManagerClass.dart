@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'FarmModel.dart';
 import 'Farmer.dart';
 import 'package:http/http.dart' as http;
 
@@ -127,7 +128,6 @@ class ApiManagerClass {
           headers: headers,
         ),
       );
-      print(json.encode(response.data));
       var userData = response.data['data']['user'];
       farmer = Farmer(
         id: userData['_id'],
@@ -153,8 +153,6 @@ class ApiManagerClass {
         landOwnership: userData['LandOwnership'],
         soilHealthReport: userData['SoilHealthReport'],
       );
-      print(response.statusMessage);
-      print(response.data);
       return farmer;
     } catch (e) {
       print("Error function data: $e");
@@ -224,6 +222,24 @@ class ApiManagerClass {
     } else {
       print(response.reasonPhrase);
       return false;
+    }
+  }
+  Future<FormModel> getForm() async {
+    FormModel formModel;
+    try {
+      await init();
+      var response = await dio.get(
+        'http://vgfa-env-1.eba-brkixzb4.ap-south-1.elasticbeanstalk.com/api/forms',
+        options: Options(
+          headers: headers,
+        ),
+      );
+      var formData = response.data['form'];
+      formModel = FormModel.fromJson(formData);
+      return formModel;
+    } catch (e) {
+      print("Error in getForm function: $e");
+      return FormModel(); // Return an empty FormModel in case of error
     }
   }
   Future<int> createForm({
