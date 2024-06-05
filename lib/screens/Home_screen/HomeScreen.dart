@@ -1,6 +1,6 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:testing/screens/Home_screen/ApplyForm.dart';
 import 'package:testing/screens/Home_screen/ProfileScreen.dart';
 import 'package:testing/screens/Home_screen/Status_form/StatusForm.dart';
@@ -97,64 +97,65 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  Widget _buildAppBar() {
-    return AppBar(
-      automaticallyImplyLeading: false,
-      backgroundColor: const Color(0xff11AB2F),
-      flexibleSpace: Container(
-        decoration: const BoxDecoration(
-          borderRadius: BorderRadius.only(
-            bottomLeft: Radius.circular(20),
-            bottomRight: Radius.circular(20),
-          ),
-          color: Color(0xff11AB2F),
-        ),
-        child: Column(
-          children: [
-            const SizedBox(height: 40,),
-            Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const SizedBox(width: 20,),
-                const Image(image: AssetImage('assets/iconn.png')),
-                const SizedBox(width: 10,),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      name ?? "", // Check for null
-                      style: const TextStyle(color: Colors.white, fontSize: 25.0),
-                    ),
-                    Text(
-                      'Frn No:${frnno ?? ""}', // Check for null
-                      style: const TextStyle(color: Colors.white, fontSize: 16.0),
-                    ),
-                  ],
-                ),
-                const SizedBox(width: 10,),
-                GestureDetector(
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => const ProfileScreen()),
-                      );
-                    },
-                    child: const Icon(
-                      Icons.edit,
-                      color: Colors.white,
-                    )
-                ),
-                const SizedBox(width: 30,),
-                const Icon(Icons.notifications, color: Colors.white,),
-                const SizedBox(width: 5,),
-                const Icon(Icons.settings, color: Colors.white,)
-              ],
-            ),
-          ],
-        ),
-      ),
-    );
-  }  @override
+  // Widget _buildAppBar() {
+  //   return AppBar(
+  //     automaticallyImplyLeading: false,
+  //     backgroundColor: const Color(0xff11AB2F),
+  //     flexibleSpace: Container(
+  //       decoration: const BoxDecoration(
+  //         borderRadius: BorderRadius.only(
+  //           bottomLeft: Radius.circular(20),
+  //           bottomRight: Radius.circular(20),
+  //         ),
+  //         color: Color(0xff11AB2F),
+  //       ),
+  //       child: Column(
+  //         children: [
+  //           const SizedBox(height: 40,),
+  //           Row(
+  //             crossAxisAlignment: CrossAxisAlignment.start,
+  //             children: [
+  //               const SizedBox(width: 20,),
+  //               const Image(image: AssetImage('assets/iconn.png')),
+  //               const SizedBox(width: 10,),
+  //               Column(
+  //                 crossAxisAlignment: CrossAxisAlignment.start,
+  //                 children: [
+  //                   Text(
+  //                     name ?? "", // Check for null
+  //                     style: const TextStyle(color: Colors.white, fontSize: 25.0),
+  //                   ),
+  //                   Text(
+  //                     'Frn No:${frnno ?? ""}', // Check for null
+  //                     style: const TextStyle(color: Colors.white, fontSize: 16.0),
+  //                   ),
+  //                 ],
+  //               ),
+  //               const SizedBox(width: 10,),
+  //               GestureDetector(
+  //                   onTap: () {
+  //                     Navigator.push(
+  //                       context,
+  //                       MaterialPageRoute(builder: (context) => const ProfileScreen()),
+  //                     );
+  //                   },
+  //                   child: const Icon(
+  //                     Icons.edit,
+  //                     color: Colors.white,
+  //                   )
+  //               ),
+  //               const SizedBox(width: 30,),
+  //               const Icon(Icons.notifications, color: Colors.white,),
+  //               const SizedBox(width: 5,),
+  //               const Icon(Icons.settings, color: Colors.white,)
+  //             ],
+  //           ),
+  //         ],
+  //       ),
+  //     ),
+  //   );
+  // }
+  @override
   Widget build(BuildContext context) {
     return FutureBuilder(
       future: updateProfile(),
@@ -171,38 +172,137 @@ class _HomeScreenState extends State<HomeScreen> {
 
   Widget Default() {
     return Scaffold(
-      appBar: PreferredSize(
-        preferredSize: const Size.fromHeight(90),
-        child: _buildAppBar(),
+      appBar: AppBar(
+        toolbarHeight: 100,
+        automaticallyImplyLeading: false,
+        backgroundColor: Colors.transparent,
+        elevation: 0.0,
+        flexibleSpace: ClipPath(// Assuming your custom clipper for the shape
+          child: Stack( // Use a Stack to position elements on top of each other
+            children: [
+              Container(
+                height: 130,
+                width: MediaQuery.of(context).size.width,
+                decoration: const BoxDecoration(
+                  color: Color(0xFF11AB2F),
+                  borderRadius: BorderRadius.only(
+                    bottomLeft: Radius.circular(20),
+                    bottomRight: Radius.circular(20),
+                  ),
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.all(8),
+                child: Column(
+                  children: [
+                    const SizedBox(height: 25,),
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const SizedBox(width: 20,),
+                        const Image(image: AssetImage('assets/iconn.png')),
+                        const SizedBox(width: 10,),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            SizedBox(
+                              width: 150,
+                              child: AutoSizeText(
+                                name ?? "", // Check for null
+                                style: TextStyle(color: Colors.white, fontSize: 20),
+                                maxLines: 1,
+                                minFontSize: 16, // Minimum font size
+                              ),
+                            ),
+                            Text(
+                              'Frn No: ${frnno ?? ""}', // Check for null
+                              style: TextStyle(color: Colors.white, fontSize: 16),
+                            ),
+                          ],
+                        ),
+                        const SizedBox(width: 10,),
+                        GestureDetector(
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(builder: (context) => const ProfileScreen()),
+                              );
+                            },
+                            child: const Icon(
+                              Icons.edit,
+                              color: Colors.white,
+                            )
+                        ),
+                        const SizedBox(width: 40,),
+                        const Icon(Icons.notifications, color: Colors.white,),
+                        const SizedBox(width: 5,),
+                        const Icon(Icons.settings, color: Colors.white,)
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ),
       ),
       body: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
-            Stack(
-              clipBehavior: Clip.none,
-              children: [
-                CustomPaint(
-                  size: Size(MediaQuery.of(context).size.width, 250),
-                  painter: CurvePainter(),
-                ),
-                Positioned(
-                  top: 0,
-                  left: 0,
-                  right: 0,
-                  bottom: 0,
-                  child: SizedBox(
-                    height: 440,
-                    width: 400,
-                    child: Column(
-                      children: [
-                        const SizedBox(height: 10,),
-                        _buildTwelve(context),
-                      ],
+            const SizedBox(height: 10,),
+            Container(
+              height: 280,
+              margin: const EdgeInsets.symmetric(horizontal: 10),
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+              decoration: AppDecoration.outlineGreenA.copyWith(
+                borderRadius: BorderRadiusStyle.roundedBorder12,
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: <Widget>[
+                  Container(
+                    height: 180,
+                    width: 360,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(16),
+                      image: DecorationImage(
+                        image: AssetImage('assets/dashborad.jpg'),
+                        fit: BoxFit.cover,
+                      ),
                     ),
                   ),
-                ),
-              ],
+                  SizedBox(height: 20,),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Expanded(
+                        child: CustomOutlinedButton(
+                          text: "Apply",
+                          margin: const EdgeInsets.only(right: 11),
+                          onPressed: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(builder: (context) => ApplyForm()),
+                            );
+                          },
+                        ),
+                      ),
+                      Expanded(
+                        child: CustomOutlinedButton(
+                          text: "Status",
+                          margin: const EdgeInsets.only(left: 11),
+                          onPressed: () {
+                            Navigator.push(context,
+                                MaterialPageRoute(builder: (context) => const StatusFrom())
+                            );
+                          },
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
             ),
 
             const SizedBox(height: 10,),
@@ -229,49 +329,49 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  Widget _buildTwelve(BuildContext context) {
-    return Container(
-      margin: const EdgeInsets.symmetric(horizontal: 20),
-      padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 22),
-      decoration: AppDecoration.outlineGreenA.copyWith(
-        borderRadius: BorderRadiusStyle.roundedBorder12,
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          const SizedBox(height: 150,),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Expanded(
-                child: CustomOutlinedButton(
-                  text: "Apply",
-                  margin: const EdgeInsets.only(right: 11),
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => ApplyForm()),
-                    );
-                  },
-                ),
-              ),
-              Expanded(
-                child: CustomOutlinedButton(
-                  text: "Status",
-                  margin: const EdgeInsets.only(left: 11),
-                  onPressed: () {
-                    Navigator.push(context,
-                        MaterialPageRoute(builder: (context) => const StatusFrom())
-                    );
-                  },
-                ),
-              ),
-            ],
-          ),
-        ],
-      ),
-    );
-  }
+  // Widget _buildTwelve(BuildContext context) {
+  //   return Container(
+  //     margin: const EdgeInsets.symmetric(horizontal: 20),
+  //     padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 22),
+  //     decoration: AppDecoration.outlineGreenA.copyWith(
+  //       borderRadius: BorderRadiusStyle.roundedBorder12,
+  //     ),
+  //     child: Column(
+  //       crossAxisAlignment: CrossAxisAlignment.start,
+  //       children: <Widget>[
+  //         const SizedBox(height: 150,),
+  //         Row(
+  //           mainAxisAlignment: MainAxisAlignment.center,
+  //           children: [
+  //             Expanded(
+  //               child: CustomOutlinedButton(
+  //                 text: "Apply",
+  //                 margin: const EdgeInsets.only(right: 11),
+  //                 onPressed: () {
+  //                   Navigator.push(
+  //                     context,
+  //                     MaterialPageRoute(builder: (context) => ApplyForm()),
+  //                   );
+  //                 },
+  //               ),
+  //             ),
+  //             Expanded(
+  //               child: CustomOutlinedButton(
+  //                 text: "Status",
+  //                 margin: const EdgeInsets.only(left: 11),
+  //                 onPressed: () {
+  //                   Navigator.push(context,
+  //                       MaterialPageRoute(builder: (context) => const StatusFrom())
+  //                   );
+  //                 },
+  //               ),
+  //             ),
+  //           ],
+  //         ),
+  //       ],
+  //     ),
+  //   );
+  // }
 
   Widget _totallistedunits(BuildContext context) {
     return Container(
@@ -333,24 +433,5 @@ class _HomeScreenState extends State<HomeScreen> {
         ],
       ),
     );
-  }
-}
-
-class CurvePainter extends CustomPainter {
-  @override
-  void paint(Canvas canvas, Size size) {
-    Paint paint = Paint()..color = const Color(0xff11AB2F);
-    Path path = Path()
-      ..lineTo(0, size.height - 140)
-      ..quadraticBezierTo(size.width / 2, size.height, size.width, size.height - 140)
-      ..lineTo(size.width, 0)
-      ..close();
-
-    canvas.drawPath(path, paint);
-  }
-
-  @override
-  bool shouldRepaint(covariant CustomPainter oldDelegate) {
-    return false;
   }
 }
