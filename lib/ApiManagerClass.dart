@@ -263,7 +263,6 @@ class ApiManagerClass {
     }
   }
   Future<List<String>?> status() async {
-    Farmer farmer = Farmer();
     try {
       await init();
       var response = await Dio().get(
@@ -275,30 +274,6 @@ class ApiManagerClass {
       print(json.encode(response.data));
 
       if (response.data['status']) {
-        var farmerData = response.data['farmer'];
-        farmer = Farmer(
-          id: farmerData['_id'],
-          firstName: farmerData['first_name'],
-          lastName: farmerData['last_name'],
-          phone: farmerData['phone'],
-          dob: farmerData['dob'],
-          panchayatCentre: farmerData['panchayat_centre'],
-          gender: farmerData['gender'],
-          frnNumber: farmerData['frn_number'],
-          address: farmerData['address'],
-          isAccountVerified: farmerData['isAccountVerified'],
-          approved: farmerData['approved'],
-          createdAt: farmerData['createdAt'] != null ? DateTime.parse(farmerData['createdAt']) : null,
-          updatedAt: farmerData['updatedAt'] != null ? DateTime.parse(farmerData['updatedAt']) : null,
-          v: farmerData['__v'],
-          farmPhotos: farmerData['FarmPhotos'] != null ? List<String>.from(farmerData['FarmPhotos']) : null,
-          tags: farmerData['tags'] != null ? List<String>.from(farmerData['tags']) : null,
-          imageUrl: farmerData['imageUrl'],
-          certification: farmerData['Certification'],
-          cropHarvestRecords: farmerData['CropHarvestRecords'],
-          landOwnership: farmerData['LandOwnership'],
-          soilHealthReport: farmerData['SoilHealthReport'],
-        );
         print(response.statusMessage);
         print(response.data);
         return null; // No missing fields since the farmer is verified

@@ -1,6 +1,7 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:testing/screens/Home_screen/ApplyForm.dart';
 import 'package:testing/screens/Home_screen/ProfileScreen.dart';
 import 'package:testing/screens/Home_screen/Status_form/StatusForm.dart';
@@ -233,7 +234,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             color: Colors.white,
                           ),
                         ),
-                        SizedBox(width: MediaQuery.of(context).size.width * 0.10), // Adjusted SizedBox width
+                        SizedBox(width: MediaQuery.of(context).size.width * 0.08), // Adjusted SizedBox width
                         Icon(Icons.notifications, color: Colors.white, size: MediaQuery.of(context).size.height * 0.03),
                         SizedBox(width: MediaQuery.of(context).size.width * 0.02), // Adjusted SizedBox width
                         Icon(Icons.settings, color: Colors.white, size: MediaQuery.of(context).size.height * 0.03)
@@ -262,15 +263,9 @@ class _HomeScreenState extends State<HomeScreen> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: <Widget>[
                   Container(
-                    height: MediaQuery.of(context).size.width * 0.4, // Adjust height relative to screen width
+                    height: MediaQuery.of(context).size.height * 0.2, // Adjust height relative to screen width
                     width: MediaQuery.of(context).size.width * 0.8, // Adjust width relative to screen width
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(16),
-                      image: DecorationImage(
-                        image: AssetImage('assets/dashborad.jpg'),
-                        fit: BoxFit.cover,
-                      ),
-                    ),
+                    child: Image.asset('assets/dashborad.jpg'), // Correct usage of SvgPicture
                   ),
                   SizedBox(height: 20,),
                   Row(

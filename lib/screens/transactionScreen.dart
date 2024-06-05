@@ -23,13 +23,13 @@ class _TransactionScreenState extends State<TransactionScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        toolbarHeight: 100,
+        toolbarHeight: MediaQuery.of(context).size.height * 0.1,
         automaticallyImplyLeading: false,
         backgroundColor: Colors.transparent,
         elevation: 0.0,
         flexibleSpace: ClipPath(
           child: Container(
-            height: 100,
+            height: MediaQuery.of(context).size.height * 0.1,
             width: MediaQuery.of(context).size.width,
             decoration: const BoxDecoration(
               borderRadius: BorderRadius.only(
@@ -38,25 +38,28 @@ class _TransactionScreenState extends State<TransactionScreen> {
               ),
               color: Color(0xFF11AB2F),
             ),
-            child: const Padding(
-              padding: EdgeInsets.all(24),
+            child: Padding(
+              padding: EdgeInsets.all(MediaQuery.of(context).size.width * 0.06),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  AutoSizeText(
-                    "Transaction History",
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 32,
+                  SizedBox(
+                    height: MediaQuery.of(context).size.height * 0.1,
+                    width: MediaQuery.of(context).size.width * 0.7,
+                    child: AutoSizeText(
+                      "Transaction history",
+                      style: TextStyle(
                       fontWeight: FontWeight.bold,
+                      color: Colors.white),
+                      maxLines: 1,
+                      minFontSize: 32,
                     ),
-                    maxLines: 1,
-                    minFontSize: 16,
-                    maxFontSize: 32,
                   ),
-                  Icon(Icons.notifications,
-                  color: Colors.white,
-                  size: 30,)
+                  Icon(
+                    Icons.notifications,
+                    color: Colors.white,
+                    size: MediaQuery.of(context).size.width * 0.07,
+                  ),
                 ],
               ),
             ),

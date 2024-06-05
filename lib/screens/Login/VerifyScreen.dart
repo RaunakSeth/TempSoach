@@ -128,7 +128,7 @@ class _VerifyScreenState extends State<VerifyScreen> {
 
                 ),
                 const SizedBox(height: 20),
-                const Text(
+                 Text(
                   "Didn't receive any code?",
                   style: TextStyle(
                     fontSize: 14,
@@ -139,7 +139,7 @@ class _VerifyScreenState extends State<VerifyScreen> {
                 const SizedBox(height: 15),
                 GestureDetector(
                   onTap: () => verifyOTP(context),
-                  child: const Text("Resend code.",
+                  child:  Text("Resend code.",
                     style: TextStyle(
                       fontSize: 14,
                       fontWeight: FontWeight.bold,

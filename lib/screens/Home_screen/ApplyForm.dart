@@ -125,24 +125,40 @@ class _ApplyFormState extends State<ApplyForm> {
 
   @override
   Widget build(BuildContext context) {
+    final screenWidth = MediaQuery.of(context).size.width;
+    final screenHeight = MediaQuery.of(context).size.height;
+    final formWidth = screenWidth * 0.9; // Adjust the width to 90% of screen width
+    final formHeight = screenHeight * 0.5; // Adjust the height to 80% of screen height
     return Scaffold(
       appBar: AppBar(
         toolbarHeight: 70,
         automaticallyImplyLeading: false,
         backgroundColor: Colors.transparent,
         elevation: 0.0,
-        flexibleSpace: const Column(
+        flexibleSpace: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Text(
-                  "Apply here for listing.",
-                  style: TextStyle(
-                    fontSize: 30,
-                    color: Colors.black,
-                    fontWeight: FontWeight.bold,
+                Align(
+                  alignment: Alignment.topLeft,
+                  child: IconButton(
+                    icon: Icon(Icons.arrow_back, color: Colors.black),
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
+                  ),
+                ),
+                Align(
+                  alignment: Alignment.center,
+                  child: Text(
+                    "Apply here for listing.",
+                    style: TextStyle(
+                      fontSize: 30,
+                      color: Colors.black,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
                 )
               ],
@@ -157,135 +173,132 @@ class _ApplyFormState extends State<ApplyForm> {
             child: SingleChildScrollView(
               child: Column(
                 children: [
-                  const CircleAvatar(
-                    radius: 48,
-                    backgroundImage: AssetImage('assets/asset2.gif'),
-                  ),
-                  SizedBox(height: 20),
+                  Image(image: AssetImage('assets/asset2.gif')),
+                  SizedBox(height: 10),
                   const Text(
                     "Fill your details here.",
                     style: TextStyle(
                       fontSize: 20,
-                      color: Colors.black,
+                      color: Colors.green,
                       fontWeight: FontWeight.bold,
                     ),
                     textAlign: TextAlign.center,
                   ),
-                  SizedBox(height: 20),
-                  Container(
-                    margin: const EdgeInsets.all(10.0),
-                    width: 400,
-                    height: 390,
-                    decoration: BoxDecoration(
-                      color: const Color(0xffF5F5F5),
-                      borderRadius: BorderRadius.circular(12),
-                      border: Border.all(
-                        width: 4,
-                        color: const Color(0xffB9B9B9),
-                      ),
-                    ),
-                    child: Padding(
-                      padding: EdgeInsets.symmetric(vertical: 20, horizontal: 20),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            'Name: Ashish Kumar',
-                            style: TextStyle(
-                              fontSize: 20,
-                              fontWeight: FontWeight.bold,
-                              color: Color(0xff303030),
-                            ),
-                          ),
-                          SizedBox(height: 10),
-                          Text(
-                            'Date of Birth: 12/02/2000',
-                            style: TextStyle(
-                              fontSize: 20,
-                              color: Color(0xff303030),
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                          SizedBox(height: 10),
-                          Text(
-                            'Gender: Male',
-                            style: TextStyle(
-                              fontSize: 20,
-                              fontStyle: FontStyle.italic,
-                              color: Color(0xff303030),
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                          SizedBox(height: 10),
-                          Text(
-                            'Phone: ${phone ?? ""}',
-                            style: TextStyle(
-                              fontSize: 20,
-                              fontStyle: FontStyle.italic,
-                              color: Color(0xff303030),
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                          SizedBox(height: 10),
-                          Text(
-                            'Email: ashish.kisan@gmail.com',
-                            style: TextStyle(
-                              fontSize: 20,
-                              fontStyle: FontStyle.italic,
-                              color: Colors.black,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                          SizedBox(height: 10),
-                          Text(
-                            'Address:',
-                            style: TextStyle(
-                              fontSize: 20,
-                              fontStyle: FontStyle.italic,
-                              color: Color(0xff303030),
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                          SizedBox(height: 10),
-                          Text(
-                            'City: Kanpur',
-                            style: TextStyle(
-                              fontSize: 20,
-                              fontStyle: FontStyle.italic,
-                              color: Color(0xff303030),
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                          SizedBox(height: 10),
-                          Text(
-                            'State: Uttar Pradesh',
-                            style: TextStyle(
-                              fontSize: 20,
-                              fontStyle: FontStyle.italic,
-                              color: Color(0xff303030),
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                          SizedBox(height: 10),
-                          Text(
-                            'Postal code: 201206',
-                            style: TextStyle(
-                              fontSize: 20,
-                              fontStyle: FontStyle.italic,
-                              color: Color(0xff303030),
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
+                  SizedBox(height: 10),
+                  // Container(
+                  //   margin: const EdgeInsets.all(10.0),
+                  //   width: 400,
+                  //   height: 390,
+                  //   decoration: BoxDecoration(
+                  //     color: const Color(0xffF5F5F5),
+                  //     borderRadius: BorderRadius.circular(12),
+                  //     border: Border.all(
+                  //       width: 4,
+                  //       color: const Color(0xffB9B9B9),
+                  //     ),
+                  //   ),
+                  //   child: Padding(
+                  //     padding: EdgeInsets.symmetric(vertical: 20, horizontal: 20),
+                  //     child: Column(
+                  //       mainAxisAlignment: MainAxisAlignment.start,
+                  //       crossAxisAlignment: CrossAxisAlignment.start,
+                  //       children: [
+                  //         Text(
+                  //           'Name: Ashish Kumar',
+                  //           style: TextStyle(
+                  //             fontSize: 20,
+                  //             fontWeight: FontWeight.bold,
+                  //             color: Color(0xff303030),
+                  //           ),
+                  //         ),
+                  //         SizedBox(height: 10),
+                  //         Text(
+                  //           'Date of Birth: 12/02/2000',
+                  //           style: TextStyle(
+                  //             fontSize: 20,
+                  //             color: Color(0xff303030),
+                  //             fontWeight: FontWeight.bold,
+                  //           ),
+                  //         ),
+                  //         SizedBox(height: 10),
+                  //         Text(
+                  //           'Gender: Male',
+                  //           style: TextStyle(
+                  //             fontSize: 20,
+                  //             fontStyle: FontStyle.italic,
+                  //             color: Color(0xff303030),
+                  //             fontWeight: FontWeight.bold,
+                  //           ),
+                  //         ),
+                  //         SizedBox(height: 10),
+                  //         Text(
+                  //           'Phone: ${phone ?? ""}',
+                  //           style: TextStyle(
+                  //             fontSize: 20,
+                  //             fontStyle: FontStyle.italic,
+                  //             color: Color(0xff303030),
+                  //             fontWeight: FontWeight.bold,
+                  //           ),
+                  //         ),
+                  //         SizedBox(height: 10),
+                  //         Text(
+                  //           'Email: ashish.kisan@gmail.com',
+                  //           style: TextStyle(
+                  //             fontSize: 20,
+                  //             fontStyle: FontStyle.italic,
+                  //             color: Colors.black,
+                  //             fontWeight: FontWeight.bold,
+                  //           ),
+                  //         ),
+                  //         SizedBox(height: 10),
+                  //         Text(
+                  //           'Address:',
+                  //           style: TextStyle(
+                  //             fontSize: 20,
+                  //             fontStyle: FontStyle.italic,
+                  //             color: Color(0xff303030),
+                  //             fontWeight: FontWeight.bold,
+                  //           ),
+                  //         ),
+                  //         SizedBox(height: 10),
+                  //         Text(
+                  //           'City: Kanpur',
+                  //           style: TextStyle(
+                  //             fontSize: 20,
+                  //             fontStyle: FontStyle.italic,
+                  //             color: Color(0xff303030),
+                  //             fontWeight: FontWeight.bold,
+                  //           ),
+                  //         ),
+                  //         SizedBox(height: 10),
+                  //         Text(
+                  //           'State: Uttar Pradesh',
+                  //           style: TextStyle(
+                  //             fontSize: 20,
+                  //             fontStyle: FontStyle.italic,
+                  //             color: Color(0xff303030),
+                  //             fontWeight: FontWeight.bold,
+                  //           ),
+                  //         ),
+                  //         SizedBox(height: 10),
+                  //         Text(
+                  //           'Postal code: 201206',
+                  //           style: TextStyle(
+                  //             fontSize: 20,
+                  //             fontStyle: FontStyle.italic,
+                  //             color: Color(0xff303030),
+                  //             fontWeight: FontWeight.bold,
+                  //           ),
+                  //         ),
+                  //       ],
+                  //     ),
+                  //   ),
+                  // ),
                   SizedBox(height: 10),
                   Container(
                     margin: const EdgeInsets.all(10.0),
-                    width: 400,
-                    height: 580,
+                    width: formWidth,
+                    height: formHeight,
                     decoration: BoxDecoration(
                       color: const Color(0xffF5F5F5),
                       border: Border.all(
@@ -313,7 +326,7 @@ class _ApplyFormState extends State<ApplyForm> {
                                 });
                               },
                               items: <String>[
-                                'Enter crop', // This should be unique and match the default value
+                                'Enter crop',
                                 'Rice',
                                 'Maize',
                                 'Wheat',
