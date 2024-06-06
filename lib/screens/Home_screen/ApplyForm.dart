@@ -125,10 +125,8 @@ class _ApplyFormState extends State<ApplyForm> {
 
   @override
   Widget build(BuildContext context) {
-    final screenWidth = MediaQuery.of(context).size.width;
-    final screenHeight = MediaQuery.of(context).size.height;
-    final formWidth = screenWidth * 0.9; // Adjust the width to 90% of screen width
-    final formHeight = screenHeight * 0.5; // Adjust the height to 80% of screen height
+    double formWidth = MediaQuery.of(context).size.width * 0.9;
+    double formHeight = MediaQuery.of(context).size.height * 0.55;
     return Scaffold(
       appBar: AppBar(
         toolbarHeight: 70,
@@ -173,7 +171,10 @@ class _ApplyFormState extends State<ApplyForm> {
             child: SingleChildScrollView(
               child: Column(
                 children: [
-                  Image(image: AssetImage('assets/asset2.gif')),
+                  Image(
+                    image: AssetImage('assets/asset2.gif'),
+                    height: 200,
+                  ),
                   SizedBox(height: 10),
                   const Text(
                     "Fill your details here.",
@@ -294,9 +295,9 @@ class _ApplyFormState extends State<ApplyForm> {
                   //     ),
                   //   ),
                   // ),
-                  SizedBox(height: 10),
+                  SizedBox(height: MediaQuery.of(context).size.height * 0.01),
                   Container(
-                    margin: const EdgeInsets.all(10.0),
+                    margin: const EdgeInsets.all(8.0),
                     width: formWidth,
                     height: formHeight,
                     decoration: BoxDecoration(
@@ -311,183 +312,185 @@ class _ApplyFormState extends State<ApplyForm> {
                       padding: const EdgeInsets.all(20.0),
                       child: Form(
                         key: _formKey,
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: <Widget>[
-                            DropdownButtonFormField<String>(
-                              decoration: InputDecoration(
-                                hintText: 'Select Crop Type',
-                                border: OutlineInputBorder(),
+                        child: SingleChildScrollView(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: <Widget>[
+                              DropdownButtonFormField<String>(
+                                decoration: InputDecoration(
+                                  hintText: 'Select Crop Type',
+                                  border: OutlineInputBorder(),
+                                ),
+                                value: _cropType,
+                                onChanged: (String? newValue) {
+                                  setState(() {
+                                    _cropType = newValue!;
+                                  });
+                                },
+                                items: <String>[
+                                  'Enter crop',
+                                  'Rice',
+                                  'Maize',
+                                  'Wheat',
+                                  'Jawar',
+                                  'Bajra'
+                                ].map<DropdownMenuItem<String>>((String value) {
+                                  return DropdownMenuItem<String>(
+                                    value: value,
+                                    child: Text(value),
+                                  );
+                                }).toList(),
                               ),
-                              value: _cropType,
-                              onChanged: (String? newValue) {
-                                setState(() {
-                                  _cropType = newValue!;
-                                });
-                              },
-                              items: <String>[
-                                'Enter crop',
-                                'Rice',
-                                'Maize',
-                                'Wheat',
-                                'Jawar',
-                                'Bajra'
-                              ].map<DropdownMenuItem<String>>((String value) {
-                                return DropdownMenuItem<String>(
-                                  value: value,
-                                  child: Text(value),
-                                );
-                              }).toList(),
-                            ),
-                            SizedBox(height: 10),
-                            Row(
-                              children: [
-                                Expanded(
-                                  child: TextFormField(
-                                    decoration: InputDecoration(
-                                      hintText: 'Enter Land Area',
-                                      border: OutlineInputBorder(),
+                              SizedBox(height: MediaQuery.of(context).size.height * 0.02),
+                              Row(
+                                children: [
+                                  Expanded(
+                                    child: TextFormField(
+                                      decoration: InputDecoration(
+                                        hintText: 'Enter Land Area',
+                                        border: OutlineInputBorder(),
+                                      ),
+                                      keyboardType: TextInputType.number,
+                                      validator: (value) {
+                                        if (value!.isEmpty) {
+                                          return 'Please enter a land area';
+                                        }
+                                        return null;
+                                      },
+                                      onSaved: (value) {
+                                        _landArea = double.parse(value!);
+                                      },
                                     ),
-                                    keyboardType: TextInputType.number,
-                                    validator: (value) {
-                                      if (value!.isEmpty) {
-                                        return 'Please enter a land area';
-                                      }
-                                      return null;
-                                    },
-                                    onSaved: (value) {
-                                      _landArea = double.parse(value!);
-                                    },
                                   ),
-                                ),
-                                SizedBox(width: 10),
-                                Container(
-                                  padding: EdgeInsets.symmetric(horizontal: 12.0),
-                                  decoration: BoxDecoration(
-                                    border: Border.all(color: Colors.grey),
-                                    borderRadius: BorderRadius.circular(8.0),
-                                  ),
-                                  child: DropdownButton<String>(
-                                    value: _landUnit,
-                                    onChanged: (String? newValue) {
-                                      setState(() {
-                                        _landUnit = newValue!;
-                                      });
-                                    },
-                                    items: <String>['acres', 'hectares']
-                                        .map<DropdownMenuItem<String>>((String value) {
-                                      return DropdownMenuItem<String>(
-                                        value: value,
-                                        child: Text(value),
-                                      );
-                                    }).toList(),
-                                  ),
-                                ),
-                              ],
-                            ),
-                            SizedBox(height: 10),
-                            Row(
-                              children: [
-                                Expanded(
-                                  child: TextFormField(
-                                    decoration: InputDecoration(
-                                      hintText: 'Enter Expected Production',
-                                      border: OutlineInputBorder(),
+                                  SizedBox(width: 10),
+                                  Container(
+                                    padding: EdgeInsets.symmetric(horizontal: 12.0),
+                                    decoration: BoxDecoration(
+                                      border: Border.all(color: Colors.grey),
+                                      borderRadius: BorderRadius.circular(8.0),
                                     ),
-                                    keyboardType: TextInputType.number,
-                                    validator: (value) {
-                                      if (value!.isEmpty) {
-                                        return 'Please enter expected production';
-                                      }
-                                      return null;
-                                    },
-                                    onSaved: (value) {
-                                      _expectedProduction = double.parse(value!);
-                                    },
+                                    child: DropdownButton<String>(
+                                      value: _landUnit,
+                                      onChanged: (String? newValue) {
+                                        setState(() {
+                                          _landUnit = newValue!;
+                                        });
+                                      },
+                                      items: <String>['acres', 'hectares']
+                                          .map<DropdownMenuItem<String>>((String value) {
+                                        return DropdownMenuItem<String>(
+                                          value: value,
+                                          child: Text(value),
+                                        );
+                                      }).toList(),
+                                    ),
                                   ),
+                                ],
+                              ),
+                              SizedBox(height: MediaQuery.of(context).size.height * 0.02),
+                              Row(
+                                children: [
+                                  Expanded(
+                                    child: TextFormField(
+                                      decoration: InputDecoration(
+                                        hintText: 'Enter Expected Production',
+                                        border: OutlineInputBorder(),
+                                      ),
+                                      keyboardType: TextInputType.number,
+                                      validator: (value) {
+                                        if (value!.isEmpty) {
+                                          return 'Please enter expected production';
+                                        }
+                                        return null;
+                                      },
+                                      onSaved: (value) {
+                                        _expectedProduction = double.parse(value!);
+                                      },
+                                    ),
+                                  ),
+                                  SizedBox(width: 10),
+                                  Container(
+                                    padding: EdgeInsets.symmetric(horizontal: 12.0),
+                                    decoration: BoxDecoration(
+                                      border: Border.all(color: Colors.grey),
+                                      borderRadius: BorderRadius.circular(8.0),
+                                    ),
+                                    child: DropdownButton<String>(
+                                      value: _productionUnit,
+                                      onChanged: (String? newValue) {
+                                        setState(() {
+                                          _productionUnit = newValue!;
+                                        });
+                                      },
+                                      items: <String>['kg', 'tons']
+                                          .map<DropdownMenuItem<String>>((String value) {
+                                        return DropdownMenuItem<String>(
+                                          value: value,
+                                          child: Text(value),
+                                        );
+                                      }).toList(),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              SizedBox(height: MediaQuery.of(context).size.height * 0.02),
+                              TextFormField(
+                                decoration: InputDecoration(
+                                  hintText: 'Enter Issue Percentage',
+                                  border: OutlineInputBorder(),
                                 ),
-                                SizedBox(width: 10),
-                                Container(
-                                  padding: EdgeInsets.symmetric(horizontal: 12.0),
-                                  decoration: BoxDecoration(
-                                    border: Border.all(color: Colors.grey),
-                                    borderRadius: BorderRadius.circular(8.0),
-                                  ),
-                                  child: DropdownButton<String>(
-                                    value: _productionUnit,
-                                    onChanged: (String? newValue) {
-                                      setState(() {
-                                        _productionUnit = newValue!;
-                                      });
-                                    },
-                                    items: <String>['kg', 'tons']
-                                        .map<DropdownMenuItem<String>>((String value) {
-                                      return DropdownMenuItem<String>(
-                                        value: value,
-                                        child: Text(value),
-                                      );
-                                    }).toList(),
-                                  ),
+                                keyboardType: TextInputType.number,
+                                validator: (value) {
+                                  if (value!.isEmpty) {
+                                    return 'Please enter issue percentage';
+                                  }
+                                  return null;
+                                },
+                                onSaved: (value) {
+                                  _issuePercentage = double.parse(value!);
+                                },
+                              ),
+                              SizedBox(height: MediaQuery.of(context).size.height * 0.02),
+                              TextFormField(
+                                decoration: InputDecoration(
+                                  hintText: 'Enter Quantity',
+                                  border: OutlineInputBorder(),
                                 ),
-                              ],
-                            ),
-                            SizedBox(height: 10),
-                            TextFormField(
-                              decoration: InputDecoration(
-                                hintText: 'Enter Issue Percentage',
-                                border: OutlineInputBorder(),
+                                keyboardType: TextInputType.number,
+                                validator: (value) {
+                                  if (value!.isEmpty) {
+                                    return 'Please enter quantity';
+                                  }
+                                  return null;
+                                },
+                                onSaved: (value) {
+                                  _quantity = int.parse(value!);
+                                },
                               ),
-                              keyboardType: TextInputType.number,
-                              validator: (value) {
-                                if (value!.isEmpty) {
-                                  return 'Please enter issue percentage';
-                                }
-                                return null;
-                              },
-                              onSaved: (value) {
-                                _issuePercentage = double.parse(value!);
-                              },
-                            ),
-                            SizedBox(height: 10),
-                            TextFormField(
-                              decoration: InputDecoration(
-                                hintText: 'Enter Quantity',
-                                border: OutlineInputBorder(),
+                              SizedBox(height: MediaQuery.of(context).size.height * 0.02),
+                              TextFormField(
+                                decoration: InputDecoration(
+                                  hintText: 'Enter Equivalent VFGA Unit',
+                                  border: OutlineInputBorder(),
+                                ),
+                                keyboardType: TextInputType.number,
+                                validator: (value) {
+                                  if (value!.isEmpty) {
+                                    return 'Please enter equivalent VFGA unit';
+                                  }
+                                  return null;
+                                },
+                                onSaved: (value) {
+                                  _equivalentVFGAUnit = int.parse(value!);
+                                },
                               ),
-                              keyboardType: TextInputType.number,
-                              validator: (value) {
-                                if (value!.isEmpty) {
-                                  return 'Please enter quantity';
-                                }
-                                return null;
-                              },
-                              onSaved: (value) {
-                                _quantity = int.parse(value!);
-                              },
-                            ),
-                            SizedBox(height: 10),
-                            TextFormField(
-                              decoration: InputDecoration(
-                                hintText: 'Enter Equivalent VFGA Unit',
-                                border: OutlineInputBorder(),
-                              ),
-                              keyboardType: TextInputType.number,
-                              validator: (value) {
-                                if (value!.isEmpty) {
-                                  return 'Please enter equivalent VFGA unit';
-                                }
-                                return null;
-                              },
-                              onSaved: (value) {
-                                _equivalentVFGAUnit = int.parse(value!);
-                              },
-                            ),
-                          ],
+                            ],
+                          ),
                         ),
                       ),
                     ),
                   ),
-                  SizedBox(height: 10),
+                  SizedBox(height: MediaQuery.of(context).size.height * 0.02),
                   SizedBox(
                     width: double.infinity,
                     height: 50,

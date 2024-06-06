@@ -117,6 +117,7 @@ class _HomeScreenState extends State<HomeScreen> {
     double containerHeight = MediaQuery.of(context).size.height * 1.5; // Adjust height relative to screen height
     double innerContainerHeight = MediaQuery.of(context).size.height * 0.24; // Adjust height for the inner container
     return Scaffold(
+      backgroundColor: Color(0xFFFCFFFD),
       appBar: AppBar(
         toolbarHeight: MediaQuery.of(context).size.height * 0.08, // Adjust the height as per your requirement
         automaticallyImplyLeading: false,
@@ -258,7 +259,7 @@ class _HomeScreenState extends State<HomeScreen> {
               SizedBox(height: MediaQuery.of(context).size.height * 0.01),
               Container(
                 width: MediaQuery.of(context).size.width * 0.9, // Adjust width relative to screen width
-                height: innerContainerHeight * 0.9,
+                height: innerContainerHeight * 0.95,
                 padding: const EdgeInsets.all(12),
                 decoration: AppDecoration.gradientGreenToGreenE.copyWith(
                   borderRadius: BorderRadiusStyle.roundedBorder12,

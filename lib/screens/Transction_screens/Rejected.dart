@@ -54,7 +54,7 @@ class UserListItem extends StatelessWidget {
           height: 254,
           padding: EdgeInsets.all(12),
           decoration: BoxDecoration(
-            color: Color(0xffFFF3F2),
+            color: Color(0xffF2FFF5),
             border: const Border(
                 left: BorderSide(width: 8, color: Color(0xff007517))
             ),
