@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:testing/theme/custom_text_style.dart';
 import 'base_button.dart';
 
-class CustomOutlinedButton extends BaseButton {
-  CustomOutlinedButton({
+class CustomOutlinedButton2 extends BaseButton {
+  CustomOutlinedButton2({
     Key? key,
     this.decoration,
     this.leftIcon,
@@ -54,9 +55,9 @@ class CustomOutlinedButton extends BaseButton {
     decoration: decoration,
     child: OutlinedButton(
       style: buttonStyle?.copyWith(
-        backgroundColor: MaterialStateProperty.all<Color>(Color(0xFFE9FFED)),
+        backgroundColor: MaterialStateProperty.all<Color>(Color(0xFFFFFAF2)),
         side: MaterialStateProperty.all<BorderSide>(
-          BorderSide(color: Color(0xFF11AB2F)),
+          BorderSide(color: Color(0xFFFF9C42)),
         ),
         shape: MaterialStateProperty.all<RoundedRectangleBorder>(
           RoundedRectangleBorder(
@@ -64,9 +65,9 @@ class CustomOutlinedButton extends BaseButton {
           ),
         ),
       ) ?? ButtonStyle(
-        backgroundColor: MaterialStateProperty.all<Color>(Color(0xFFE9FFED)),
+        backgroundColor: MaterialStateProperty.all<Color>(Color(0xFFFFFAF2)),
         side: MaterialStateProperty.all<BorderSide>(
-          BorderSide(color: Color(0xFF11AB2F)),
+          BorderSide(color: Color(0xFFFF9C42)),
         ),
         shape: MaterialStateProperty.all<RoundedRectangleBorder>(
           RoundedRectangleBorder(
@@ -83,7 +84,7 @@ class CustomOutlinedButton extends BaseButton {
           Text(
             text,
             style: TextStyle(
-              color: Color(0xff11AB2F),
+              color: Color(0xffF89B1C),
               fontWeight: FontWeight.bold,
               fontSize: 20,
             ),

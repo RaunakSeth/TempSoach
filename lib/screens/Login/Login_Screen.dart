@@ -68,17 +68,9 @@ class _Login_ScreenState extends State<Login_Screen> {
             padding: const EdgeInsets.symmetric(vertical: 25, horizontal: 35),
             child: Column(
               children: [
-                Container(
-                  width: 200,
+                Image.asset(
+                  "assets/asset3.gif",
                   height: 200,
-                  padding: const EdgeInsets.all(20.0),
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    color: Colors.green.shade200,
-                  ),
-                  child: Image.asset(
-                    "assets/register.png",
-                  ),
                 ),
                 const SizedBox(height: 20),
                 const Text(

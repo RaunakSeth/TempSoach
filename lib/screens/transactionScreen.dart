@@ -23,13 +23,13 @@ class _TransactionScreenState extends State<TransactionScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        toolbarHeight: MediaQuery.of(context).size.height * 0.1,
+        toolbarHeight: MediaQuery.of(context).size.height * 0.08,
         automaticallyImplyLeading: false,
         backgroundColor: Colors.transparent,
         elevation: 0.0,
         flexibleSpace: ClipPath(
           child: Container(
-            height: MediaQuery.of(context).size.height * 0.1,
+            height: MediaQuery.of(context).size.height * 0.12,
             width: MediaQuery.of(context).size.width,
             decoration: const BoxDecoration(
               borderRadius: BorderRadius.only(
@@ -38,43 +38,41 @@ class _TransactionScreenState extends State<TransactionScreen> {
               ),
               color: Color(0xFF11AB2F),
             ),
-            child: Padding(
-              padding: EdgeInsets.all(MediaQuery.of(context).size.width * 0.06),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  SizedBox(
-                    height: MediaQuery.of(context).size.height * 0.1,
-                    width: MediaQuery.of(context).size.width * 0.7,
-                    child: AutoSizeText(
-                      "Transaction history",
-                      style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      color: Colors.white),
-                      maxLines: 1,
-                      minFontSize: 32,
-                    ),
+            child: Column(
+              children: [
+                SizedBox(height: 18,),
+                Padding(
+                  padding: EdgeInsets.symmetric(vertical: 16, horizontal: 24),
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      AutoSizeText(
+                        "Transaction history",
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white),
+                        maxLines: 1,
+                        minFontSize: 34,
+                      ),
+                      Icon(
+                        Icons.notifications,
+                        color: Colors.white,
+                        size: MediaQuery.of(context).size.width * 0.07,
+                      ),
+                    ],
                   ),
-                  Icon(
-                    Icons.notifications,
-                    color: Colors.white,
-                    size: MediaQuery.of(context).size.width * 0.07,
-                  ),
-                ],
-              ),
+                ),
+              ]
             ),
           ),
         ),
       ),
-      body: Stack(
+      body: Column(
         children: [
-          Column(
-            children: [
-              _buildNavigationBar(),
-              Expanded(
-                child: _screens[_currentIndex],
-              ),
-            ],
+          _buildNavigationBar(),
+          Expanded(
+            child: _screens[_currentIndex],
           ),
         ],
       ),
