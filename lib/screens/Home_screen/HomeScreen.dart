@@ -55,7 +55,7 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   void _startPeriodicStatusCheck() {
-    _timer = Timer.periodic(Duration(hours: 0, seconds: 120), (timer) {
+    _timer = Timer.periodic(Duration(hours: 2, seconds: 0), (timer) {
       _checkStatus();
     });
   }

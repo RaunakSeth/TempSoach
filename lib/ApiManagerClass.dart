@@ -345,4 +345,27 @@ class ApiManagerClass {
     }
   }
 
+  Future<int?> getState() async {
+    try {
+      await init();
+      var response = await dio.get(
+        '$baseUrl/api/forms',
+        options: Options(
+          headers: headers,
+        ),
+      );
+
+      if (response.statusCode == 200) {
+        var state = response.data['form']['state'];
+        return state;
+      } else {
+        print('Failed to fetch state: ${response.statusCode}');
+        return null;
+      }
+    } catch (e) {
+      print('Error fetching state: $e');
+      return null;
+    }
+  }
+
 }
