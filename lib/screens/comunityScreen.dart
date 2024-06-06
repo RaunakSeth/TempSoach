@@ -185,17 +185,17 @@ class UserListItem extends StatelessWidget {
         child: Row(
           children: [
             if (imageUrl != null)
-              CachedNetworkImage(
-                imageUrl: imageUrl!=null?"http://vgfa-env-1.eba-brkixzb4.ap-south-1.elasticbeanstalk.com$imageUrl":"https://static.vecteezy.com/system/resources/thumbnails/009/292/244/small/default-avatar-icon-of-social-media-user-vector.jpg",
-
-                placeholder: (context, url) => const CircleAvatar(
-                  backgroundColor: Colors.amber,
-                  radius: 25,
-                ),
-                imageBuilder: (context, image) => CircleAvatar(
-                  backgroundImage: image,
-                  radius:25,
-                ),
+              Image.network(
+                imageUrl != null
+                    ? "http://vgfa-env-1.eba-brkixzb4.ap-south-1.elasticbeanstalk.com$imageUrl"
+                    : "https://static.vecteezy.com/system/resources/thumbnails/009/292/244/small/default-avatar-icon-of-social-media-user-vector.jpg",
+                errorBuilder: (BuildContext context, Object exception,
+                    StackTrace? stackTrace) {
+                  return const CircleAvatar(
+                    backgroundColor: Colors.amber,
+                    radius: 25,
+                  );
+                },
               ),
             if (imageUrl == null)
               CircleAvatar(

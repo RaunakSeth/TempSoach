@@ -1,9 +1,9 @@
-<!--android:usesCleartextTraffic="true"
-        android:networkSecurityConfig="@xml/network_security_config"
-        -->
+
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
     <uses-permission android:name="android.permission.INTERNET"/>
     <application
+        android:usesCleartextTraffic="true"
+        android:networkSecurityConfig="@xml/network_security_config"
         android:label="testing"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
