@@ -30,13 +30,13 @@ class _CommunityScreenState extends State<CommunityScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        toolbarHeight: MediaQuery.of(context).size.height * 0.08,
+        toolbarHeight: MediaQuery.of(context).size.height * 0.10,
         automaticallyImplyLeading: false,
         backgroundColor: Colors.transparent,
         elevation: 0.0,
         flexibleSpace: ClipPath(
           child: Container(
-            height: MediaQuery.of(context).size.height * 0.12,
+            height: MediaQuery.of(context).size.height * 0.14,
             width: MediaQuery.of(context).size.width,
             decoration: const BoxDecoration(
               borderRadius: BorderRadius.only(
@@ -49,7 +49,7 @@ class _CommunityScreenState extends State<CommunityScreen> {
                 children: [
                   SizedBox(height: 15,),
                   Padding(
-                    padding: EdgeInsets.symmetric(vertical: 16,horizontal: 24),
+                    padding: EdgeInsets.only(top: 28, left: 16, right: 16),
                     child: Row(
                       crossAxisAlignment: CrossAxisAlignment.center,
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -176,31 +176,31 @@ class UserListItem extends StatelessWidget {
     );
   }
 }
-    //   body: FutureBuilder<List<Farmer>>( // Changed to FarmerList
-    //     future: _farmersFuture,
-    //     builder: (context, snapshot) {
-    //       if (snapshot.connectionState == ConnectionState.waiting) {
-    //         return Center(child: CircularProgressIndicator());
-    //       } else if (snapshot.hasError) {
-    //         return Center(child: Text('Error: ${snapshot.error}'));
-    //       } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-    //         return Center(child: Text('No farmers found.'));
-    //       } else {
-    //         List<Farmer> farmers = snapshot.data!;
-    //         return ListView.builder(
-    //           itemCount: farmers.length,
-    //           itemBuilder: (context, index) {
-    //             Farmer farmer = farmers;
-    //             return UserListItem(
-    //               name: '${farmer.firstName} ${farmer.lastName}',
-    //               imageUrl: farmer.imageUrl, // Use 'imageUrl' from farmer object
-    //             );
-    //           },
-    //         );
-    //       }
-    //     },
-    //   )
-    // );
+//   body: FutureBuilder<List<Farmer>>( // Changed to FarmerList
+//     future: _farmersFuture,
+//     builder: (context, snapshot) {
+//       if (snapshot.connectionState == ConnectionState.waiting) {
+//         return Center(child: CircularProgressIndicator());
+//       } else if (snapshot.hasError) {
+//         return Center(child: Text('Error: ${snapshot.error}'));
+//       } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+//         return Center(child: Text('No farmers found.'));
+//       } else {
+//         List<Farmer> farmers = snapshot.data!;
+//         return ListView.builder(
+//           itemCount: farmers.length,
+//           itemBuilder: (context, index) {
+//             Farmer farmer = farmers;
+//             return UserListItem(
+//               name: '${farmer.firstName} ${farmer.lastName}',
+//               imageUrl: farmer.imageUrl, // Use 'imageUrl' from farmer object
+//             );
+//           },
+//         );
+//       }
+//     },
+//   )
+// );
 //   }
 // }
 //

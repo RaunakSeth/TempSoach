@@ -257,8 +257,8 @@ class _HomeScreenState extends State<HomeScreen> {
               const SizedBox(height: 20),
               SizedBox(height: MediaQuery.of(context).size.height * 0.01),
               Container(
-                width: MediaQuery.of(context).size.width * 0.9, // Adjust width relative to screen width
-                height: innerContainerHeight * 0.9,
+                width: MediaQuery.of(context).size.width * 0.90, // Adjust width relative to screen width
+                height: innerContainerHeight * 1.0,
                 padding: const EdgeInsets.all(12),
                 decoration: AppDecoration.gradientGreenToGreenE.copyWith(
                   borderRadius: BorderRadiusStyle.roundedBorder12,

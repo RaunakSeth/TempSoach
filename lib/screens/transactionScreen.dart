@@ -21,18 +21,15 @@ class _TransactionScreenState extends State<TransactionScreen> {
 
   @override
   Widget build(BuildContext context) {
-    double screenHeight = MediaQuery.of(context).size.height;
-
     return Scaffold(
-      backgroundColor: Color(0xFFFCFFFD),
       appBar: AppBar(
-        toolbarHeight: screenHeight * 0.10,
+        toolbarHeight: MediaQuery.of(context).size.height * 0.10,
         automaticallyImplyLeading: false,
         backgroundColor: Colors.transparent,
         elevation: 0.0,
         flexibleSpace: ClipPath(
           child: Container(
-            height: screenHeight * 0.14,
+            height: MediaQuery.of(context).size.height * 0.14,
             width: MediaQuery.of(context).size.width,
             decoration: const BoxDecoration(
               borderRadius: BorderRadius.only(
@@ -41,32 +38,32 @@ class _TransactionScreenState extends State<TransactionScreen> {
               ),
               color: Color(0xFF11AB2F),
             ),
-            child: Padding(
-              padding: EdgeInsets.only(left: 16,right: 16,top: 28),
-              child: Column(
+            child: Column(
                 children: [
-                  SizedBox(height: screenHeight * 0.02),
-                  Row(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      AutoSizeText(
-                        "Transaction history",
-                        style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            color: Colors.white),
-                        maxLines: 1,
-                        minFontSize: 34,
-                      ),
-                      Icon(
-                        Icons.notifications,
-                        color: Colors.white,
-                        size: MediaQuery.of(context).size.width * 0.07,
-                      ),
-                    ],
+                  SizedBox(height: 18,),
+                  Padding(
+                    padding: EdgeInsets.only(top: 28, left: 16, right: 16),
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        AutoSizeText(
+                          "Transaction history",
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              color: Colors.white),
+                          maxLines: 1,
+                          minFontSize: 34,
+                        ),
+                        Icon(
+                          Icons.notifications,
+                          color: Colors.white,
+                          size: MediaQuery.of(context).size.width * 0.07,
+                        ),
+                      ],
+                    ),
                   ),
                 ]
-              ),
             ),
           ),
         ),

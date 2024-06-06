@@ -35,25 +35,25 @@ class _Login_ScreenState extends State<Login_Screen> {
       print("+91" + phoneController.text);
       bool response=await api.login(phone:"+91" + phoneController.text);
       if(response)
-        {
-      Navigator.pushReplacement(context, MaterialPageRoute(
-          builder: (context) =>
-              VerifyScreen(phone: "+91" + phoneController.text)
-      ),
-      );
-  }
+      {
+        Navigator.pushReplacement(context, MaterialPageRoute(
+            builder: (context) =>
+                VerifyScreen(phone: "+91" + phoneController.text)
+        ),
+        );
+      }
       else
-        {
-          Fluttertoast.showToast(
-              msg: "Error in Login",
-              toastLength: Toast.LENGTH_LONG,
-              gravity: ToastGravity.BOTTOM,
-              timeInSecForIosWeb: 1,
-              backgroundColor: Colors.grey,
-              textColor: Colors.white,
-              fontSize: 16.0
-          );
-        }
+      {
+        Fluttertoast.showToast(
+            msg: "Error in Login",
+            toastLength: Toast.LENGTH_LONG,
+            gravity: ToastGravity.BOTTOM,
+            timeInSecForIosWeb: 1,
+            backgroundColor: Colors.grey,
+            textColor: Colors.white,
+            fontSize: 16.0
+        );
+      }
     } catch (e) {
       print(e.toString());
     }
@@ -68,17 +68,9 @@ class _Login_ScreenState extends State<Login_Screen> {
             padding: const EdgeInsets.symmetric(vertical: 25, horizontal: 35),
             child: Column(
               children: [
-                Container(
-                  width: 200,
+                Image.asset(
+                  "assets/asset3.gif",
                   height: 200,
-                  padding: const EdgeInsets.all(20.0),
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    color: Colors.green.shade200,
-                  ),
-                  child: Image.asset(
-                    "assets/register.png",
-                  ),
                 ),
                 const SizedBox(height: 20),
                 const Text(
@@ -188,3 +180,4 @@ class _Login_ScreenState extends State<Login_Screen> {
     );
   }
 }
+

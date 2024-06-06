@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:pinput/pinput.dart';
+import 'package:testing/screens/Login/Login_Screen.dart';
 import 'package:testing/screens/navScreen.dart';
 import 'package:testing/widget/CustomButton.dart';
 import '../../ApiManagerClass.dart';
@@ -22,10 +23,10 @@ class _VerifyScreenState extends State<VerifyScreen> {
     try {
       bool response=await api.verify(phone: widget.phone, otp:otpCode);
       if (response) {
-       Navigator.pushReplacement(
-         context,
-         MaterialPageRoute(builder: (context) => NavScreen()), // Pass the phone number
-       );
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => NavScreen()), // Pass the phone number
+        );
       } else {
         Fluttertoast.showToast(
             msg: "Error in Verification",
@@ -45,7 +46,6 @@ class _VerifyScreenState extends State<VerifyScreen> {
 
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
       body: SafeArea(
         child:Center(
@@ -57,21 +57,13 @@ class _VerifyScreenState extends State<VerifyScreen> {
                 Align(
                   alignment: Alignment.topLeft,
                   child: GestureDetector(
-                    onTap: () => Navigator.of(context).pop(),
+                    onTap: () => Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=> Login_Screen())),
                     child: const Icon(Icons.arrow_back),
                   ),
                 ),
-                Container(
-                  width: 200,
+                Image.asset(
+                  "assets/asset4.png",
                   height: 200,
-                  padding: const EdgeInsets.all(20.0),
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    color: Colors.green.shade50,
-                  ),
-                  child: Image.asset(
-                    "assets/register.png",
-                  ),
                 ),
                 const SizedBox(height: 20),
                 const Text(
@@ -128,7 +120,7 @@ class _VerifyScreenState extends State<VerifyScreen> {
 
                 ),
                 const SizedBox(height: 20),
-                 Text(
+                Text(
                   "Didn't receive any code?",
                   style: TextStyle(
                     fontSize: 14,
@@ -143,7 +135,7 @@ class _VerifyScreenState extends State<VerifyScreen> {
                     style: TextStyle(
                       fontSize: 14,
                       fontWeight: FontWeight.bold,
-                      color: Colors.black38,
+                      color: Colors.blue.shade700,
                     ),
                   ),
                 ),
@@ -154,5 +146,4 @@ class _VerifyScreenState extends State<VerifyScreen> {
       ),
     );
   }
-
 }
