@@ -1,4 +1,5 @@
-import 'package:auto_size_text/auto_size_text.dart';
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:testing/ApiManagerClass.dart';
 import 'package:testing/Farmer.dart';// Assuming the file is named
@@ -30,94 +31,136 @@ class _CommunityScreenState extends State<CommunityScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        toolbarHeight: MediaQuery.of(context).size.height * 0.08,
+        toolbarHeight: 100,
         automaticallyImplyLeading: false,
         backgroundColor: Colors.transparent,
         elevation: 0.0,
         flexibleSpace: ClipPath(
-          child: Container(
-            height: MediaQuery.of(context).size.height * 0.12,
-            width: MediaQuery.of(context).size.width,
-            decoration: const BoxDecoration(
-              borderRadius: BorderRadius.only(
-                bottomLeft: Radius.circular(20),
-                bottomRight: Radius.circular(20),
+          child: Stack(
+            children: [
+              Container(
+                height: 130,
+                width: MediaQuery.of(context).size.width,
+                decoration: const BoxDecoration(
+                  color: Color(0xFF11AB2F),
+                  borderRadius: BorderRadius.only(
+                    bottomLeft: Radius.circular(20),
+                    bottomRight: Radius.circular(20),
+                  ),
+                ),
               ),
-              color: Color(0xFF11AB2F),
-            ),
-            child: Column(
-                children: [
-                  SizedBox(height: 15,),
-                  Padding(
-                    padding: EdgeInsets.symmetric(vertical: 16,horizontal: 24),
-                    child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              Padding(
+                padding: const EdgeInsets.all(8),
+                child: Column(
+                  children: [
+                    const SizedBox(height: 30),
+                    Row(
                       children: [
-                        AutoSizeText(
-                          "Community",
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              color: Colors.white),
-                          maxLines: 1,
-                          minFontSize: 40,
+                        const SizedBox(width: 10),
+                        Expanded(
+                          child: TextField(
+                            decoration: InputDecoration(
+                              fillColor: Colors.white,
+                              filled: true,
+                              hintText: 'Search',
+                              prefixIcon: const Icon(Icons.search),
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(10.0),
+                              ),
+                            ),
+                            onChanged: (value) {
+                              // Handle search query changes here
+                            },
+                          ),
                         ),
-                        Icon(
-                          Icons.notifications,
-                          color: Colors.white,
-                          size: MediaQuery.of(context).size.width * 0.07,
+                        const SizedBox(width: 10),
+                        IconButton(
+                          icon: const Icon(
+                            Icons.notifications,
+                            color: Colors.white,
+                            size: 30,
+                          ),
+                          onPressed: () {
+                            // Add functionality for bell icon press
+                          },
                         ),
                       ],
                     ),
-                  ),
-                ]
-            ),
+                  ],
+                ),
+              ),
+            ],
           ),
         ),
       ),
-      body: Padding(
-        padding: EdgeInsets.only(left: 16, right: 16),
-        child: Column(
-          children: [
-            Align(
-              alignment: Alignment.centerLeft,
-              child: Text(
-                'Members',
-                style: TextStyle(
-                  fontSize: 24,
-                  fontWeight: FontWeight.w500,
-                  color: Color(0xFF797C7B),
-                ),
-              ),
-            ),
-            Expanded(
-              child: FutureBuilder<List<Farmer>>(
-                future: _farmersFuture,
-                builder: (context, snapshot) {
-                  if (snapshot.connectionState == ConnectionState.waiting) {
-                    return const Center(child: CircularProgressIndicator());
-                  } else if (snapshot.hasError) {
-                    return Center(child: Text('Error: ${snapshot.error}'));
-                  } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-                    return const Center(child: Text('No farmers found.'));
-                  } else {
-                    final farmers = snapshot.data!;
-                    return ListView.builder(
-                      itemCount: farmers.length,
-                      itemBuilder: (BuildContext context, int index) {
-                        final farmer = farmers[index];
-                        return UserListItem(
-                          name: '${farmer.firstName} ${farmer.lastName}',
-                          imageUrl: farmer.imageUrl,
-                        );
+      body: Stack(
+        children: [
+          Positioned(
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: 0,
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
+              child: Column(
+                children: [
+                  const SizedBox(height: 20),
+                  const Align(
+                    alignment: Alignment.centerLeft,
+                    child: Text(
+                      'Group Admin',
+                      style: TextStyle(
+                        fontSize: 24,
+                        fontWeight: FontWeight.w500,
+                        color: Color(0xFF797C7B),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 10),
+                  // const UserListItem(name: 'Aman Singh', imageUrl: 'assets/person1.png'),
+                  const SizedBox(height: 20),
+                  const Align(
+                    alignment: Alignment.centerLeft,
+                    child: Text(
+                      'Member',
+                      style: TextStyle(
+                        fontSize: 24,
+                        fontWeight: FontWeight.w500,
+                        color: Color(0xFF797C7B),
+                      ),
+                    ),
+                  ),
+                  Expanded(
+                    child: FutureBuilder<List<Farmer>>(
+                      future: _farmersFuture,
+                      builder: (context, snapshot) {
+                        if (snapshot.connectionState == ConnectionState.waiting) {
+                          return const Center(child: CircularProgressIndicator());
+                        } else if (snapshot.hasError) {
+                          return Center(child: Text('Error: ${snapshot.error}'));
+                        } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+                          return const Center(child: Text('No farmers found.'));
+                        } else {
+                          final farmers = snapshot.data!;
+                          return ListView.builder(
+                            itemCount: farmers.length,
+                            itemBuilder: (BuildContext context, int index) {
+                              final farmer = farmers[index];
+                              return UserListItem(
+                                name: '${farmer.firstName} ${farmer.lastName}',
+                                imageUrl: farmer.imageUrl,
+                              );
+                            },
+                          );
+                        }
                       },
-                    );
-                  }
-                },
+                    ),
+                  ),
+                ],
               ),
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
@@ -135,6 +178,10 @@ class UserListItem extends StatelessWidget {
       contentPadding: EdgeInsets.zero,
       title: Container(
         padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
+        decoration: BoxDecoration(
+          border: Border.all(color: Colors.black),
+          borderRadius: BorderRadius.circular(16.0),
+        ),
         child: Row(
           children: [
             if (imageUrl != null)
@@ -145,7 +192,7 @@ class UserListItem extends StatelessWidget {
                 errorBuilder: (BuildContext context, Object exception,
                     StackTrace? stackTrace) {
                   return const CircleAvatar(
-                    backgroundColor: Colors.green,
+                    backgroundColor: Colors.amber,
                     radius: 25,
                   );
                 },
@@ -166,7 +213,7 @@ class UserListItem extends StatelessWidget {
                 name,
                 style: const TextStyle(
                   fontSize: 24.0,
-                  fontWeight: FontWeight.w400,
+                  fontWeight: FontWeight.bold,
                 ),
               ),
             ),
