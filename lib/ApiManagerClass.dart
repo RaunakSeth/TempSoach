@@ -9,7 +9,7 @@ import 'package:http/http.dart' as http;
 
 class ApiManagerClass {
   Dio dio = Dio();
-  var baseUrl = "http://vgfa-env-1.eba-brkixzb4.ap-south-1.elasticbeanstalk.com";
+  var baseUrl = "https://vfgabackend.outhad.com";
   var headers;
   AndroidOptions _getAndroidOptions() => const AndroidOptions(
     encryptedSharedPreferences: true,
@@ -63,7 +63,7 @@ class ApiManagerClass {
     try {
       await init();
       var response = await dio.post(
-        'http://vgfa-env-1.eba-brkixzb4.ap-south-1.elasticbeanstalk.com/api/auth/farmer/register',
+        'https://vfgabackend.outhad.com/api/auth/farmer/register',
         data: data,
       );
       print(json.encode(response.data));
@@ -83,7 +83,7 @@ class ApiManagerClass {
     try {
       await init();
       var response = await dio.post(
-        'http://vgfa-env-1.eba-brkixzb4.ap-south-1.elasticbeanstalk.com/api/auth/farmer/login',
+        'https://vfgabackend.outhad.com/api/auth/farmer/login',
         data: data,
       );
       print(json.encode(response.data));
@@ -105,7 +105,7 @@ class ApiManagerClass {
     try {
       await init();
       var response = await dio.post(
-        'http://vgfa-env-1.eba-brkixzb4.ap-south-1.elasticbeanstalk.com/api/auth/farmer/verify',
+        'https://vfgabackend.outhad.com/api/auth/farmer/verify',
         data: data,
       );
       final storage = FlutterSecureStorage(aOptions: _getAndroidOptions());
@@ -123,7 +123,7 @@ class ApiManagerClass {
     try {
       await init();
       var response = await dio.get(
-        'http://vgfa-env-1.eba-brkixzb4.ap-south-1.elasticbeanstalk.com/api/auth/farmer/me',
+        'https://vfgabackend.outhad.com/api/auth/farmer/me',
         options: Options(
           headers: headers,
         ),
@@ -138,7 +138,6 @@ class ApiManagerClass {
         panchayatCentre: userData['panchayat_centre'],
         gender: userData['gender'],
         frnNumber: userData['frn_number'],
-        role: userData['role'],
         address: userData['address'],
         isAccountVerified: userData['isAccountVerified'],
         approved: userData['approved'],
@@ -159,7 +158,6 @@ class ApiManagerClass {
       return farmer;
     }
   }
-
   Future<bool> update({
     required String phone,
     required String firstName,
@@ -178,7 +176,7 @@ class ApiManagerClass {
   }) async {
     var request = http.MultipartRequest(
         'PUT',
-        Uri.parse('http://vgfa-env-1.eba-brkixzb4.ap-south-1.elasticbeanstalk.com/api/auth/farmer/update')
+        Uri.parse('https://vfgabackend.outhad.com/api/auth/farmer/update')
     );
 
     request.fields.addAll({
@@ -229,7 +227,7 @@ class ApiManagerClass {
     try {
       await init();
       var response = await dio.get(
-        'http://vgfa-env-1.eba-brkixzb4.ap-south-1.elasticbeanstalk.com/api/forms',
+        'https://vfgabackend.outhad.com/api/forms',
         options: Options(
           headers: headers,
         ),
@@ -262,7 +260,7 @@ class ApiManagerClass {
     try {
       await init();
       var response = await dio.request(
-        'http://vgfa-env-1.eba-brkixzb4.ap-south-1.elasticbeanstalk.com/api/forms/create',
+        'https://vfgabackend.outhad.com/api/forms/create',
         options: Options(
           method: 'POST',
           headers: headers,
@@ -282,7 +280,7 @@ class ApiManagerClass {
     try {
       await init();
       var response = await Dio().get(
-        'http://vgfa-env-1.eba-brkixzb4.ap-south-1.elasticbeanstalk.com/api/auth/farmer/status',
+        'https://vfgabackend.outhad.com//api/auth/farmer/status',
         options: Options(
           headers: headers,
         ),
@@ -308,7 +306,7 @@ class ApiManagerClass {
     try {
       await init();
       var response = await Dio().get(
-        'http://vgfa-env-1.eba-brkixzb4.ap-south-1.elasticbeanstalk.com/api/auth/farmer/status',
+        'https://vfgabackend.outhad.com/api/auth/farmer/status',
         options: Options(
           headers: headers,
         ),

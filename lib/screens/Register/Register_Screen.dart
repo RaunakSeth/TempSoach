@@ -43,7 +43,7 @@ class _Register_ScreenState extends State<Register_Screen> {
     try {
       Dio dio = Dio();
       Response response = await dio.post(
-        'https://vgfa-backend.onrender.com/api/auth/farmer/register',
+        'https://vfgabackend.outhad.com/api/auth/farmer/register',
         data: {
           "phone":"+91"+phoneController.text,
           "first_name": _firstNameController.text,

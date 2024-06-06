@@ -72,7 +72,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
       _addressController.text = response.address!;
       phone = response.phone!;
       setState(() {
-        profileName=response.imageUrl!=null?"http://vgfa-env-1.eba-brkixzb4.ap-south-1.elasticbeanstalk.com"+response.imageUrl.toString():null;
+        profileName=response.imageUrl!=null?response.imageUrl.toString():null;
         landOwnershipName = response.landOwnership.toString().substring(23);
         cropHarvestRecordsName = response.cropHarvestRecords.toString().substring(23);
         certificationName = response.certification.toString().substring(23);
@@ -92,25 +92,25 @@ class _ProfileScreenState extends State<ProfileScreen> {
       print(e.toString());
     }
   }
- void _toggleDocumentEdit()
- {
-   if(!_isEditingDoc)
-     {
-       setState(() {
-         icon=Icon(Icons.upload_file);
-         landOwnershipName = "Upload";
-         cropHarvestRecordsName = "Upload";
-         certificationName = "Upload";
-         soilHealthReportName = "Upload";
-         farmPhotosName = "Upload";
+  void _toggleDocumentEdit()
+  {
+    if(!_isEditingDoc)
+    {
+      setState(() {
+        icon=Icon(Icons.upload_file);
+        landOwnershipName = "Upload";
+        cropHarvestRecordsName = "Upload";
+        certificationName = "Upload";
+        soilHealthReportName = "Upload";
+        farmPhotosName = "Upload";
 
-       });
-     }
-     setState(() {
-       _isEditingDoc=!_isEditingDoc;
-     });
+      });
+    }
+    setState(() {
+      _isEditingDoc=!_isEditingDoc;
+    });
 
- }
+  }
   void _toggleEdit() {
     setState(() {
       _isEditing = !_isEditing;
@@ -118,15 +118,15 @@ class _ProfileScreenState extends State<ProfileScreen> {
   }
   Future<void> updatevalues() async {
     var response = await api.update(
-        phone: phone,
-        firstName: _firstNameController.text,
-        lastName: _lastNameController.text,
-        panchayatCentre: _panchayatController.text,
-        gender: _genderController.text,
-        dob: _dobController.text,
-        frnNumber: _frnNumberController.text,
-        address: _addressController.text,
-        );
+      phone: phone,
+      firstName: _firstNameController.text,
+      lastName: _lastNameController.text,
+      panchayatCentre: _panchayatController.text,
+      gender: _genderController.text,
+      dob: _dobController.text,
+      frnNumber: _frnNumberController.text,
+      address: _addressController.text,
+    );
     if (response) {
       Fluttertoast.showToast(
           msg: "Values updated successfully",
@@ -151,8 +151,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
   Future<void> updatevaluesDoc() async {
     setState(() {
       icon=SpinKitPouringHourGlass(
-      color: Colors.green,
-      size: 24.0,
+        color: Colors.green,
+        size: 24.0,
       );
     });
     var response = await api.update(
@@ -279,14 +279,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
             },
           ),
           IconButton(
-          icon: Icon(
-            Icons.logout,
-            color: Colors.black,
-            size: 30,
+            icon: Icon(
+              Icons.logout,
+              color: Colors.black,
+              size: 30,
+            ),
+            onPressed: _logout,
           ),
-          onPressed: _logout,
-        ),
-
         ],
       ),
       body: SafeArea(
@@ -306,20 +305,15 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     ),
                   ),
                 ),
-                const SizedBox(height: 20,),
+                const SizedBox(height: 20),
                 GestureDetector(
-                  onTap: () => _isEditingDoc?pickfile("Profile"):{},
-                  child: Image.network(
-                    profileName != null
-                        ? profileName!
-                        : "https://static.vecteezy.com/system/resources/thumbnails/009/292/244/small/default-avatar-icon-of-social-media-user-vector.jpg",
-                    errorBuilder: (BuildContext context, Object exception,
-                        StackTrace? stackTrace) {
-                      return const CircleAvatar(
-                        backgroundColor: Colors.amber,
-                        radius: 25,
-                      );
-                    },
+                  onTap: () => _isEditingDoc ? pickfile("Profile") : {},
+                  child: CircleAvatar(
+                    radius: 75,
+                    backgroundImage: profileName != null
+                        ? NetworkImage(profileName!)
+                        : NetworkImage("https://static.vecteezy.com/system/resources/thumbnails/009/292/244/small/default-avatar-icon-of-social-media-user-vector.jpg"),
+                    backgroundColor: Colors.transparent,
                   ),
                 ),
                 const SizedBox(
@@ -328,38 +322,23 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 SizedBox(
                   height: 40,
                   child: Row(
-                      children:<Widget> [
-                      Padding(padding: const EdgeInsets.all(4),),
-                       TextIconButton(
-                        text: 'Details',
-                        icon: Icon(
-                          Icons.description,
-                          color: Colors.black,
-                          size: 30,
-                        ),
-                        onPressed: ()=>{}
-                        // async {
-                        //   if (_isEditing) {
-                        //     await updatevalues();
-                        //   }
-                        //   _toggleEdit();
-                        // },
-                      )
-                      ],
-                    ),
+                    children: <Widget>[
+                      Padding(padding: const EdgeInsets.all(4)),
+                      TextIconButton(
+                          text: 'Details',
+                          icon: Icon(
+                            Icons.description,
+                            color: Colors.black,
+                            size: 30,
+                          ),
+                          onPressed: () => {}
+                      ),
+                    ],
                   ),
-                  // child: Text(
-                  //   'Edit',
-                  //   style: TextStyle(
-                  //     color: Colors.black,
-                  //     fontWeight: FontWeight.normal,
-                  //     fontSize: 30,
-                  //   )
-                  // ),
+                ),
                 Form(
                   key: _formKey,
                   child: Container(
-                    // Remove the fixed height to allow the container to adjust to its content
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(10.0),
                       border: Border.all(
@@ -419,7 +398,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             isEnabled: _isEditing
                         ),
                         const SizedBox(height: 10),
-                        // Add any additional fields here
                       ],
                     ),
                   ),
@@ -428,24 +406,18 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 SizedBox(
                   height: 40,
                   child: Row(
-                    children:<Widget> [
-                      Padding(padding: const EdgeInsets.all(4),),
-                        TextIconButton(
+                    children: <Widget>[
+                      Padding(padding: const EdgeInsets.all(4)),
+                      TextIconButton(
                           text: 'Update Documents',
                           icon: Icon(
                             Icons.cloud_upload,
                             color: Colors.black,
                             size: 30,
                           ),
-                          onPressed: ()=>{}
-                          // async {
-                          //   if (_isEditingDoc) {
-                          //     await updatevaluesDoc();
-                          //   }
-                          //   _toggleDocumentEdit();
-                          // },
-                        ),
-                      ]
+                          onPressed: () => {}
+                      ),
+                    ],
                   ),
                 ),
                 Form(
@@ -455,17 +427,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        // DocumentUploadView(
-                        //   title: 'Profile Photo',
-                        //   description: '*Please upload your profile photo.',
-                        //   onPressed: () => pickfile("ProfilePhoto"),
-                        //   buttonText: "Pick Profile Photo",
-                        // ),
-                        // const SizedBox(height: 10),
                         DocumentUploadView(
                           title: 'Land Ownership',
                           description: '*Land ownership certificate (patta), Land lease agreement, Land records documentation',
-                          onPressed: () => _isEditingDoc?pickfile("LandOwnership"):{},
+                          onPressed: () => _isEditingDoc ? pickfile("LandOwnership") : {},
                           icon: icon,
                           buttonText: landOwnershipName == null ? "Upload" : landOwnershipName.toString(),
                         ),
@@ -473,7 +438,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         DocumentUploadView(
                           title: 'Crop Harvest Records',
                           description: '*Harvest Summary Reports, Crop Yield Records, Production Volume Logs',
-                          onPressed: () => _isEditingDoc?pickfile("CropHarvestRecords"):{},
+                          onPressed: () => _isEditingDoc ? pickfile("CropHarvestRecords") : {},
                           icon: icon,
                           buttonText: cropHarvestRecordsName == null ? "Upload" : cropHarvestRecordsName.toString(),
                         ),
@@ -481,7 +446,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         DocumentUploadView(
                           title: 'Certification',
                           description: '*Organic Certification Documents, Good Agricultural Practices (GAP) Certification, Fair Trade Certification',
-                          onPressed: () => _isEditingDoc?pickfile("Certification"):{},
+                          onPressed: () => _isEditingDoc ? pickfile("Certification") : {},
                           icon: icon,
                           buttonText: certificationName == null ? "Upload" : certificationName.toString(),
                         ),
@@ -489,7 +454,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         DocumentUploadView(
                           title: 'Soil Health Report',
                           description: '*Soil Testing Results, Soil Quality Analysis, Soil Fertility Report',
-                          onPressed: () => _isEditingDoc?pickfile("SoilHealthReport"):{},
+                          onPressed: () => _isEditingDoc ? pickfile("SoilHealthReport") : {},
                           icon: icon,
                           buttonText: soilHealthReportName == null ? "Upload" : soilHealthReportName.toString(),
                         ),
@@ -497,7 +462,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         DocumentUploadView(
                           title: 'Farm Photos',
                           description: '*Current Crop Photos, Farm Infrastructure Images, Seasonal Progress Photos',
-                          onPressed: () => _isEditingDoc?pickfile("FarmPhotos"):{},
+                          onPressed: () => _isEditingDoc ? pickfile("FarmPhotos") : {},
                           icon: icon,
                           buttonText: farmPhotosName == null ? "Upload" : farmPhotosName.toString(),
                         ),
@@ -511,34 +476,34 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     height: 20,
                   ),
                 ),
-            Visibility(
-              visible: _isEditing || _isEditingDoc,
-              child:SizedBox(
-                  width: double.infinity,
-                  height: 50,
-                  child: CustomButton(
-                    onPressed: () async {
-                      if(_isEditing) {
-                        await updatevalues();
-                        _toggleEdit();
-                      }
-                      if(_isEditingDoc) {
-                        await updatevaluesDoc();
-                        _toggleDocumentEdit();
-                      }
-                    },
-                    text: "Save",
+                Visibility(
+                  visible: _isEditing || _isEditingDoc,
+                  child: SizedBox(
+                    width: double.infinity,
+                    height: 50,
+                    child: CustomButton(
+                      onPressed: () async {
+                        if (_isEditing) {
+                          await updatevalues();
+                          _toggleEdit();
+                        }
+                        if (_isEditingDoc) {
+                          await updatevaluesDoc();
+                          _toggleDocumentEdit();
+                        }
+                      },
+                      text: "Save",
+                    ),
                   ),
                 ),
-              ),
                 Visibility(
                   visible: _isEditing || _isEditingDoc,
                   child: SizedBox(
                     height: 20,
                   ),
                 ),
-                SizedBox(height: 30,),
-            ],
+                SizedBox(height: 30),
+              ],
             ),
           ),
         ),
@@ -590,5 +555,4 @@ class _ProfileScreenState extends State<ProfileScreen> {
       ],
     );
   }
-
 }

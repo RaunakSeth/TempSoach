@@ -19,16 +19,16 @@ class CustomOutlinedButton extends BaseButton {
     EdgeInsets? margin,
     required String text,
   }) : super(
-          text: text,
-          onPressed: onPressed,
-          buttonStyle: buttonStyle,
-          isDisabled: isDisabled,
-          buttonTextStyle: buttonTextStyle,
-          height: height,
-          alignment: alignment,
-          width: width,
-          margin: margin,
-        );
+    text: text,
+    onPressed: onPressed,
+    buttonStyle: buttonStyle,
+    isDisabled: isDisabled,
+    buttonTextStyle: buttonTextStyle,
+    height: height,
+    alignment: alignment,
+    width: width,
+    margin: margin,
+  );
 
   final BoxDecoration? decoration;
 
@@ -42,32 +42,56 @@ class CustomOutlinedButton extends BaseButton {
   Widget build(BuildContext context) {
     return alignment != null
         ? Align(
-            alignment: alignment ?? Alignment.center,
-            child: buildOutlinedButtonWidget,
-          )
+      alignment: alignment ?? Alignment.center,
+      child: buildOutlinedButtonWidget,
+    )
         : buildOutlinedButtonWidget;
   }
 
   Widget get buildOutlinedButtonWidget => Container(
-        height: this.height ?? 42,
-        width: this.width ?? double.maxFinite,
-        margin: margin,
-        decoration: decoration,
-        child: OutlinedButton(
-          style: buttonStyle,
-          onPressed: isDisabled ?? false ? null : onPressed ?? () {},
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              leftIcon ?? const SizedBox.shrink(),
-              Text(
-                text,
-                style: buttonTextStyle ?? CustomTextStyles.titleMediumGreenA700,
-              ),
-              rightIcon ?? const SizedBox.shrink(),
-            ],
+    height: this.height ?? 42,
+    width: this.width ?? double.maxFinite,
+    margin: margin,
+    decoration: decoration,
+    child: OutlinedButton(
+      style: buttonStyle?.copyWith(
+        backgroundColor: MaterialStateProperty.all<Color>(Color(0xFFE9FFED)),
+        side: MaterialStateProperty.all<BorderSide>(
+          BorderSide(color: Color(0xFF11AB2F)),
+        ),
+        shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+          RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(12.0), // Adjust the radius as needed
           ),
         ),
-      );
+      ) ?? ButtonStyle(
+        backgroundColor: MaterialStateProperty.all<Color>(Color(0xFFE9FFED)),
+        side: MaterialStateProperty.all<BorderSide>(
+          BorderSide(color: Color(0xFF11AB2F)),
+        ),
+        shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+          RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(12.0), // Adjust the radius as needed
+          ),
+        ),
+      ),
+      onPressed: isDisabled ?? false ? null : onPressed ?? () {},
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          leftIcon ?? const SizedBox.shrink(),
+          Text(
+            text,
+            style: TextStyle(
+              color: Color(0xFF11AB2F),
+              fontWeight: FontWeight.bold,
+              fontSize: 20,
+            ),
+          ),
+          rightIcon ?? const SizedBox.shrink(),
+        ],
+      ),
+    ),
+  );
 }
