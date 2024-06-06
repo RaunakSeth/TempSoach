@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:pinput/pinput.dart';
-import 'package:testing/screens/Login/Login_Screen.dart';
 import 'package:testing/screens/navScreen.dart';
 import 'package:testing/widget/CustomButton.dart';
 import '../../ApiManagerClass.dart';
@@ -46,6 +45,7 @@ class _VerifyScreenState extends State<VerifyScreen> {
 
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
       body: SafeArea(
         child:Center(
@@ -57,13 +57,21 @@ class _VerifyScreenState extends State<VerifyScreen> {
                 Align(
                   alignment: Alignment.topLeft,
                   child: GestureDetector(
-                    onTap: () => Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=> Login_Screen())),
+                    onTap: () => Navigator.of(context).pop(),
                     child: const Icon(Icons.arrow_back),
                   ),
                 ),
-                Image.asset(
-                  "assets/asset4.png",
+                Container(
+                  width: 200,
                   height: 200,
+                  padding: const EdgeInsets.all(20.0),
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    color: Colors.green.shade50,
+                  ),
+                  child: Image.asset(
+                    "assets/register.png",
+                  ),
                 ),
                 const SizedBox(height: 20),
                 const Text(
@@ -135,7 +143,7 @@ class _VerifyScreenState extends State<VerifyScreen> {
                     style: TextStyle(
                       fontSize: 14,
                       fontWeight: FontWeight.bold,
-                      color: Colors.blue.shade700,
+                      color: Colors.black38,
                     ),
                   ),
                 ),

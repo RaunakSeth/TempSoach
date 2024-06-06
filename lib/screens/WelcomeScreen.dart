@@ -35,40 +35,33 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
       body: SafeArea(
         child: Center(
           child: Padding(
-            padding: const EdgeInsets.only(top: 175, bottom: 30,left: 35, right: 35),
+            padding: const EdgeInsets.symmetric(vertical:  25, horizontal: 35),
             child: Column(
+              mainAxisAlignment: MainAxisAlignment.center ,
               children: [
+                Image.asset(
+                  "assets/asset3.gif",
+                  height: 300,
+                ),
+                const SizedBox(height: 20),
                 const Text(
-                  "Welcome to VFGA",
+                  "Let's get started",
                   style: TextStyle(
-                    fontSize: 32,
+                    fontSize: 20,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
                 const SizedBox(height: 10),
-                Image.asset(
-                    "assets/vfgaLogo.png",
-                    height: 175,
+                const Text(
+                  "Jai Jawan! Jai Kisaan!",
+                  style: TextStyle(
+                    fontSize: 20,
+                    color: Colors.black38,
+                    fontWeight: FontWeight.bold,
                   ),
-                const SizedBox(height: 20),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [ 
-                    Text(
-                      "Powered By Soach", 
-                      style: TextStyle(
-                        fontSize: 20, 
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    SizedBox(
-                      height: 30,
-                      width: 30,
-                      child: Image.asset('assets/logo_soach.png'),
-                    ),
-                  ],
                 ),
-                const SizedBox(height: 175),
+                const SizedBox(height: 20),
+                //CustomButton
                 SizedBox(
                   width: double.infinity,
                   height: 50,
