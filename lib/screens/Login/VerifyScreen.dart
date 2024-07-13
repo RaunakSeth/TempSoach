@@ -42,10 +42,44 @@ class _VerifyScreenState extends State<VerifyScreen> {
       print(e.toString()); // Print any errors for debugging
     }
   }
+  Future<void> LoginUser(BuildContext context) async {
+    try {
+      String phone = widget.phone ?? ""; // Default value if widget.phone is null
+      bool response = await api.login(phone: phone);
+      if (response) {
+        Fluttertoast.showToast(
+          msg: "Otp is Sent",
+          toastLength: Toast.LENGTH_LONG,
+          gravity: ToastGravity.BOTTOM,
+          timeInSecForIosWeb: 1,
+          backgroundColor: Colors.grey,
+          textColor: Colors.white,
+          fontSize: 16.0,
+        );
+      } else {
+        Fluttertoast.showToast(
+          msg: "Error in Login",
+          toastLength: Toast.LENGTH_LONG,
+          gravity: ToastGravity.BOTTOM,
+          timeInSecForIosWeb: 1,
+          backgroundColor: Colors.grey,
+          textColor: Colors.white,
+          fontSize: 16.0,
+        );
+      }
+    } catch (e) {
+      print(e.toString());
+    }
+  }
+  String getMaskedPhoneNumber(String? phone) {
+    if (phone == null || phone.length < 4) return phone ?? "";
+    return '******' + phone.substring(phone.length - 4);
+  }
 
 
   @override
   Widget build(BuildContext context) {
+    final maskedPhone = getMaskedPhoneNumber(widget.phone);
     return Scaffold(
       body: SafeArea(
         child:Center(
@@ -74,8 +108,8 @@ class _VerifyScreenState extends State<VerifyScreen> {
                   ),
                 ),
                 const SizedBox(height: 10),
-                const Text(
-                  "Enter the OTP send to your phone number",
+                Text(
+                  "Enter the OTP sent to $maskedPhone",
                   style: TextStyle(
                     fontSize: 14,
                     color: Colors.black38,
@@ -83,8 +117,8 @@ class _VerifyScreenState extends State<VerifyScreen> {
                   ),
                   textAlign: TextAlign.center,
                 ),
-                const SizedBox(height: 20),
-                Expanded(
+                Flexible(
+                  fit: FlexFit.loose,
                   child: Pinput(
                     length: 6,
                     showCursor: true,
@@ -109,7 +143,6 @@ class _VerifyScreenState extends State<VerifyScreen> {
                     },
                   ),
                 ),
-                const SizedBox(height: 25),
                 SizedBox(
                   width: MediaQuery.of(context).size.width,
                   height: 50,
@@ -117,7 +150,6 @@ class _VerifyScreenState extends State<VerifyScreen> {
                     text: "Verify",
                     onPressed: () => verifyOTP(context),
                   ),
-
                 ),
                 const SizedBox(height: 20),
                 Text(
@@ -130,7 +162,7 @@ class _VerifyScreenState extends State<VerifyScreen> {
                 ),
                 const SizedBox(height: 15),
                 GestureDetector(
-                  onTap: () => verifyOTP(context),
+                  onTap: () => LoginUser(context),
                   child:  Text("Resend code.",
                     style: TextStyle(
                       fontSize: 14,

@@ -99,7 +99,7 @@ class _Register_ScreenState extends State<Register_Screen> {
                 ),
                 const SizedBox(height: 10),
                 const Text(
-                  "Add your phone number. We'll send you a verification code",
+                  "Create your account to get started.",
                   style: TextStyle(
                     fontSize: 14,
                     color: Colors.black38,

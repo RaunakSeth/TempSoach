@@ -65,7 +65,7 @@ class _Login_ScreenState extends State<Login_Screen> {
       body: SafeArea(
         child: Center(
           child: Padding(
-            padding: const EdgeInsets.symmetric(vertical: 25, horizontal: 35),
+            padding:  EdgeInsets.symmetric(vertical: 25, horizontal: 35),
             child: Column(
               children: [
                 Image.asset(
@@ -82,7 +82,7 @@ class _Login_ScreenState extends State<Login_Screen> {
                 ),
                 const SizedBox(height: 10),
                 const Text(
-                  "Add your phone number. We'll send you a verification code",
+                  "Please provide your phone number to receive a verification code.",
                   style: TextStyle(
                     fontSize: 14,
                     color: Colors.black38,

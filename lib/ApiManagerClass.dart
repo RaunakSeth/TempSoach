@@ -86,8 +86,6 @@ class ApiManagerClass {
         'https://vfgabackend.outhad.com/api/auth/farmer/login',
         data: data,
       );
-      print(json.encode(response.data));
-      print(response.statusMessage);
       return true;
     } catch (e) {
       print("Error function login: $e");

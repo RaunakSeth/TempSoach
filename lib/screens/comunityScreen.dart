@@ -30,13 +30,12 @@ class _CommunityScreenState extends State<CommunityScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        toolbarHeight: MediaQuery.of(context).size.height * 0.10,
+        toolbarHeight: MediaQuery.of(context).size.height * 0.08,
         automaticallyImplyLeading: false,
         backgroundColor: Colors.transparent,
         elevation: 0.0,
         flexibleSpace: ClipPath(
           child: Container(
-            height: MediaQuery.of(context).size.height * 0.14,
             width: MediaQuery.of(context).size.width,
             decoration: const BoxDecoration(
               borderRadius: BorderRadius.only(
@@ -45,32 +44,35 @@ class _CommunityScreenState extends State<CommunityScreen> {
               ),
               color: Color(0xFF11AB2F),
             ),
-            child: Column(
-                children: [
-                  SizedBox(height: 15,),
-                  Padding(
-                    padding: EdgeInsets.only(top: 28, left: 16, right: 16),
-                    child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        AutoSizeText(
-                          "Community",
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              color: Colors.white),
-                          maxLines: 1,
-                          minFontSize: 40,
-                        ),
-                        Icon(
-                          Icons.notifications,
-                          color: Colors.white,
-                          size: MediaQuery.of(context).size.width * 0.07,
-                        ),
-                      ],
+            child: Align(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    SizedBox(height: 15,),
+                    Padding(
+                      padding: EdgeInsets.only(left: 16, right: 16),
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          AutoSizeText(
+                            "Community",
+                            style: TextStyle(
+                                fontWeight: FontWeight.w500,
+                                color: Colors.white),
+                            maxLines: 1,
+                            minFontSize: 40,
+                          ),
+                          Icon(
+                            Icons.notifications,
+                            color: Colors.white,
+                            size: MediaQuery.of(context).size.width * 0.07,
+                          ),
+                        ],
+                      ),
                     ),
-                  ),
-                ]
+                  ]
+              ),
             ),
           ),
         ),
@@ -79,6 +81,7 @@ class _CommunityScreenState extends State<CommunityScreen> {
         padding: EdgeInsets.only(left: 16, right: 16),
         child: Column(
           children: [
+            SizedBox(height: 10,),
             Align(
               alignment: Alignment.centerLeft,
               child: Text(
@@ -148,9 +151,10 @@ class UserListItem extends StatelessWidget {
             Expanded(
               child: Text(
                 name,
-                style: const TextStyle(
+                style: TextStyle(
+                  color: Color(0xFF000E08),
                   fontSize: 24.0,
-                  fontWeight: FontWeight.w400,
+                  fontWeight: FontWeight.w500,
                 ),
               ),
             ),

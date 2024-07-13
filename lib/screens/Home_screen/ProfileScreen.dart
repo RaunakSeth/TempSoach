@@ -263,17 +263,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
             onPressed: () async {
               if (!_isEditing) {
                 _toggleEdit();
-              }
-            },
-          ),
-          IconButton(
-            icon: Icon(
-              Icons.cloud_upload,
-              color: Colors.black,
-              size: 30,
-            ),
-            onPressed: () async {
-              if (!_isEditingDoc) {
                 _toggleDocumentEdit();
               }
             },
@@ -305,15 +294,43 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     ),
                   ),
                 ),
-                const SizedBox(height: 20),
+                SizedBox(
+                  height: 10,
+                ),
                 GestureDetector(
-                  onTap: () => _isEditingDoc ? pickfile("Profile") : {},
-                  child: CircleAvatar(
-                    radius: 75,
-                    backgroundImage: profileName != null
-                        ? NetworkImage(profileName!)
-                        : NetworkImage("https://static.vecteezy.com/system/resources/thumbnails/009/292/244/small/default-avatar-icon-of-social-media-user-vector.jpg"),
-                    backgroundColor: Colors.transparent,
+                  onTap: () {
+                    if (_isEditingDoc) pickfile("Profile");
+                  },
+                  child: Stack(
+                    children: [
+                      CircleAvatar(
+                        radius: MediaQuery.of(context).size.height * 0.08,
+                        backgroundImage: profileName != null ? NetworkImage(profileName!) : null,
+                        child: profileName == null
+                            ? Icon(
+                          Icons.person,
+                          size: 50,
+                        )
+                            : null,
+                        backgroundColor: Colors.grey[200],
+                        foregroundColor: Colors.grey,
+                      ),
+                      if (_isEditingDoc)
+                        Positioned(
+                          right: 0,
+                          bottom: 0,
+                          child: CircleAvatar(
+                            radius: MediaQuery.of(context).size.height * 0.02,
+                            backgroundColor: Colors.white,
+                            child: Image.asset(
+                              'assets/circle.png',
+                              width: MediaQuery.of(context).size.height * 0.04,
+                              height: MediaQuery.of(context).size.height * 0.04,
+                              fit: BoxFit.contain,
+                            ),
+                          ),
+                        ),
+                    ],
                   ),
                 ),
                 const SizedBox(

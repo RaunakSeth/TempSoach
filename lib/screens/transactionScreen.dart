@@ -23,13 +23,12 @@ class _TransactionScreenState extends State<TransactionScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        toolbarHeight: MediaQuery.of(context).size.height * 0.10,
+        toolbarHeight: MediaQuery.of(context).size.height * 0.08,
         automaticallyImplyLeading: false,
         backgroundColor: Colors.transparent,
         elevation: 0.0,
         flexibleSpace: ClipPath(
           child: Container(
-            height: MediaQuery.of(context).size.height * 0.14,
             width: MediaQuery.of(context).size.width,
             decoration: const BoxDecoration(
               borderRadius: BorderRadius.only(
@@ -39,10 +38,11 @@ class _TransactionScreenState extends State<TransactionScreen> {
               color: Color(0xFF11AB2F),
             ),
             child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   SizedBox(height: 18,),
                   Padding(
-                    padding: EdgeInsets.only(top: 28, left: 16, right: 16),
+                    padding: EdgeInsets.only( left: 16, right: 16),
                     child: Row(
                       crossAxisAlignment: CrossAxisAlignment.center,
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -50,7 +50,7 @@ class _TransactionScreenState extends State<TransactionScreen> {
                         AutoSizeText(
                           "Transaction history",
                           style: TextStyle(
-                              fontWeight: FontWeight.bold,
+                              fontWeight: FontWeight.w500,
                               color: Colors.white),
                           maxLines: 1,
                           minFontSize: 34,

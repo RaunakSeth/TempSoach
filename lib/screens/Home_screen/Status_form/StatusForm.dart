@@ -12,6 +12,7 @@ class StatusFrom extends StatefulWidget {
 
 class _StatusFromState extends State<StatusFrom> {
   int firstIndex = 0;
+  int newindex =0;
   String patidarRemark = '';
   ApiManagerClass api = ApiManagerClass();
   List<Status> statuses = [
@@ -60,28 +61,28 @@ class _StatusFromState extends State<StatusFrom> {
         ),
       ),
       body: Padding(
-        padding: EdgeInsets.all(16),
+        padding: EdgeInsets.only(left: 16, right: 16),
         child: SingleChildScrollView(
           child: Column(
             children: [
             Align(
             alignment: Alignment.topLeft,
             child: SizedBox(
-              height: 90,
-              width: 300,
+              height: MediaQuery.of(context).size.height*0.09,
+              width: MediaQuery.of(context).size.width*0.7,
               child: Text(
                 "Check Application Status",
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
                   color: Colors.black,
-                  fontSize: 34,
+                  fontSize: 28,
                 ),
               ),
             ),
           ),
           LayoutBuilder(
             builder: (context, constraints) {
-              double containerHeight = 150;
+              double containerHeight = MediaQuery.of(context).size.height*0.12;
               double containerWidth = constraints.maxWidth;
 
               if (containerWidth < 400) {
@@ -103,8 +104,8 @@ class _StatusFromState extends State<StatusFrom> {
                     return Container(
                       width: tileWidth,
                       child: StatusTimelineTile(
-                        isFirst: index == firstIndex,
-                        isInProgress: index == firstIndex + 1,
+                        isFirst: index == newindex,
+                        isInProgress: index == newindex + 1,
                         isLast: index == statuses.length - 1,
                         status: status,
                       ),
@@ -149,8 +150,8 @@ class _StatusFromState extends State<StatusFrom> {
                     child: Text(
                       "You have successfully submitted the application form for listing of your crop production as VFGA unit.",
                       style: TextStyle(
-                        fontWeight: FontWeight.w500,
-                        color: Colors.black,
+                        fontWeight: FontWeight.w400,
+                        color: Color(0xFF434343),
                         fontSize: 16,
                       ),
                     ),
@@ -196,16 +197,16 @@ class _StatusFromState extends State<StatusFrom> {
                     decoration: BoxDecoration(
                       color: Color(0xFFe7f7ea),
                       borderRadius: BorderRadius.circular(10),
-                      border: Border.all(color: Colors.green, width: 2),
+                      border: Border.all(color: Color(0xFF11AB2F), width: 2),
                     ),
                     child: Padding(
                       padding: EdgeInsets.all(4),
                       child: Text(
-                        patidarRemark,
+                        "No Remarks",
                         style: TextStyle(
-                          color: Colors.green,
+                          color: Color(0xFF007517),
                           fontSize: 16,
-                          fontWeight: FontWeight.w600,
+                          fontWeight: FontWeight.w400,
                         ),
                       ),
                     ),
@@ -225,16 +226,16 @@ class _StatusFromState extends State<StatusFrom> {
                     decoration: BoxDecoration(
                       color: Color(0xFFe7f7ea),
                       borderRadius: BorderRadius.circular(10),
-                      border: Border.all(color: Colors.green, width: 2),
+                      border: Border.all(color: Color(0xFF11AB2F), width: 2),
                     ),
                     child: Padding(
                       padding: EdgeInsets.all(4),
                       child: Text(
                         "No Remarks",
                         style: TextStyle(
-                          color: Colors.green,
+                          color: Color(0xFF007517),
                           fontSize: 16,
-                          fontWeight: FontWeight.w600,
+                          fontWeight: FontWeight.w400,
                         ),
                       ),
                     ),
@@ -274,18 +275,18 @@ class _StatusFromState extends State<StatusFrom> {
             ],
           ),
                 SizedBox(
-            height: 100,
-            width: 350,
-            child: Text(
-              firstIndex == 0
-                  ? "You have successfully submitted the application form for listing of your crop production as VFGA unit."
-                  : firstIndex == 1
-                  ? "Your application is approved by Pattidar."
-                  : firstIndex == 2
-                  ? "Your application is approved by Gram Panchayat."
-                  : firstIndex == 3
-                  ? "Your application is under review of government office."
-                  : "Application is rejected.",
+                  height: MediaQuery.of(context).size.height *0.03,
+                  width: 350,
+                  child: Text(
+                    firstIndex == 0
+                        ? "You have successfully submitted the application form for listing of your crop production as VFGA unit."
+                        : firstIndex == 1
+                        ? "Your application is approved by Pattidar."
+                    : firstIndex == 2
+                        ? "Your application is approved by Gram Panchayat."
+                    : firstIndex == 3
+                        ? "Your application is under review of government office."
+                        : "Application is rejected.",
               style: TextStyle(
                 color: Colors.black,
                 fontSize: 16,
@@ -296,7 +297,6 @@ class _StatusFromState extends State<StatusFrom> {
               ],
             ),
           ),
-              SizedBox(height: 2,),
             ],
           ),
         ),

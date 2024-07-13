@@ -40,9 +40,10 @@ class _NavScreenState extends State<NavScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xFFFCFFFD),
+      backgroundColor: Colors.white,
       bottomNavigationBar: AnimatedNotchBottomBar(
         showLabel: true,
+        color: Colors.white,
         itemLabelStyle: const TextStyle(
           color: Colors.grey,
           fontSize: 8.0,

@@ -35,7 +35,8 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
       body: SafeArea(
         child: Center(
           child: Padding(
-            padding: const EdgeInsets.only(top: 175, bottom: 30,left: 35, right: 35),
+            padding: EdgeInsets.only(top: MediaQuery.of(context).size.height*0.25, bottom: MediaQuery.of(context).size.height*0.02,
+                left: MediaQuery.of(context).size.height*0.035, right: MediaQuery.of(context).size.height*0.035),
             child: Column(
               children: [
                 const Text(
@@ -68,7 +69,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                     ),
                   ],
                 ),
-                const SizedBox(height: 175),
+                SizedBox(height: MediaQuery.of(context).size.height*0.15,),
                 SizedBox(
                   width: double.infinity,
                   height: 50,
@@ -82,7 +83,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                     text: "Get Started",
                   ),
                 ),
-                const SizedBox(height: 10),
+                const SizedBox(height: 20),
                 GestureDetector(
                   onTap: () {
                     Navigator.pushReplacement(context, MaterialPageRoute(
@@ -90,7 +91,11 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                     ),
                     );
                   },
-                  child: Text("If you are already registered click here."),
+                  child: Text("If you are already registered click here.",
+                  style: TextStyle(
+                    color: Colors.blue
+                  ),
+                  ),
                 ),
               ],
             ),

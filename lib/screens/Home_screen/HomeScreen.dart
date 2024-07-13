@@ -25,12 +25,12 @@ class _HomeScreenState extends State<HomeScreen> {
   ApiManagerClass api = ApiManagerClass();
   Timer? _timer;
 
-  @override
-  void initState() {
-    super.initState();
-    init();
-    _startPeriodicStatusCheck();
-  }
+  // @override
+  // void initState() {
+  //   super.initState();
+  //   init();
+  //   _startPeriodicStatusCheck();
+  // }
 
   @override
   void dispose() {
@@ -54,11 +54,11 @@ class _HomeScreenState extends State<HomeScreen> {
     }
   }
 
-  void _startPeriodicStatusCheck() {
-    _timer = Timer.periodic(Duration(hours: 2, seconds: 0), (timer) {
-      _checkStatus();
-    });
-  }
+  // void _startPeriodicStatusCheck() {
+  //   _timer = Timer.periodic(Duration(hours: 2, seconds: 0), (timer) {
+  //     _checkStatus();
+  //   });
+  // }
 
   Future<void> _checkStatus() async {
     try {
@@ -201,7 +201,7 @@ class _HomeScreenState extends State<HomeScreen> {
             children: <Widget>[
               SizedBox(height: 10),
               Container(
-                height: MediaQuery.of(context).size.height * 0.31, // Adjust height relative to screen height
+                height: MediaQuery.of(context).size.height * 0.30, // Adjust height relative to screen height
                 margin: const EdgeInsets.symmetric(horizontal: 10),
                 padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
                 decoration: AppDecoration.outlineGreenA.copyWith(
@@ -230,6 +230,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             text: "Apply",
                             margin: const EdgeInsets.only(right: 11),
                             onPressed: () {
+                              _checkStatus();
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(builder: (context) => ApplyForm()),
@@ -258,14 +259,14 @@ class _HomeScreenState extends State<HomeScreen> {
               SizedBox(height: MediaQuery.of(context).size.height * 0.01),
               Container(
                 width: MediaQuery.of(context).size.width * 0.90, // Adjust width relative to screen width
-                height: innerContainerHeight * 1.0,
-                padding: const EdgeInsets.all(12),
+                height: MediaQuery.of(context).size.height * 0.20,
+                padding: EdgeInsets.all(6),
                 decoration: AppDecoration.gradientGreenToGreenE.copyWith(
                   borderRadius: BorderRadiusStyle.roundedBorder12,
                 ),
-                child: const Column(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    SizedBox(height: 10),
                     Text(
                       "Total Listed Units",
                       style: TextStyle(
