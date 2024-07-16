@@ -117,6 +117,7 @@ class _HomeScreenState extends State<HomeScreen> {
     double containerHeight = MediaQuery.of(context).size.height * 1.5; // Adjust height relative to screen height
     double innerContainerHeight = MediaQuery.of(context).size.height * 0.24; // Adjust height for the inner container
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
         toolbarHeight: MediaQuery.of(context).size.height * 0.08, // Adjust the height as per your requirement
         automaticallyImplyLeading: false,

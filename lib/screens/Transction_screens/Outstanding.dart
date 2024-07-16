@@ -36,35 +36,38 @@ class _OutstandingState extends State<Outstanding> {
 
   @override
   Widget build(BuildContext context) {
-    return Center(
-      child: Padding(
-        padding: const EdgeInsets.all(24),
-        child: isLoading
-            ? CircularProgressIndicator()
-            : !(formModel!.isEmpty())
-            ? ListView.builder(
-          itemCount: 1,
-          itemBuilder: (BuildContext context, int index) {
-            return UserListItem(
-              name: formModel!.farmer!.firstName ?? 'Unknown',
-              imagePath: formModel!.farmer!.imageUrl ?? 'assets/person4.png',
-              cropSeason: formModel!.cropType!, // Example value
-              status: 'Received', // Example value
-              cropType: formModel!.cropType ?? 'Unknown',
-              cropAmount: formModel!.quantity?.toString() ?? '0.0',
-              expectedQuantity: formModel!.expectedProduction?.toString() ?? '0.0',
-              actualQuantity: formModel!.quantity?.toString() ?? '0.0',
-              applicationDate: formModel!.farmer!.createdAt?.toString().split(' ')[0] ?? 'Unknown',
-              expectedHarvestDate: '15/06/2025', // Example value
-              location: formModel!.farmer!.address ?? 'Unknown',
-              pricePerUnit: '12', // Example value
-              totalUnits: formModel!.quantity?.toString() ?? '0.0',
-            );
-          },
-        )
-            : Text('Form not found or not submitted yet',
-          style: TextStyle(color: Colors.black,
-              fontSize: 17),),
+    return Scaffold(
+      backgroundColor: Colors.white,
+      body: Center(
+        child: Padding(
+          padding: const EdgeInsets.all(24),
+          child: isLoading
+              ? CircularProgressIndicator()
+              : !(formModel!.isEmpty())
+              ? ListView.builder(
+            itemCount: 1,
+            itemBuilder: (BuildContext context, int index) {
+              return UserListItem(
+                name: formModel!.farmer!.firstName ?? 'Unknown',
+                imagePath: formModel!.farmer!.imageUrl ?? 'assets/person4.png',
+                cropSeason: formModel!.cropType!, // Example value
+                status: 'Received', // Example value
+                cropType: formModel!.cropType ?? 'Unknown',
+                cropAmount: formModel!.quantity?.toString() ?? '0.0',
+                expectedQuantity: formModel!.expectedProduction?.toString() ?? '0.0',
+                actualQuantity: formModel!.quantity?.toString() ?? '0.0',
+                applicationDate: formModel!.farmer!.createdAt?.toString().split(' ')[0] ?? 'Unknown',
+                expectedHarvestDate: '15/06/2025', // Example value
+                location: formModel!.farmer!.address ?? 'Unknown',
+                pricePerUnit: '12', // Example value
+                totalUnits: formModel!.quantity?.toString() ?? '0.0',
+              );
+            },
+          )
+              : Text('Form not found or not submitted yet',
+            style: TextStyle(color: Colors.black,
+                fontSize: 17),),
+        ),
       ),
     );
   }

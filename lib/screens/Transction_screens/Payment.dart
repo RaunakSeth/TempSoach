@@ -5,12 +5,15 @@ class Payment extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return  Center(
-      child: Padding(
-        padding: const EdgeInsets.all(24),
-        child:Text('Payment Not Processed Yet',
-          style: TextStyle(color: Colors.black,
-              fontSize: 17),),),);
+    return  Scaffold(
+      backgroundColor: Colors.white,
+      body: Center(
+        child: Padding(
+          padding: const EdgeInsets.all(24),
+          child:Text('Payment Not Processed Yet',
+            style: TextStyle(color: Colors.black,
+                fontSize: 17),),),),
+    );
     // Center(
     //   child: Padding(
     //     padding: const EdgeInsets.all(24),
