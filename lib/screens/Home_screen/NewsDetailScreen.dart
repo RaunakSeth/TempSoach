@@ -29,7 +29,7 @@ class NewsDetailPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(foregroundColor: Colors.white,toolbarHeight: 60,backgroundColor: Color(0xFF11AB2F)),
+      appBar: AppBar(toolbarHeight: 2),
       backgroundColor: Colors.white.withOpacity(0.88),
       body: Stack(
         children: [
@@ -85,7 +85,7 @@ class NewsDetailPage extends StatelessWidget {
             child: Container(
               padding: const EdgeInsets.all(2),
               decoration: BoxDecoration(
-                color: Colors.green.withOpacity(0.25),
+                color: Colors.grey.withOpacity(0.8),
                 borderRadius: BorderRadius.circular(36.0),
                 boxShadow: const [
                   BoxShadow(
@@ -135,6 +135,38 @@ class NewsDetailPage extends StatelessWidget {
                     ),
                   ),
                 ),
+              ),
+            ),
+          ),
+          Positioned(
+            top: 40,
+            left: 16,
+            child: Container(
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                color: Colors.grey.withOpacity(0.9),
+              ),
+              child: IconButton(
+                icon: const Icon(Icons.arrow_back_ios_new_rounded, color: Colors.black),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              ),
+            ),
+          ),
+          Positioned(
+            bottom: 40,
+            right: 16,
+            child: Container(
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                color: Colors.green.withOpacity(0.7),
+              ),
+              child: IconButton(
+                icon: const Icon(Icons.bookmark_add, color: Colors.white),
+                onPressed: () {
+                  // Add bookmark functionality here
+                },
               ),
             ),
           ),
