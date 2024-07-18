@@ -1,5 +1,4 @@
 import 'package:auto_size_text/auto_size_text.dart';
-import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:testing/screens/Home_screen/ApplyForm.dart';
 import 'package:testing/screens/Home_screen/ProfileScreen.dart';
@@ -7,6 +6,7 @@ import 'package:testing/screens/Home_screen/Status_form/StatusForm.dart';
 import 'package:testing/theme/app_decoration.dart';
 import 'package:testing/widgets/customButton2.dart';
 import 'package:testing/widgets/custom_outlined_button.dart';
+import 'package:testing/widgets/news/news_box.dart';
 import 'dart:async';
 
 import '../../ApiManagerClass.dart';
@@ -298,8 +298,8 @@ class _HomeScreenState extends State<HomeScreen> {
               SizedBox(height: MediaQuery.of(context).size.height * 0.01),
               Container(
                 width: double.infinity,
-                height: MediaQuery.of(context).size.height * 0.2, // Adjust height relative to screen height
-                child: CarouselSlider(
+                child: NewsBox(),
+               /* CarouselSlider(
                   options: CarouselOptions(
                     height: MediaQuery.of(context).size.height * 0.3, // Adjust height relative to screen height
                     enlargeCenterPage: true,
@@ -322,8 +322,8 @@ class _HomeScreenState extends State<HomeScreen> {
                       child: Image.asset(item, fit: BoxFit.cover, width: 1000),
                     ),
                   )).toList(),
-                ),
-              ),
+                ),                                                                   */
+              ),  
             ],
           ),
         ),
