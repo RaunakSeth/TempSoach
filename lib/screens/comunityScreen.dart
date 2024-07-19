@@ -12,18 +12,56 @@ class CommunityScreen extends StatefulWidget {
 
 class _CommunityScreenState extends State<CommunityScreen> {
   late Future<List<Farmer>> _farmersFuture;
+  List<Farmer> _farmers = [];
+  List<Farmer> _filteredFarmers = [];
+  bool _isSearching = false;
   ApiManagerClass api = ApiManagerClass();
+  TextEditingController _searchController = TextEditingController();
 
   @override
   void initState() {
     super.initState();
-    _fetchFarmersData();
+    _farmersFuture = _fetchFarmersData();
+    _searchController.addListener(_filterFarmers);
   }
 
-  Future<void> _fetchFarmersData() async {
+  Future<List<Farmer>> _fetchFarmersData() async {
+    List<Farmer> farmers = await api.getFarmers();
     setState(() {
-      _farmersFuture = api.getFarmers();
+      _farmers = farmers;
+      _filteredFarmers = farmers;
     });
+    return farmers;
+  }
+
+  void _filterFarmers() {
+    final query = _searchController.text.toLowerCase();
+    setState(() {
+      if (query.isEmpty) {
+        _filteredFarmers = _farmers;
+      } else {
+        _filteredFarmers = _farmers
+            .where((farmer) =>
+                farmer.firstName?.toLowerCase().contains(query) == true ||
+                farmer.lastName?.toLowerCase().contains(query) == true)
+            .toList();
+      }
+    });
+  }
+
+  void _toggleSearch() {
+    setState(() {
+      _isSearching = !_isSearching;
+      if (!_isSearching) {
+        _searchController.clear();
+        _filteredFarmers = _farmers;
+      }
+    });
+  }
+
+  void _callFarmer(Farmer farmer) {
+    
+    print('Calling ${farmer.firstName} ${farmer.lastName}');
   }
 
   @override
@@ -48,31 +86,81 @@ class _CommunityScreenState extends State<CommunityScreen> {
             child: Align(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    SizedBox(height: 15,),
-                    Padding(
-                      padding: EdgeInsets.only(left: 16, right: 16),
-                      child: Row(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          AutoSizeText(
-                            "Community",
-                            style: TextStyle(
-                                fontWeight: FontWeight.w500,
-                                color: Colors.white),
-                            maxLines: 1,
-                            minFontSize: 40,
-                          ),
-                          Icon(
-                            Icons.notifications,
-                            color: Colors.white,
-                            size: MediaQuery.of(context).size.width * 0.07,
-                          ),
-                        ],
-                      ),
+                children: [
+                  SizedBox(height: 15),
+                  Padding(
+                    padding: EdgeInsets.only(left: 16, right: 16),
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: _isSearching
+                          ? [
+                              Container(
+                                height: 50,
+                                width: 320,
+                                decoration: BoxDecoration(borderRadius: BorderRadius.circular(16),color: Colors.white),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Container(
+                                      padding: EdgeInsets.fromLTRB(12,8,0,8),
+                                      child: Icon(Icons.search,color: Colors.black45,size: 24,)),
+                                    Container(
+                                      width: 220,
+                                      padding: EdgeInsets.fromLTRB(2, 10, 6, 2),
+                                      child: TextField(
+                                        controller: _searchController,
+                                        style: TextStyle(color: Colors.black,fontSize: 20),
+                                        decoration: InputDecoration(
+                                          hintText: 'Enter Name..',
+                                          border: InputBorder.none,
+                                          hintStyle: TextStyle(color: Colors.green.withOpacity(0.5),fontSize: 20),
+                                        ),
+                                      ),
+                                    ),
+                                    IconButton(
+                                      padding: EdgeInsets.all(8),
+                                      icon: Icon(Icons.close_rounded, color: Colors.black45,size: 24),
+                                      onPressed: _toggleSearch,
+                                    ), 
+                                  ],
+                                ),
+                              ),
+                              IconButton(
+                                icon: Icon(Icons.notifications_none_outlined, color: Colors.white,size: MediaQuery.of(context).size.width*0.07),
+                                onPressed: _toggleSearch,
+                              ),
+                            ]
+                          : [
+                              AutoSizeText(
+                                "Community",
+                                style: TextStyle(
+                                    fontWeight: FontWeight.w500,
+                                    color: Colors.white),
+                                maxLines: 1,
+                                minFontSize: 40,
+                              ),
+                              Row(
+                                children: [
+                                  IconButton(
+                                    icon: Icon(Icons.search,
+                                        color: Colors.white),
+                                    onPressed: _toggleSearch,
+                                    iconSize: MediaQuery.of(context).size.width * 0.07,
+                                  ),
+                                  Icon(
+                                    Icons.notifications_none_outlined,
+                                    color: Colors.white,
+                                    size:
+                                        MediaQuery.of(context).size.width * 0.07,
+                                  ),
+                                  SizedBox(width: 10)
+                                ],
+                              ),
+                            ],
                     ),
-                  ]
+                  ),
+                ],
               ),
             ),
           ),
@@ -82,7 +170,7 @@ class _CommunityScreenState extends State<CommunityScreen> {
         padding: EdgeInsets.only(left: 16, right: 16),
         child: Column(
           children: [
-            SizedBox(height: 10,),
+            SizedBox(height: 10),
             Align(
               alignment: Alignment.centerLeft,
               child: Text(
@@ -105,15 +193,73 @@ class _CommunityScreenState extends State<CommunityScreen> {
                   } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
                     return const Center(child: Text('No farmers found.'));
                   } else {
-                    final farmers = snapshot.data!;
                     return ListView.builder(
-                      itemCount: farmers.length,
+                      itemCount: _filteredFarmers.length + 1, // Adding one more item for the "Group Chat" section
                       itemBuilder: (BuildContext context, int index) {
-                        final farmer = farmers[index];
-                        return UserListItem(
-                          name: '${farmer.firstName} ${farmer.lastName}',
-                          imageUrl: farmer.imageUrl,
-                        );
+                        if (index == _filteredFarmers.length) {
+                          return Column(
+                            children: [
+                              SizedBox(height: 20),
+                              Align(
+                                alignment: Alignment.centerLeft,
+                                child: Text(
+                                  'Group Chat',
+                                  style: TextStyle(
+                                    fontSize: 24,
+                                    fontWeight: FontWeight.w500,
+                                    color: Color(0xFF797C7B),
+                                  ),
+                                ),
+                              ),
+                              SizedBox(height: 20),
+                              Container(
+                                decoration: BoxDecoration(color: Color(0xFF11AB2F),
+                                borderRadius: BorderRadius.circular(32),
+                                 boxShadow: [
+                                    BoxShadow(
+                                      color: Colors.grey.withOpacity(0.6),
+                                      blurRadius: 4,
+                                      offset: Offset(1,4), // changes position of shadow
+                                    ),
+                                  ],
+                                ),
+                                padding: EdgeInsets.fromLTRB(4,0,4,0),
+                                margin: EdgeInsets.fromLTRB(12,0,12,0),
+                                child: ElevatedButton(
+                                  onPressed: () {},
+                                  child: Container(
+                                    height: MediaQuery.of(context).size.height * 0.12,
+                                    child: Row(
+                                      children: [
+                                        Icon(Icons.chat_rounded,color: Colors.white,size: MediaQuery.of(context).size.width*0.12,),
+                                        const SizedBox(width: 20),
+                                        Text("Connect with your Members",
+                                        style: TextStyle(
+                                          fontSize: 18,
+                                          color: Colors.white,
+                                          fontWeight: FontWeight.w600
+                                        ))
+                                      ],
+                                    ),
+                                  ),
+                                  style: ElevatedButton.styleFrom(
+                                    backgroundColor: Color(0xFF11AB2F),
+                                    elevation: 0
+                                
+                                  ),
+                                ),
+                              ),
+                              const SizedBox(height: 40)
+                            ],
+                          );
+                        } else {
+                          final farmer = _filteredFarmers[index];
+                          return UserListItem(
+                            name: '${farmer.firstName} ${farmer.lastName}',
+                            imageUrl: farmer.imageUrl,
+                            onCallPressed: () => _callFarmer(farmer),
+                          );
+                        }
                       },
                     );
                   }
@@ -130,8 +276,14 @@ class _CommunityScreenState extends State<CommunityScreen> {
 class UserListItem extends StatelessWidget {
   final String name;
   final String? imageUrl;
+  final VoidCallback onCallPressed;
 
-  const UserListItem({Key? key, required this.name, this.imageUrl}) : super(key: key);
+  const UserListItem({
+    Key? key,
+    required this.name,
+    this.imageUrl,
+    required this.onCallPressed,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -158,6 +310,10 @@ class UserListItem extends StatelessWidget {
                   fontWeight: FontWeight.w500,
                 ),
               ),
+            ),
+            IconButton(
+              icon: Icon(Icons.call, color: Colors.green),
+              onPressed: onCallPressed,
             ),
           ],
         ),
