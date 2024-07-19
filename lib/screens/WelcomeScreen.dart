@@ -20,7 +20,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
     final storage = FlutterSecureStorage(aOptions: _getAndroidOptions());
     String? value = await storage.read(key: "Token Key");
     if(value != null) {
-      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => NavScreen()));
+    Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => NavScreen()));
     }
   }
   @override
