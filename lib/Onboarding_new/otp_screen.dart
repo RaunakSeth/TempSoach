@@ -5,6 +5,7 @@ import 'package:testing/ApiManagerClass.dart';
 import 'package:testing/Onboarding_new/login_screen.dart';
 import 'package:testing/Onboarding_new/new_welcome_screen.dart';
 import 'package:testing/screens/Home_screen/HomeScreen.dart';
+import 'package:testing/screens/navScreen.dart';
 
 class OtpScreen extends StatefulWidget {
   final String phoneNumber;
@@ -74,7 +75,7 @@ class _OtpScreenState extends State<OtpScreen> {
       if (response) {
         Navigator.pushReplacement(
           context,
-          MaterialPageRoute(builder: (context) => const HomeScreen()),
+          MaterialPageRoute(builder: (context) => const NavScreen()),
         );
       } else {
         Fluttertoast.showToast(
