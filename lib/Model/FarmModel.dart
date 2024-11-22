@@ -1,4 +1,4 @@
-import 'Farmer.dart';
+import '../Farmer.dart';
 
 class FormModel {
   final String? id;

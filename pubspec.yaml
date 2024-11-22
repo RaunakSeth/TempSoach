@@ -58,9 +58,9 @@ dependencies:
   flutter_secure_storage: ^9.0.0
   auto_size_text: ^3.0.0
   carousel_slider: ^4.2.1
-  flutter_test:
-    sdk: flutter
   google_fonts: ^6.2.1
+  win32: ^5.5.1
+  open_file: ^3.5.9
 
 
 dev_dependencies:

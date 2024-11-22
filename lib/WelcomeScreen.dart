@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-import 'package:testing/screens/Register/Register_Screen.dart';
-import 'package:testing/screens/Login/Login_Screen.dart';
+import 'package:testing/Onboarding_new/login_screen.dart';
+import 'package:testing/Onboarding_new/new_welcome_screen.dart';
 import 'package:testing/screens/navScreen.dart';
 import 'package:testing/widget/CustomButton.dart';
 
@@ -76,7 +76,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                   child: CustomButton(
                     onPressed: (){
                       Navigator.push(context, MaterialPageRoute(
-                        builder: (context)=>  Register_Screen(),
+                        builder: (context)=>  newWelcomeScreen(),
                       ),
                       );
                     },
@@ -87,7 +87,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                 GestureDetector(
                   onTap: () {
                     Navigator.pushReplacement(context, MaterialPageRoute(
-                        builder: (context)=>  Login_Screen()
+                        builder: (context)=> LoginScreen()
                     ),
                     );
                   },

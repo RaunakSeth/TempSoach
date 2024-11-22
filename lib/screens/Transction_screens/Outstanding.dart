@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:testing/ApiManagerClass.dart';
 
-import '../../FarmModel.dart';
+import '../../Model/FarmModel.dart';
 
 class Outstanding extends StatefulWidget {
   const Outstanding({Key? key}) : super(key: key);

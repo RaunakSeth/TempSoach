@@ -44,6 +44,7 @@ class _NavScreenState extends State<NavScreen> {
       bottomNavigationBar: AnimatedNotchBottomBar(
         showLabel: true,
         color: Colors.white,
+        bottomBarHeight: 70,
         itemLabelStyle: const TextStyle(
           color: Colors.grey,
           fontSize: 8.0,

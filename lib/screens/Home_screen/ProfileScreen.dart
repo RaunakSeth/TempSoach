@@ -4,7 +4,7 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:testing/ApiManagerClass.dart';
-import 'package:testing/screens/WelcomeScreen.dart';
+import 'package:testing/WelcomeScreen.dart';
 import 'package:testing/widget/CustomButton.dart';
 import 'package:testing/widgets/DocumentUploadView.dart';
 import 'package:testing/widgets/TextIconButton.dart';
@@ -121,7 +121,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
       phone: phone,
       firstName: _firstNameController.text,
       lastName: _lastNameController.text,
-      panchayatCentre: _panchayatController.text,
+      panchayat_centre: _panchayatController.text,
       gender: _genderController.text,
       dob: _dobController.text,
       frnNumber: _frnNumberController.text,
@@ -159,7 +159,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
         phone: phone,
         firstName: _firstNameController.text,
         lastName: _lastNameController.text,
-        panchayatCentre: _panchayatController.text,
+        panchayat_centre: _panchayatController.text,
         gender: _genderController.text,
         dob: _dobController.text,
         frnNumber: _frnNumberController.text,
@@ -449,7 +449,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           description: '*Land ownership certificate (patta), Land lease agreement, Land records documentation',
                           onPressed: () => _isEditingDoc ? pickfile("LandOwnership") : {},
                           icon: icon,
-                          buttonText: landOwnershipName == null ? "Upload" : landOwnershipName.toString(),
+                          // Show "Uploaded" if the file is uploaded, otherwise show "Upload"
+                          buttonText: landOwnershipName != null ? "Uploaded" : "Upload",
                         ),
                         const SizedBox(height: 10),
                         DocumentUploadView(
@@ -457,7 +458,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           description: '*Harvest Summary Reports, Crop Yield Records, Production Volume Logs',
                           onPressed: () => _isEditingDoc ? pickfile("CropHarvestRecords") : {},
                           icon: icon,
-                          buttonText: cropHarvestRecordsName == null ? "Upload" : cropHarvestRecordsName.toString(),
+                          buttonText: cropHarvestRecordsName != null ? "Uploaded" : "Upload",
                         ),
                         const SizedBox(height: 10),
                         DocumentUploadView(
@@ -465,7 +466,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           description: '*Organic Certification Documents, Good Agricultural Practices (GAP) Certification, Fair Trade Certification',
                           onPressed: () => _isEditingDoc ? pickfile("Certification") : {},
                           icon: icon,
-                          buttonText: certificationName == null ? "Upload" : certificationName.toString(),
+                          buttonText: certificationName != null ? "Uploaded" : "Upload",
                         ),
                         const SizedBox(height: 10),
                         DocumentUploadView(
@@ -473,7 +474,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           description: '*Soil Testing Results, Soil Quality Analysis, Soil Fertility Report',
                           onPressed: () => _isEditingDoc ? pickfile("SoilHealthReport") : {},
                           icon: icon,
-                          buttonText: soilHealthReportName == null ? "Upload" : soilHealthReportName.toString(),
+                          buttonText: soilHealthReportName != null ? "Uploaded" : "Upload",
                         ),
                         const SizedBox(height: 10),
                         DocumentUploadView(
@@ -481,7 +482,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           description: '*Current Crop Photos, Farm Infrastructure Images, Seasonal Progress Photos',
                           onPressed: () => _isEditingDoc ? pickfile("FarmPhotos") : {},
                           icon: icon,
-                          buttonText: farmPhotosName == null ? "Upload" : farmPhotosName.toString(),
+                          buttonText: farmPhotosName != null ? "Uploaded" : "Upload",
                         ),
                       ],
                     ),

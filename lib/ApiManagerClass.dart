@@ -3,13 +3,13 @@ import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-import 'FarmModel.dart';
+import 'Model/FarmModel.dart';
 import 'Farmer.dart';
 import 'package:http/http.dart' as http;
 
 class ApiManagerClass {
   Dio dio = Dio();
-  var baseUrl = "https://vfgabackend.outhad.com";
+  var baseUrl = "https://vfgabackend.soachglobal.com";
   var headers;
   AndroidOptions _getAndroidOptions() => const AndroidOptions(
     encryptedSharedPreferences: true,
@@ -26,51 +26,105 @@ class ApiManagerClass {
     required String phone,
     required String firstName,
     required String lastName,
-    required String panchayatCentre,
+    required String panchayat_centre,
     required String gender,
     required String dob,
     required String frnNumber,
     required String address,
-    File? profilePicture,
-    File? LandOwnership,
-    File? CropHarvestRecords,
-    File? Certification,
-    File? SoilHealthReport,
-    File? FarmPhotos
+    required String bank_name,
+    required String account_holder_name,
+    required String account_number,
+    required String re_enter_account_number,
+    required String ifsc_code,
+    required String aadhaar,
+    PlatformFile? profilePicture,
+    PlatformFile? LandOwnership,
+    PlatformFile? CropHarvestRecords,
+    PlatformFile? Certification,
+    PlatformFile? SoilHealthReport,
+    PlatformFile? FarmPhotos,
   }) async {
-    // Create a temporary map to hold the data
-    final Map<String, dynamic> tempData = {
-      "phone": phone,
-      "first_name": firstName,
-      "last_name": lastName,
-      "panchayat_centre": panchayatCentre,
-      "gender": gender,
-      "dob": dob,
-      "frn_number": frnNumber,
-      "address": address,
-    };
-
-    // Conditionally add files to the map if they are not null
-    if (profilePicture != null) tempData["profile_picture"] = profilePicture;
-    if (LandOwnership != null) tempData["land_ownership"] = LandOwnership;
-    if (CropHarvestRecords != null) tempData["crop_harvest_records"] = CropHarvestRecords;
-    if (Certification != null) tempData["certification"] = Certification;
-    if (SoilHealthReport != null) tempData["soil_health_report"] = SoilHealthReport;
-    if (FarmPhotos != null) tempData["farm_photos"] = FarmPhotos;
-
-    // Declare the final data variable with the built map
-    final data = json.encode(tempData);
     try {
       await init();
-      var response = await dio.post(
-        'https://vfgabackend.outhad.com/api/auth/farmer/register',
-        data: data,
+
+      // Create a multipart request for file upload
+      var request = http.MultipartRequest(
+        'POST',
+        Uri.parse('$baseUrl/api/auth/farmer/register'),
       );
-      print(json.encode(response.data));
-      print(response.statusMessage);
-      return true;
+
+      // Add required fields
+      request.fields.addAll({
+        "phone": phone,
+        "first_name": firstName,
+        "last_name": lastName,
+        "panchayat_centre": panchayat_centre,
+        "gender": gender,
+        "dob": dob,
+        "frn_number": frnNumber,
+        "address": address,
+        "bank_name": bank_name,
+        "account_holder_name": account_holder_name,
+        "account_number": account_number,
+        "re_enter_account_number": re_enter_account_number,
+        "ifsc_code": ifsc_code,
+        "aadhaar": aadhaar,
+      });
+
+      // Add files if provided
+      if (profilePicture != null) {
+        request.files.add(await http.MultipartFile.fromPath(
+          'profilePicture',
+          profilePicture.path.toString(),
+        ));
+      }
+      if (LandOwnership != null) {
+        request.files.add(await http.MultipartFile.fromPath(
+          'LandOwnership',
+          LandOwnership.path.toString(),
+        ));
+      }
+      if (CropHarvestRecords != null) {
+        request.files.add(await http.MultipartFile.fromPath(
+          'CropHarvestRecords',
+          CropHarvestRecords.path.toString(),
+        ));
+      }
+      if (Certification != null) {
+        request.files.add(await http.MultipartFile.fromPath(
+          'Certification',
+          Certification.path.toString(),
+        ));
+      }
+      if (SoilHealthReport != null) {
+        request.files.add(await http.MultipartFile.fromPath(
+          'SoilHealthReport',
+          SoilHealthReport.path.toString(),
+        ));
+      }
+      if (FarmPhotos != null) {
+        request.files.add(await http.MultipartFile.fromPath(
+          'FarmPhotos',
+          FarmPhotos.path.toString(),
+        ));
+      }
+
+      // Add headers
+      request.headers.addAll(headers);
+
+      // Send the request
+      http.StreamedResponse response = await request.send();
+
+      if (response.statusCode == 200) {
+        String responseBody = await response.stream.bytesToString();
+        print("Registration Success: $responseBody");
+        return true;
+      } else {
+        print("Registration Failed: ${response.statusCode}, ${response.reasonPhrase}");
+        return false;
+      }
     } catch (e) {
-      print("Error function register: $e");
+      print("Error in register: $e");
       return false;
     }
   }
@@ -83,7 +137,7 @@ class ApiManagerClass {
     try {
       await init();
       var response = await dio.post(
-        'https://vfgabackend.outhad.com/api/auth/farmer/login',
+        '$baseUrl/api/auth/farmer/login',
         data: data,
       );
       return true;
@@ -103,7 +157,7 @@ class ApiManagerClass {
     try {
       await init();
       var response = await dio.post(
-        'https://vfgabackend.outhad.com/api/auth/farmer/verify',
+        '$baseUrl/api/auth/farmer/verify',
         data: data,
       );
       final storage = FlutterSecureStorage(aOptions: _getAndroidOptions());
@@ -121,7 +175,7 @@ class ApiManagerClass {
     try {
       await init();
       var response = await dio.get(
-        'https://vfgabackend.outhad.com/api/auth/farmer/me',
+        '$baseUrl/api/auth/farmer/me',
         options: Options(
           headers: headers,
         ),
@@ -160,11 +214,17 @@ class ApiManagerClass {
     required String phone,
     required String firstName,
     required String lastName,
-    required String panchayatCentre,
+    required String panchayat_centre,
     required String gender,
     required String dob,
     required String frnNumber,
     required String address,
+    String? aadhaar,
+    String? bank_name,
+    String? account_holder_name,
+    String? account_number,
+    String? re_enter_account_number,
+    String? ifsc_code,
     PlatformFile? profilePicture,
     PlatformFile? LandOwnership,
     PlatformFile? CropHarvestRecords,
@@ -173,20 +233,43 @@ class ApiManagerClass {
     PlatformFile? FarmPhotos,
   }) async {
     var request = http.MultipartRequest(
-        'PUT',
-        Uri.parse('https://vfgabackend.outhad.com/api/auth/farmer/update')
+      'PUT',
+      Uri.parse('$baseUrl/api/auth/farmer/update'),
     );
 
+    // Add required fields
     request.fields.addAll({
-      'phone': phone,
-      'first_name': firstName,
-      'last_name': lastName,
-      'panchayat_centre': panchayatCentre,
-      'gender': gender,
-      'dob': dob,
-      'frn_number': frnNumber,
-      'address': address,
+      "phone": phone,
+      "first_name": firstName,
+      "last_name": lastName,
+      "panchayat_centre": panchayat_centre,
+      "gender": gender,
+      "dob": dob,
+      "frn_number": frnNumber,
+      "address": address,
     });
+
+    // Add optional bank details if provided
+    if (aadhaar != null) {
+      request.fields["bank_name"] = aadhaar;
+    }
+    if (bank_name != null) {
+      request.fields["bank_name"] = bank_name;
+    }
+    if (account_holder_name != null) {
+      request.fields["account_holder_name"] = account_holder_name;
+    }
+    if (account_number != null) {
+      request.fields["account_number"] = account_number;
+    }
+    if (re_enter_account_number != null) {
+      request.fields["re_enter_account_number"] = re_enter_account_number;
+    }
+    if (ifsc_code != null) {
+      request.fields["ifsc_code"] = ifsc_code;
+    }
+
+    // Add files if provided
     if (profilePicture != null) {
       request.files.add(await http.MultipartFile.fromPath('profilePicture', profilePicture.path.toString()));
     }
@@ -204,7 +287,6 @@ class ApiManagerClass {
     }
     if (FarmPhotos != null) {
       request.files.add(await http.MultipartFile.fromPath('FarmPhotos', FarmPhotos.path.toString()));
-
     }
 
     request.headers.addAll(headers);
@@ -225,7 +307,7 @@ class ApiManagerClass {
     try {
       await init();
       var response = await dio.get(
-        'https://vfgabackend.outhad.com/api/forms',
+        '$baseUrl/api/forms',
         options: Options(
           headers: headers,
         ),
@@ -258,7 +340,7 @@ class ApiManagerClass {
     try {
       await init();
       var response = await dio.request(
-        'https://vfgabackend.outhad.com/api/forms/create',
+        '$baseUrl/api/forms/create',
         options: Options(
           method: 'POST',
           headers: headers,
@@ -278,7 +360,7 @@ class ApiManagerClass {
     try {
       await init();
       var response = await Dio().get(
-        'https://vfgabackend.outhad.com//api/auth/farmer/status',
+        '$baseUrl/api/auth/farmer/status',
         options: Options(
           headers: headers,
         ),
@@ -304,7 +386,7 @@ class ApiManagerClass {
     try {
       await init();
       var response = await Dio().get(
-        'https://vfgabackend.outhad.com/api/auth/farmer/status',
+        '$baseUrl/api/auth/farmer/status',
         options: Options(
           headers: headers,
         ),
