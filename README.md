@@ -21,4 +21,4 @@ The solution includes:
 
 ### App Demo
 
-[Play video](https://raw.githubusercontent.com/RaunakSeth/TempSoach/refs/heads/main/WhatsApp%20Video%202025-04-24%20at%2001.00.25_93bcdf2e.mp4)
+<video src='https://rawcdn.githack.com/RaunakSeth/TempSoach/refs/heads/main/WhatsApp%20Video%202025-04-24%20at%2001.00.25_93bcdf2e.mp4' />
