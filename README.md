@@ -20,5 +20,5 @@ The solution includes:
 ## Videos
 
 ### App Demo
-<video src="https://raw.githubusercontent.com/RaunakSeth/TempSoach/refs/heads/main/WhatsApp%20Video%202025-04-24%20at%2001.00.25_93bcdf2e.mp4"
-       controls width="600" />
+
+[Play video](https://raw.githubusercontent.com/RaunakSeth/TempSoach/refs/heads/main/WhatsApp%20Video%202025-04-24%20at%2001.00.25_93bcdf2e.mp4)
