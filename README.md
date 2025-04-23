@@ -1,16 +1,22 @@
-# testing
+# Soach Global App
 
-A new Flutter project.
+Soach Global is an innovative agri-fintech platform designed to empower farmers by enabling them to raise capital for crop cultivation without incurring debt. The platform allows farmers to submit detailed information about their land, crop type, expected yield, and the percentage of future produce they are willing to offer as investment shares. After verification, these shares are listed and sold as SEBI-registered agri-stocks, giving farmers access to upfront funds while maintaining ownership and operational control.
 
-## Getting Started
+## Overview
 
-This project is a starting point for a Flutter application.
+The solution includes:
 
-A few resources to get you started if this is your first Flutter project:
+- **Farmer-side Mobile App (Flutter)**: Allows farmers to register their land and crop details, set expected yield values, specify share percentages, and track the verification process and funding status.
+- **Admin Dashboard (Web - MERN Stack)**: Enables administrators to review farmer-submitted data, manage SEBI registration workflows, monitor funding status, and oversee investor interactions.
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+## Features
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+- **Crop data verification and risk assessment**
+- **SEBI-compliant crop share registration**
+- **Debt-free funding model for farmers**
+- **Real-time dashboard for tracking applications and investments**
+- **Secure, user-friendly mobile interface for farmers**
+
+## Videos
+
+### App Demo

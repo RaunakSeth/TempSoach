@@ -1,0 +1,2 @@
+D:/soach global/TempSoach/android/app/.cxx/Debug/20363e3z/armeabi-v7a/CMakeFiles/edit_cache.dir
+D:/soach global/TempSoach/android/app/.cxx/Debug/20363e3z/armeabi-v7a/CMakeFiles/rebuild_cache.dir
